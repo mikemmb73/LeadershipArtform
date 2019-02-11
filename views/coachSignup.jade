@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  p This is where the executive can sign up
+  p This is where the coach can sign up
   br
   br
   .main.container
@@ -23,9 +23,6 @@ block content
             label(for='phoneNumber') Phone Number:
             input#phoneNumber.form-control(type='text', name='phoneNumber')
           div.form-group
-            label(for='coachID') Coach's ID:
-            input#coachID.form-control(type='text', name='coachID')
-          div.form-group
             label(for='pw') Password:
             input#pw.form-control(type='password' name='password')       
           div.form-group
@@ -38,3 +35,5 @@ block content
             label(for='image') Photo:
             input#image.form-control(type='file' name='image')     
           button.btn.btn-primary(type='submit') Sign up
+
+

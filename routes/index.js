@@ -7,8 +7,13 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET signup page for executive. */
-router.get('/', function(req, res, next) {
-  res.render('executiveSignup', { title: 'Executive Signup' });
+router.get('/executiveSignup', function(req, res, next) {
+  res.render('executiveSignup.jade', { title: 'Executive Signup' });
+});
+
+/* GET signup page for coach. */
+router.get('/coachSignup', function(req, res, next) {
+  res.render('coachSignup.jade', { title: 'Coach Signup' });
 });
 
 module.exports = router;

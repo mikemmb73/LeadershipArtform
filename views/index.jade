@@ -9,20 +9,22 @@ block content
         div.fill
             div.container
                 ul.nav
-                input.btn.primary(type="submit", value="Signup")
+                a(href="coachSignup")
+                  input.btn.primary(type="submit", value="Signup")
                 |  
                 form.pull-right(method="post", id="loginForm")
                     input.input-small(id="username", type="text", name="User", placeholder="Username")
                     input.input-small(id="password", type="password", name="Password", placeholder="Password")
                     input.btn.primary(type="submit", value="Sign In")
                 p#loginPrompt.pull-right.login-prompt
-                h2 As coach
+                h2 As Coach
                 br
                 br
         div.fill
             div.container
                 ul.nav
-                input.btn.primary(type="submit", value="Signup")
+                a(href="executiveSignup")
+                  input.btn.primary(type="submit", value="Signup")
                 |  
                 form.pull-right(method="post", id="loginForm")
                     input.input-small(id="username", type="text", name="User", placeholder="Username")
