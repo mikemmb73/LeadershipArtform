@@ -18,4 +18,9 @@ router.get('/coachSignup', function(req, res, next) {
   res.render('coachSignup.pug', { title: 'Coach Signup' });
 });
 
+/* GET homepage for coach. */
+router.get('/coachView', function(req, res, next) {
+  res.render('coachView.pug', { title: 'Coach View' });
+});
+
 module.exports = router;
