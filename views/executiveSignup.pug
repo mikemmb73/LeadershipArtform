@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1= title
+  p This is where the executive can sign up
+  br
+  br
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        // register form
+        form(method='POST' action='/register')
+          div.form-group
+            label(for='fname') First Name:
+            input#fname.form-control(type='text', fname='fname')
+          div.form-group
+            label(for='lname') Last Name:
+            input#lname.form-control(type='text', lname='lname')
+          div.form-group
+            label(for='email') Email:
+            input#email.form-control(type='email', name='email')
+          div.form-group
+            label(for='phoneNumber') Phone Number:
+            input#phoneNumber.form-control(type='text', name='phoneNumber')
+          div.form-group
+            label(for='coachID') Coach's ID:
+            input#coachID.form-control(type='text', name='coachID')
+          div.form-group
+            label(for='pw') Password:
+            input#pw.form-control(type='password' name='password')
+          div.form-group
+            label(for='pw2') Confirm Password:
+            input#pw2.form-control(type='password' name='confirmPassword')
+          div.form-group
+            label(for='bio') Professional Bio:
+            input#bio.form-control(type='text' name='bio')
+          div.form-group
+            label(for='image') Photo:
+            input#image.form-control(type='file' name='image')
+          button.btn.btn-primary(type='submit') Sign up

@@ -6,3 +6,38 @@ body {
 a {
   color: #00B7FF;
 }
+#submitButton{
+  margin-top: 10px;
+  margin-left: 30px;
+}
+.homeContainer{
+  background-color: #e6f2ff;
+  height: 300px;
+  padding: 10px;
+}
+
+#IndexHeader{
+  text-align: center;
+}
+
+.orLabel{
+  float:center;
+  margin-top:50px; 
+  margin-left:40px;
+  align: center;
+  
+}
+
+#loginForm{
+  margin-left:35px;
+}
+
+.loginLabel{
+  margin-left:15px;
+}
+
+#submitButton{
+  float:center;
+  margin-left:30px;
+}
+
