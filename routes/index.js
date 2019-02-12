@@ -23,4 +23,16 @@ router.get('/coachView', function(req, res, next) {
   res.render('coachView.pug', { title: 'Coach View' });
 });
 
+router.get('/executiveView', function(req,res,next){
+	res.render('executiveView.pug', {title: 'Executive View'});
+});
+
+router.get('/executiveProfile', function(req,res,next){
+	res.render('executiveProfile.pug', {title: 'Executive Profile'});
+});
+
+router.get('/coachProfile', function(req,res,next){
+	res.render('coachProfile.pug', {title: 'Coach Profile'});
+});
+
 module.exports = router;
