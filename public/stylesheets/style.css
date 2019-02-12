@@ -10,11 +10,7 @@ a {
   margin-top: 10px;
   margin-left: 30px;
 }
-.homeContainer{
-  background-color: #e6f2ff;
-  height: 300px;
-  padding: 10px;
-}
+
 
 #IndexHeader{
   text-align: center;
@@ -41,3 +37,18 @@ a {
   margin-left:30px;
 }
 
+.nav a{
+  font-size: 3em !important;
+  color:red;
+}
+
+#profileImage{
+  height: auto;
+  width:250px;
+  padding: 20px;
+}
+
+#clientImage{
+  height:100px;
+  width:120px;
+}

@@ -1,0 +1,61 @@
+extends layout
+
+block content
+	h1=title
+	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+		a.navbar-brand(href='index') Leadership as an Artform
+		div.collapse.navbar-collapse#navbarColor02
+			ul.navbar-nav.ml-auto
+				li.nav-item.active View Profile
+					a.nav-link(href='executiveProfile')
+				li.nav-item View Coach's Profile
+					a.nav-link(href='coachProfile')
+				li.nav-item Add Goal
+					a.nav-link(href='#')
+	div.row
+		div.col-md-2
+		div.col-md-2
+			img#profileImage(src='https://cdn.andnowuknow.com/headshots/justin_hs.jpg?FbYA5K4Z7KhFKzBY6aSjRSpIxGvzFshe')
+		div.col-md-6
+			br
+			h1 Name
+			h3 Monsters Inc Co
+			h5 Biography information; what the executive is working toward
+		div.col-md-2
+
+
+		br
+	div.jumbotron
+		h3 Current Goals
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-header Due Date/Assigned Date
+			div.card-body
+				h4 Goal Name
+				p Description of goal 
+			div.progress
+				div.progress-bar.bg-warning(role='progressbar' style='width:5%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+		br
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-header Due Date/Assigned Date
+			div.card-body
+				h4 Goal Name
+				p Description of goal 
+			div.progress
+				div.progress-bar.bg-warning(role='progressbar' style='width:25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+
+	div.jumbotron
+		h3 Past Goals
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-header Date Completed
+			div.card-body
+				h4 Goal Name
+				p Description of goal 
+			div.progress
+				div.progress-bar.bg-success(role='progressbar' style='width:100%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-header Date Completed
+			div.card-body
+				h4 Goal Name
+				p Description of goal 
+			div.progress
+				div.progress-bar.bg-success(role='progressbar' style='width:100%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
