@@ -1,30 +1,47 @@
 extends layout
 
 block content
-  h1= title
+  h1=title
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href='index') Leadership as an Artform
+    div.collapse.navbar-collapse#navbarColor02
+      ul.navbar-nav.ml-auto
+        li.nav-item.active View Profile
+          a.nav-link(href='executiveProfile')
+        li.nav-item View Coach's Profile
+          a.nav-link(href='#')
+        li.nav-item Add Goal
+          a.nav-link(href='#')
 
+  div.jumbotron
+    a(class='button btn btn-primary' role='button' size='small') Remind All
 
-  nav.navbar.navbar-default(role="navigation")
-    .navbar-header
-        button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#navbar-inverse", aria-expanded="false", aria-controls="navbar")
-            span.sr-only Toggle navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-        a.navbar-brand(href="#") Title
-        ul.nav.navbar-nav
-          li.active: a(href="#") View Profile
-          li: a(href="#") Invite Executive
-          li: a(href="#") Add Goal
-          li: a(href="#") Logout
+    div.row.jumbotron
+      div.col
+      div.col-md-2
+        img#clientImage(src='https://cdn.onlinewebfonts.com/svg/img_549112.png')
+      br
+      div.col-md-2
+        h4 Name of Executive
+        h5 Title/ Company
+        .row
+          .col-md-4
+            a.btn.btn-default Remind
+          .col-md-4
+            a.btn.btn-default Add Goal
+      div.col
 
-    p This is where the coach can view their homepage
-    br
-    br
-
-  .main.container
-  div.row
-    div.col-md-5.jumbotron
-      div.row
-        div.col-md-5
-        a(class='button btn btn-primary' role='button') Remind All
+      div.row.jumbotron
+        div.col
+        div.col-md-2
+          img#clientImage(src='https://cdn.onlinewebfonts.com/svg/img_549112.png')
+        br
+        div.col-md-2
+          h4 Name of Executive
+          h5 Title/ Company
+          .row
+            .col-md-4
+              a.btn.btn-default Remind
+            .col-md-4
+              a.btn.btn-default Add Goal
+        div.col
