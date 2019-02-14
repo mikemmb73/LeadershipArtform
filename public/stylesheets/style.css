@@ -13,28 +13,29 @@ a {
 
 
 #IndexHeader{
+  margin-left: 15px;
   text-align: center;
 }
 
 .orLabel{
   float:center;
   margin-top:50px; 
-  margin-left:40px;
+  margin-left:43px;
   align: center;
   
 }
 
 #loginForm{
-  margin-left:35px;
+  margin-left:23px;
 }
 
 .loginLabel{
-  margin-left:15px;
+  margin-left:18px;
 }
 
 #submitButton{
   float:center;
-  margin-left:30px;
+  margin-left:54px;
 }
 
 .nav a{
