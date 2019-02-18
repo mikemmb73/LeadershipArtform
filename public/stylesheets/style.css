@@ -38,6 +38,10 @@ a {
   margin-left:54px;
 }
 
+#addGoalButton{
+  float:center;
+}
+
 .nav a{
   font-size: 3em !important;
   color:red;
@@ -52,4 +56,21 @@ a {
 #clientImage{
   height:100px;
   width:120px;
+}
+
+.dropdown-menu li:hover .sub-menu {
+    visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.dropdown-menu .sub-menu {
+    left: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
 }
