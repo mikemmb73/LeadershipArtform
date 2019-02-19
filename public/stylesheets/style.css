@@ -19,10 +19,10 @@ a {
 
 .orLabel{
   float:center;
-  margin-top:50px; 
+  margin-top:50px;
   margin-left:43px;
   align: center;
-  
+
 }
 
 #loginForm{
@@ -58,6 +58,16 @@ a {
   width:120px;
 }
 
+.client_button {
+  font-size: 23px;
+  margin-left: 40px;
+}
+
+.custom_modal_dialog {
+  padding-left: 300px;
+  padding-right: 300px;
+
+}
 .dropdown-menu li:hover .sub-menu {
     visibility: visible;
 }
