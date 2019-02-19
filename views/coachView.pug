@@ -1,47 +1,106 @@
 extends layout
 
 block content
-  h1=title
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a.navbar-brand(href='index') Leadership as an Artform
-    div.collapse.navbar-collapse#navbarColor02
-      ul.navbar-nav.ml-auto
-        li.nav-item.active View Profile
-          a.nav-link(href='executiveProfile')
-        li.nav-item View Coach's Profile
-          a.nav-link(href='#')
-        li.nav-item Add Goal
-          a.nav-link(href='#')
+	h1=title
+	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+		a.navbar-brand(href='/') Leadership as an Artform
+		div.collapse.navbar-collapse#navbarColor02
+			ul.navbar-nav.ml-auto
+				li
+					a.nav-link.nav-item(href='coachProfile') View Profile
+				li
+					a.nav-item.nav-link(href='/',data-toggle="modal", data-target="#addClientModal") Invite Client
+				li
+					a.nav-item.nav-link(href='addGoal', data-toggle="modal", data-target="#addGoalModal") Add Goal
+		.modal(role="dialog", id="addGoalModal")
+			.modal-dialog-centered.custom_modal_dialog(role="document")
+				.modal-content
+					.modal-header
+						h5 Add A Goal
+						button(class="close",data-dismiss="modal")
+							span &times;
+					.modal-body
+						p Goal Title:
+							input(type="text")
+						p Target Executive:
+							input(type="text")
+						p Goal Description:
+							br
+							textarea
+					.modal-footer
+						button(data-dismiss="modal").btn.btn-primary Submit
 
-  div.jumbotron
-    a(class='button btn btn-primary' role='button' size='small') Remind All
-
-    div.row.jumbotron
-      div.col
-      div.col-md-2
-        img#clientImage(src='https://cdn.onlinewebfonts.com/svg/img_549112.png')
-      br
-      div.col-md-2
-        h4 Name of Executive
-        h5 Title/ Company
-        .row
-          .col-md-4
-            a.btn.btn-default Remind
-          .col-md-4
-            a.btn.btn-default Add Goal
-      div.col
-
-      div.row.jumbotron
-        div.col
-        div.col-md-2
-          img#clientImage(src='https://cdn.onlinewebfonts.com/svg/img_549112.png')
-        br
-        div.col-md-2
-          h4 Name of Executive
-          h5 Title/ Company
-          .row
-            .col-md-4
-              a.btn.btn-default Remind
-            .col-md-4
-              a.btn.btn-default Add Goal
-        div.col
+	div.row.client_title
+		h1 Clients
+			button(class="btn btn-primary",type="button").client_button Remind All
+		.modal(role="dialog", id="addClientModal")
+			.modal-dialog-centered.custom_modal_dialog(role="document")
+				.modal-content
+					.modal-header
+						h5 Invite a Client
+						button(class="close",data-dismiss="modal")
+							span &times;
+					.modal-body
+						p Client Name:
+							input(type="text")
+						p Email Address:
+							input(type="text")
+						p Welcome Message:
+							br
+							textarea
+					.modal-footer
+						button(data-dismiss="modal").btn.btn-primary Submit
+	div.row.jumbotron
+		.modal(role="dialog", id="sendReminderModal")
+			.modal-dialog-centered.custom_modal_dialog(role="document")
+				.modal-content
+					.modal-header
+						h5 Send a Reminder
+						button(class="close",data-dismiss="modal")
+							span &times;
+					.modal-body
+						p Choose Executive:
+							input(type="text")
+						p Choose Goal:
+							input(type="text")
+					.modal-footer
+						button(data-dismiss="modal").btn.btn-primary Submit
+		div.col.navbar-nav
+		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
+			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
+		nav-item.nav-link.div.col-md-2
+			a(href="executiveProfile")
+				h3 Name
+				h5 Monsters Inc Co
+				h6 Biography info
+			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+		div.col.navbar-nav
+		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
+			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
+		nav-item.nav-link.div.col-md-2
+			a(href="executiveProfile")
+				h3 Name
+				h5 Monsters Inc Co
+				h6 Biography info
+			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+		div.col.navbar-nav
+	div.row.jumbotron
+		div.col.navbar-nav
+		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
+			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
+		nav-item.nav-link.div.col-md-2
+			a(href="executiveProfile")
+				h3 Name
+				h5 Monsters Inc Co
+				h6 Biography info
+			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+		div.col.navbar-nav
+		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
+			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
+		nav-item.nav-link.div.col-md-2
+			a(href="executiveProfile")
+				h3 Name
+				h5 Monsters Inc Co
+				h6 Biography info
+			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+		div.col.navbar-nav

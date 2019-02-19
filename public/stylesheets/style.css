@@ -72,6 +72,10 @@ a {
     visibility: visible;
 }
 
+.client_title {
+  padding-top: 30px;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
