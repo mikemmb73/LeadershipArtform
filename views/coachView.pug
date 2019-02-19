@@ -2,33 +2,33 @@ extends layout
 
 block content
 	h1=title
-	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/') Leadership as an Artform
-		div.collapse.navbar-collapse#navbarColor02
-			ul.navbar-nav.ml-auto
-				li
-					a.nav-link.nav-item(href='coachProfile') View Profile
-				li
-					a.nav-item.nav-link(href='/',data-toggle="modal", data-target="#addClientModal") Invite Client
-				li
-					a.nav-item.nav-link(href='addGoal', data-toggle="modal", data-target="#addGoalModal") Add Goal
-		.modal(role="dialog", id="addGoalModal")
-			.modal-dialog-centered.custom_modal_dialog(role="document")
-				.modal-content
-					.modal-header
-						h5 Add A Goal
-						button(class="close",data-dismiss="modal")
-							span &times;
-					.modal-body
-						p Goal Title:
-							input(type="text")
-						p Target Executive:
-							input(type="text")
-						p Goal Description:
-							br
-							textarea
-					.modal-footer
-						button(data-dismiss="modal").btn.btn-primary Submit
+		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+			a.navbar-brand(href='/') Leadership as an Artform
+			div.collapse.navbar-collapse#navbarColor02
+				ul.navbar-nav.ml-auto
+					li
+						a.nav-link.nav-item(href='coachProfile') View Profile
+					li
+						a.nav-item.nav-link(href='/',data-toggle="modal", data-target="#addClientModal") Invite Client
+					li
+						a.nav-item.nav-link(href='addGoal', data-toggle="modal", data-target="#addGoalModal") Add Goal
+			.modal(role="dialog", id="addGoalModal")
+				.modal-dialog-centered.custom_modal_dialog(role="document")
+					.modal-content
+						.modal-header
+							h5 Add A Goal
+							button(class="close",data-dismiss="modal")
+								span &times;
+						.modal-body
+							p Goal Title:
+								input(type="text")
+							p Target Executive:
+								input(type="text")
+							p Goal Description:
+								br
+								textarea
+						.modal-footer
+							button(data-dismiss="modal").btn.btn-primary Submit
 
 	div.row.client_title
 		h1 Clients
