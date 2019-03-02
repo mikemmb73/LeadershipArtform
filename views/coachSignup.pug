@@ -5,11 +5,12 @@ block content
   p This is where the coach can sign up
   br
   br
+  //script(type="text/javascript" src="../../model/executiveCoach.js")
   .main.container
     .row
       .col-md-6.col-md-offset-3
         // register form
-        form(method='POST' action='/register')
+        form(id = "form" method='POST' action='/coachProfile')
           div.form-group
             label(for='fname') First Name:
             input#fname.form-control(type='text', fname='fname')
@@ -34,6 +35,11 @@ block content
           div.form-group
             label(for='image') Photo:
             input#image.form-control(type='file' name='image')     
-          button.btn.btn-primary(type='submit') Sign up
+          button.btn.btn-primary(type='submit' onclick= "signUp()") Sign up
+          script.
+            function signUp() {
+              console.log("hi"); 
+            }
+
 
 
