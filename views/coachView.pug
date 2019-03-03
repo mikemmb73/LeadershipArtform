@@ -36,20 +36,21 @@ block content
 		.modal(role="dialog", id="addClientModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
-					.modal-header
-						h5 Invite a Client
-						button(class="close",data-dismiss="modal")
-							span &times;
-					.modal-body
-						p Client Name:
-							input(type="text")
-						p Email Address:
-							input(type="text")
-						p Welcome Message:
-							br
-							textarea
-					.modal-footer
-						button(data-dismiss="modal").btn.btn-primary Submit
+					form(id = "form" method='POST' action='/coachView')
+						.modal-header
+							h5 Invite a Client
+							button(class="close",data-dismiss="modal")
+								span &times;
+						.modal-body
+							p Client Name:
+								input(type="text" name="clientName")
+							p Email Address:
+								input(type="text" name="emailAddress")
+							p Welcome Message:
+								br
+								input(type="textarea" name = "message")
+						.modal-footer
+							button.btn.btn-primary(type='submit') Submit
 	div.row.jumbotron
 		.modal(role="dialog", id="sendReminderModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
