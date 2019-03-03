@@ -1,33 +1,46 @@
 function mcDropdown(){
+  document.getElementById('mcButton').disabled=true;
+  document.getElementById('freeResponseButton').disabled=true;
+  document.getElementById('likertButton').disabled=true;
   var jumbotron = document.getElementById('questionDropdown');
   if (jumbotron.style.display === "none") {
     jumbotron.style.display = "block";
   }
   var form = document.createElement("form");
-  // var formAttClass = document.createAttribute("class");
-  // formAttClass.value="form-control";
+  var formAttClass = document.createAttribute("class");
+  formAttClass.value="form-control form-group";
   var selectForm = document.createElement("select");
+  var selectFormID = document.createAttribute("id");
+  selectFormID.value="optionsNumber";
+  selectForm.setAttributeNode(selectFormID);
   form.appendChild(selectForm);
+  jumbotron.appendChild(form);
 
   var i;
   var options;
-  for (i = 0; i < 7; i++){
-    console.log("inside for loop");
+  for (i = 1; i < 6; i++){
     options = document.createElement("option");
+    //set option value
     var optionsAmount = document.createTextNode(i);
     options.appendChild(optionsAmount);
+    var optionsValue = document.createAttribute("value");
+    optionsValue.value = i;
+    options.setAttributeNode(optionsValue);
     selectForm.appendChild(options);
   }
 
-  var radio = document.createElement("input");
-  var radioAtt = document.createAttribute("type");
-  radioAtt.value="radio";
-  radio.setAttributeNode(radioAtt);
-  jumbotron.appendChild(radio);
+  var getSelections = document.getElementById('optionsNumber');
+  var selection = getSelections.options[getSelections.selectedIndex].value;
+  console.log(selection);
+
+
 
 }
 
 function freeResponseDropdown(){
+  document.getElementById('mcButton').disabled=true;
+  document.getElementById('freeResponseButton').disabled=true;
+  document.getElementById('likertButton').disabled=true;
   var jumbotron = document.getElementById('questionDropdown');
 
   if (jumbotron.style.display === "none") {
@@ -76,6 +89,9 @@ function freeResponseDropdown(){
 }
 
 function likertDropdown(){
+  document.getElementById('mcButton').disabled=true;
+  document.getElementById('freeResponseButton').disabled=true;
+  document.getElementById('likertButton').disabled=true;
   console.log('here likert');
   var jumbotron = document.getElementById('questionDropdown');
   if (jumbotron.style.display === "none") {

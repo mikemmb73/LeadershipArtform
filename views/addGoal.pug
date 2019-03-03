@@ -57,13 +57,13 @@ block content
 			div.card-body
 				h5 Type of Question
 				form
-					input(type='radio', name='gender', value='male',  onclick='mcDropdown()')
+					input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
 					|  Multiple Choice
 					br
-					input(type='radio', name='gender', value='female' onclick='freeResponseDropdown()')
+					input(type='radio', name='gender', value='female', id='freeResponseButton', onclick='freeResponseDropdown()')
 					|  Free Response
 					br
-					input(type='radio', name='gender', value='other' onclick='likertDropdown()')
+					input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
 					|  Likert Scale
 					div.jumbotron#questionDropdown(style="display:none")
 			div.card-footer Add additional +
