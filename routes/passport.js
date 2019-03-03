@@ -3,6 +3,13 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+// var mysql = require('mysql');
+// var connection = mysql.createConnection({
+//       host: 'IP',
+//       user: 'root',
+//       password: 'password'
+//     });
+
 /* POST login page. */
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
