@@ -72,6 +72,10 @@ a {
     visibility: visible;
 }
 
+.welcomeMessage{
+  height: 200px;
+  width: 600px;
+}
 .client_title {
   padding-top: 30px;
 }

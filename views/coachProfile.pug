@@ -11,6 +11,8 @@ block content
 					li
 						a.nav-item.nav-link(href='/coachView') Back to Home
 					li
+						a.nav-item.nav-link(href='/',data-toggle="modal", data-target="#addClientModal") Invite Client
+					li
 						a.nav-item.nav-link(href='addGoal', data-toggle="modal", data-target="#addGoalModal") Add Goal
 			.modal(role="dialog", id="addGoalModal")
 				.modal-dialog-centered.custom_modal_dialog(role="document")
@@ -30,15 +32,16 @@ block content
 						.modal-footer
 							button(data-dismiss="modal").btn.btn-primary Submit
 		div.row
-			div.col-md-2
+			div.col-md-1
 			div.col-md-2
 				img#profileImage(src='https://cdn.andnowuknow.com/headshots/justin_hs.jpg?FbYA5K4Z7KhFKzBY6aSjRSpIxGvzFshe')
+			div.col-md-1
 			div.col-md-6
 				br
 				h1 Name
 				h3 Tennessee Kids
 				h5 Biography information; what the executive is working toward
-			div.col-md-2
+			div.col-md-1
 			br
 	div.row
 		h1 Clients
@@ -46,20 +49,21 @@ block content
 		.modal(role="dialog", id="addClientModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
-					.modal-header
-						h5 Invite a Client
-						button(class="close",data-dismiss="modal")
-							span &times;
-					.modal-body
-						p Client Name:
-							input(type="text")
-						p Email Address:
-							input(type="text")
-						p Welcome Message:
-							br
-							textarea
-					.modal-footer
-						button(data-dismiss="modal").btn.btn-primary Submit
+					form(id = "form" method='POST' action='/coachView')
+						.modal-header
+							h5 Invite a Client
+							button(class="close",data-dismiss="modal")
+								span &times;
+						.modal-body
+							p Client Name:
+								input(type="text" name="clientName")
+							p Email Address:
+								input(type="text" name="emailAddress")
+							p Welcome Message:
+								br
+								input(type="textarea" name = "message")
+						.modal-footer
+							button.btn.btn-primary(type='submit') Submit
 	div.row.jumbotron
 		.modal(role="dialog", id="sendReminderModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
