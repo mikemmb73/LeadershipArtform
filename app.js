@@ -10,7 +10,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 //pug compile
-const pug = require('pug');
+//const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
 
 // view engine setup
