@@ -47,6 +47,10 @@ a {
   color:red;
 }
 
+#noteText{
+  height:400px;
+  width:650px;
+}
 #profileImage{
   height: auto;
   width:250px;
@@ -56,6 +60,12 @@ a {
 #clientImage{
   height:100px;
   width:120px;
+}
+
+#freeResponseQuestion{
+  height:200px;
+  width: 300px;
+  margin-left: 25px;
 }
 
 .client_button {

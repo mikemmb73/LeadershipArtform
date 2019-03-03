@@ -35,13 +35,17 @@ router.get('/executiveProfile', function(req,res,next){
 	res.render('executiveProfile.pug', {title: 'Executive Profile'});
 });
 
-router.get('/coachProfile', function(req,res,next){
-	res.render('coachProfile.pug', {title: 'Coach Profile'});
+router.get('/coachProfile_coach', function(req,res,next){
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
+});
+
+router.get('/coachProfile_executive', function(req,res,next){
+	res.render('coachProfile_executive.pug', {title: 'Coach Profile'});
 });
 
 router.post('/coachProfile', function(req, res) {
-	var user = req.param('email', null); 
-}); 
+	var user = req.param('email', null);
+});
 
 router.get('/addGoal', function(req,res,next){
 	res.render('addGoal.pug', {title: 'Add Goal'});
