@@ -18,6 +18,10 @@ router.get('/coachSignup', function(req, res, next) {
   res.render('coachSignup.pug', { title: 'Coach Signup' });
 });
 
+router.get('../model/executiveCoach.js', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client.js'));
+});
+
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
   res.render('coachView.pug', { title: 'Coach View' });
@@ -35,8 +39,14 @@ router.get('/coachProfile', function(req,res,next){
 	res.render('coachProfile.pug', {title: 'Coach Profile'});
 });
 
+router.post('/coachProfile', function(req, res) {
+	var user = req.param('email', null); 
+}); 
+
 router.get('/addGoal', function(req,res,next){
 	res.render('addGoal.pug', {title: 'Add Goal'});
 });
+
+
 
 module.exports = router;
