@@ -19,7 +19,7 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    connection.query("SELECT * FROM 'coaches', 'executives' where id = "+id, function(err, rows) {
+    connection.query("SELECT * FROM coaches, executives WHERE id = "+id, function(err, rows) {
       done(err, rows[0]);
     });
   });
@@ -30,7 +30,8 @@ module.exports = function(passport) {
     passReqToCallback : true
   },
   function(req, email, passport, done) {
-    connection.query("select * from user where email = '" + email + "'", function(err, rows) {
+    connection.query("INSERT INTO executives (email, password) VALUES ('emalysz@usc.edu', 'password')");
+    connection.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
       if (err) return done(err);
       if (!rows.length) {
         return done(null, false, req.flash('loginMessage', 'No user found.'));
@@ -43,12 +44,16 @@ module.exports = function(passport) {
 }
 
 
-/* POST login page. */
-router.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: true })
-);
+// /* POST login page. */
+// router.post('/login',
+//   passport.authenticate('local', { successRedirect: '/executiveView',
+//                                    failureRedirect: '/',
+//                                    failureFlash: true })
+// );
+
+router.post('/', function(req, res) {
+	res.render('executiveView.pug', {title: 'Coach Profile'});
+});
 
 // router.post('/login', function(req, res, next) {
 //   passport.authenticate('local', function(err, user, info) {

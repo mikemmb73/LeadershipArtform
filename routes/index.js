@@ -1,8 +1,15 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var emailServices = require('../services/emailServices');
+<<<<<<< HEAD
+var loginservices= require('../services/loginservices')
+=======
+var signup = require('../services/signup');
+>>>>>>> 35e29f99bfd836ca5abea3d5b234a9497da9552c
 const bodyParser = require("body-parser");
 const pug = require('pug');
+var ExecutiveCoach = require('../model/executiveCoach');
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -23,6 +30,7 @@ router.get('/executiveSignup', function(req, res, next) {
 
 /* GET signup page for coach. */
 router.get('/coachSignup', function(req, res, next) {
+  console.log(req.body);
   res.render('coachSignup.pug', { title: 'Coach Signup' });
 });
 
@@ -36,11 +44,24 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', function(req, res) {
-	var name = req.body.clientName;
-	var email = req.body.emailAddress;
-	var message = req.body.message;
-	emailServices.sendEmail(name, email, message);
-	res.render('coachView.pug', {title: 'Coach View'});
+  if (req.body.fname != null) { // signup a new user
+    var user = signup.signUpCoach(req.body.fname, req.body.lname,
+      req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
+    if (user == null) {
+      res.redirect('/coachSignup');
+    }
+    //var currUser = new ExecutiveCoach.ExecutiveCoach(user.fname, user.lname, user.email,
+      //user.phone_number, user.password, user.bio, user.photo, user.coach_id);
+  res.render('coachView.pug', {title: 'CoachView'})
+  } else {
+    console.log("its null");
+    var name = req.body.clientName;
+	   var email = req.body.emailAddress;
+	   var message = req.body.message;
+	    emailServices.sendEmail(name, email, message);
+      res.render('coachView.pug', {title: 'Coach View'});
+    }
+
 });
 
 router.get('/executiveView', function(req,res,next){
@@ -74,6 +95,13 @@ router.get('/addGoal_coach', function(req,res,next){
 
 router.get('/addGoal_executive', function(req,res,next){
 	res.render('addGoal_executive.pug', {title: 'Add Goal'});
+});
+
+router.post('/', function(req, res) {
+  var email = req.body.User;
+  var password = req.body.Password;
+  loginservices.authenticate(email, password);
+	res.render('executiveView.pug', {title: 'Coach Profile'});
 });
 
 
