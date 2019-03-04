@@ -17,89 +17,102 @@ class ExecutiveCoach {
   //   this.executives = executives;
   // }
   //
- 	constructor(fname, lname, email, phone_number, password, bio, photo, coach_id) {
-		this.fname = fname;
-		this.lname = lname;
-		this.email = email;
-		this.phone_number = phone_number;
-		this.password = password;
-		this.bio = bio;
-		this.photo = photo;
-    this.coach_id = coach_id;
+ 	constructor(first_name, last_name, user_email, phone, pass, description, picture, id_coach) {
+    this.fname = first_name;
+		this.lname = last_name;
+		this.email = user_email;
+		this.phone_number = phone;
+		this.password = pass;
+		this.bio = description;
+		this.photo = picture;
+    this.coach_id = id_coach;
 
-		var goals = [];
-		this.goals = goals;
+		var _goals = [];
+		this.goals = _goals;
 
-		var executives = [];
-		this.executives = executives;
-
+		var _executives = [];
+		this.executives = _executives;
+}
 		//assign an ID to the executive coach
 		//idea: have a global counter that increments by 1 every time a coach signs up
 
 		// var id = controller.getNextAvailableID();
 		// this.id = id;
 
-	}
-  set phoneNumber(phone_number) {
-    this.phone_number = phone_number;
+  set phone_num(_phone_number) {
+    this.phone_number = _phone_number;
   }
-  set lname(lname) {
-		this.lname = lname;
+  set last_name(value) {
+		this.lname = value;
 	}
-  set fname(fname) {
-    this.fname = fname;
+  set first_name(value) {
+    this.fname = value;
   }
 
-	get email() {
+  get full_name() {
+    return this.fname + " " + this.lname
+  }
+  get first_name() {
+    return this.fname
+  }
+
+	get user_email() {
 		return this.email;
 	}
-  set email(email) {
-    this.email = email;
+  set user_email(value) {
+    this.email = value;
   }
 
-	get phoneNumber() {
+	get phone_num() {
 		return this.phone_number;
 	}
 
-	get password() {
+	get pass() {
 		return this.password;
 	}
-  set password(password) {
-    this.password = password;
+  set pass(value) {
+    this.password = value;
   }
 
-	get bio() {
+	get biography() {
 		return this.bio;
 	}
-  set bio(bio) {
-    this.bio = bio;
+  set biography(value) {
+    this.bio = _value;
   }
 
-	get photo() {
+	get photograph() {
 		return this.photo;
 	}
 
-  set photo(photo) {
-    this.photo = photo;
+  set photograph(value) {
+    this.photo = value;
   }
 
-	get goals() {
+	get coach_goals() {
 		return this.goals;
 	}
 
-	get coach_id() {
-		return this.coach_id;
-	}
-  set coach_id(coach_id) {
-    this.coach_id = coach_id;
+  set coach_goals(value) {
+    this.goals = value
   }
 
-	get executives() {
+	get coach_id_val() {
+		return this.coach_id;
+	}
+  set coach_id_val(value) {
+    this.coach_id = value;
+  }
+
+	get executive() {
 		return this.executives;
 	}
+  set executive(value) {
+    this.executives = value
+  }
 
-	addGoal(goal) {
-		this.goals.push(goal);
+	addGoal(_goal) {
+		this.goals.push(_goal);
 	}
 
 	addExecutive(executive) {
@@ -107,6 +120,6 @@ class ExecutiveCoach {
 		this.executives.push(executive);
 	}
 }
-module.exports = {
+module.exports =  {
   ExecutiveCoach
 };

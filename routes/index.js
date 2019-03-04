@@ -38,16 +38,15 @@ router.get('/coachView', function(req, res, next) {
   res.render('coachView.pug', { title: 'Coach View',  });
 });
 
-router.post('/coachView', function(req, res) {
+router.post('/coachView', async function(req, res) {
   if (req.body.fname != null) { // signup a new user
-    var user = signup.signUpCoach(req.body.fname, req.body.lname,
+    var user = await signup.signUpCoach(req.body.fname, req.body.lname,
       req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
     if (user == null) {
       res.redirect('/coachSignup');
     }
-    //var currUser = new ExecutiveCoach.ExecutiveCoach(user.fname, user.lname, user.email,
-      //user.phone_number, user.password, user.bio, user.photo, user.coach_id);
-  res.render('coachView.pug', {title: 'CoachView'})
+    console.log(user)
+  res.render('coachView.pug', {title: 'CoachView', user: user});
   } else {
     console.log("its null");
     var name = req.body.clientName;
@@ -85,7 +84,7 @@ router.post('/coachProfile', function(req, res) {
 });
 
 router.get('/addGoal', function(req,res,next){
-	res.render('addGoal.pug', {title: 'Add Goal'});
+	res.render('addGoal_coach.pug', {title: 'Add Goal'});
 });
 
 

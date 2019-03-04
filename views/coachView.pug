@@ -11,10 +11,10 @@ block content
 					a.nav-link.nav-item(href='/coachProfile_coach') Profile
 				li
 					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
-				li 
+				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
 	div.row.client_title
-		h1 Clients
+		h1 Clients. Welcome, #{user.first_name}
 			button(class="btn btn-primary",type="button").client_button Remind All
 		.modal(role="dialog", id="addClientModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")

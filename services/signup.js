@@ -15,7 +15,6 @@ module.exports = {
     });
 
     const [rows, fields] = await connection.execute("SELECT * FROM coaches WHERE email = ?",[email.toLowerCase()]);
-    console.log(rows);
     if (rows != null) {
       if (rows.length != 0) {
         console.log("duplicate email");
@@ -27,10 +26,8 @@ module.exports = {
       console.log("success!");
       const [rows, fields] = await connection.execute("SELECT * FROM coaches where email = ?", [email.toLowerCase()]);
       console.log(rows);
-      //const currCoach = new ExecutiveCoach.ExecutiveCoach(rows[0]);
-      // figure out how to do rows.map(x => new ExecutiveCoach.ExecutiveCoach(x))
-      //console.log(currCoach);
-      return rows[0];
+      const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+      return currCoach[0];
 
 
     }
