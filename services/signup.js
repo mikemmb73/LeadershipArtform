@@ -1,6 +1,8 @@
 var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
+var currentExecutive; 
+var currentCoach; 
 
 module.exports = {
   signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
@@ -19,6 +21,7 @@ module.exports = {
         const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("!!!!!!");
         console.log(currCoach[0]);
+        currentCoach = currCoach[0]; 
         return currCoach[0];
       }
     }
@@ -42,9 +45,19 @@ module.exports = {
         const currExecutive = rows.map(x => new Executive.Executive(x));
         console.log("!!!!!!");
         console.log(currExecutive[0]);
+        currentExecutive = currExecutive[0]; 
         return currExecutive[0];
       }
     }
     return null;
+  },
+
+  getCurrentExecutive: function() {
+    return currentExecutive; 
+  },
+
+  getCurrentCoach: function() {
+    return currentCoach; 
   }
+
 };

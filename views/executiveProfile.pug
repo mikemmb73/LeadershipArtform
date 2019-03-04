@@ -18,13 +18,13 @@ block content
 	div.row
 		div.col-md-1
 		div.col-md-2
-			img#profileImage(src='https://cdn.andnowuknow.com/headshots/justin_hs.jpg?FbYA5K4Z7KhFKzBY6aSjRSpIxGvzFshe')
+			img#profileImage(src='#{user.photograph}')
 		div.col-md-1
 		div.col-md-6
 			br
-			h1 Name
-			h3 Monsters Inc Co
-			h5 Biography information; what the executive is working toward
+			h1 #{user.name}
+			h3 #{user.username}
+			h5 #{user.bio_info}
 		div.col-md-2
 
 
