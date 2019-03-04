@@ -68,8 +68,12 @@ router.post('/coachProfile', function(req, res) {
 	res.render('coachProfile.pug', {title: 'Coach Profile'});
 });
 
-router.get('/addGoal', function(req,res,next){
-	res.render('addGoal.pug', {title: 'Add Goal'});
+router.get('/addGoal_coach', function(req,res,next){
+	res.render('addGoal_coach.pug', {title: 'Add Goal'});
+});
+
+router.get('/addGoal_executive', function(req,res,next){
+	res.render('addGoal_executive.pug', {title: 'Add Goal'});
 });
 
 
