@@ -1,12 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
 var emailServices = require('../services/emailServices');
-<<<<<<< HEAD
 var loginservices= require('../services/loginservices')
-=======
 var signup = require('../services/signup');
->>>>>>> 35e29f99bfd836ca5abea3d5b234a9497da9552c
 const bodyParser = require("body-parser");
 const pug = require('pug');
 var ExecutiveCoach = require('../model/executiveCoach');
