@@ -67,20 +67,21 @@ router.get('/executiveProfile', function(req,res,next){
 	res.render('executiveProfile.pug', {title: 'Executive Profile'});
 });
 
-router.get('/coachProfile', function(req,res,next){
-	res.render('coachProfile.pug', {title: 'Coach Profile'});
+router.get('/coachProfile_coach', function(req,res,next){
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
+});
+
+router.get('/coachProfile_executive', function(req,res,next){
+	res.render('coachProfile_executive.pug', {title: 'Coach Profile'});
 });
 
 
 router.post('/coachProfile', function(req, res) {
-
-  	var name = req.body.clientName;
-  	var email = req.body.emailAddress;
-  	var message = req.body.message;
-  	emailServices.sendEmail(name, email, message);
-
-
-  res.render('coachProfile.pug', {title: 'Coach Profile'});
+	var name = req.body.clientName;
+	var email = req.body.emailAddress;
+	var message = req.body.message;
+	emailServices.sendEmail(name, email, message);
+	res.render('coachProfile.pug', {title: 'Coach Profile'});
 });
 
 router.get('/addGoal', function(req,res,next){

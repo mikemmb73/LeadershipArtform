@@ -1,0 +1,29 @@
+extends layout
+
+block content
+		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+			a.navbar-brand(href='/') Leadership as an Artform
+			div.collapse.navbar-collapse#navbarColor02
+				ul.navbar-nav.ml-auto
+					li
+						a.nav-item.nav-link(href='/executiveView') Home
+					li
+						a.nav-link.nav-item(href='/executiveProfile') Profile
+					li
+						a.nav-link.nav-item.active(href='/coachProfile_executive') Coach's Profile
+					li
+						a.nav-item.nav-link(href='/addGoal_executive') Add Goal
+					li 
+						a.nav-item.nav-link#signOut(href='/') Sign Out
+		div.row
+			div.col-md-1
+			div.col-md-2
+				img#profileImage(src='https://cdn.andnowuknow.com/headshots/justin_hs.jpg?FbYA5K4Z7KhFKzBY6aSjRSpIxGvzFshe')
+			div.col-md-1
+			div.col-md-6
+				br
+				h1 Name
+				h3 Tennessee Kids
+				h5 Biography information; what the executive is working toward
+			div.col-md-1
+			br
