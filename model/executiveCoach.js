@@ -1,38 +1,38 @@
 class ExecutiveCoach {
 
-  // constructor(obj) {
-  //   this.fname = obj.fname;
-  //   this.lname = obj.lname;
-  //   this.email = obj.email;
-  //   this.phone_number = obj.phone_number;
-  //   this.password = obj.password;
-  //   this.bio = obj.bio;
-  //   this.photo = obj.photo;
-  //   this.coach_id = obj.coach_id;
-  //
-  //   var goals = [];
-  //   this.goals = goals;
-  //
-  //   var executives = [];
-  //   this.executives = executives;
-  // }
-  //
- 	constructor(first_name, last_name, user_email, phone, pass, description, picture, id_coach) {
-    this.fname = first_name;
-		this.lname = last_name;
-		this.email = user_email;
-		this.phone_number = phone;
-		this.password = pass;
-		this.bio = description;
-		this.photo = picture;
-    this.coach_id = id_coach;
+  constructor(obj) {
+    this.fname = obj.fname;
+    this.lname = obj.lname;
+    this.email = obj.email;
+    this.phone_number = obj.phone_number;
+    this.password = obj.password;
+    this.bio = obj.bio;
+    this.photo = obj.photo;
+    this.coach_id = obj.coach_id;
 
-		var _goals = [];
-		this.goals = _goals;
+    var goals = [];
+    this.goals = goals;
 
-		var _executives = [];
-		this.executives = _executives;
-}
+    var executives = [];
+    this.executives = executives;
+  }
+
+//  	constructor(first_name, last_name, user_email, phone, pass, description, picture, id_coach) {
+//     this.fname = first_name;
+// 		this.lname = last_name;
+// 		this.email = user_email;
+// 		this.phone_number = phone;
+// 		this.password = pass;
+// 		this.bio = description;
+// 		this.photo = picture;
+//     this.coach_id = id_coach;
+//
+// 		var _goals = [];
+// 		this.goals = _goals;
+//
+// 		var _executives = [];
+// 		this.executives = _executives;
+// }
 		//assign an ID to the executive coach
 		//idea: have a global counter that increments by 1 every time a coach signs up
 

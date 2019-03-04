@@ -44,9 +44,10 @@ router.post('/coachView', async function(req, res) {
       req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
     if (user == null) {
       res.redirect('/coachSignup');
+    } else {
+      console.log(user);
+      res.render('coachView.pug', {title: 'CoachView', user: user});
     }
-    console.log(user)
-  res.render('coachView.pug', {title: 'CoachView', user: user});
   } else {
     console.log("its null");
     var name = req.body.clientName;

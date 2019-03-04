@@ -25,8 +25,10 @@ module.exports = {
       connection.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);",[email.toLowerCase(), password, fname, lname, phone, bio, photo]);
       console.log("success!");
       const [rows, fields] = await connection.execute("SELECT * FROM coaches where email = ?", [email.toLowerCase()]);
-      console.log(rows);
+      console.log(rows[0].coach_id);
       const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+      console.log("!!!!!!");
+      console.log(currCoach[0]);
       return currCoach[0];
 
 
