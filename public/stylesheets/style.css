@@ -47,6 +47,10 @@ a {
   color:red;
 }
 
+#noteText{
+  height:400px;
+  width:650px;
+}
 #profileImage{
   height: auto;
   width:250px;
@@ -56,6 +60,19 @@ a {
 #clientImage{
   height:100px;
   width:120px;
+}
+
+#freeResponseQuestion{
+  width: 800px;
+  margin-left: 25px;
+}
+
+#likertQuestion{
+  width: 800px;
+}
+
+#likertScaleLeftRight{
+  width: 300px;
 }
 
 .client_button {

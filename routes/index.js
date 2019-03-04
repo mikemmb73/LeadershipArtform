@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var emailServices = require('../services/emailServices'); 
+var emailServices = require('../services/emailServices');
 const bodyParser = require("body-parser");
 const pug = require('pug');
 
@@ -36,10 +36,10 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', function(req, res) {
-	var name = req.body.clientName; 
+	var name = req.body.clientName;
 	var email = req.body.emailAddress;
-	var message = req.body.message;  
-	emailServices.sendEmail(name, email, message); 
+	var message = req.body.message;
+	emailServices.sendEmail(name, email, message);
 	res.render('coachView.pug', {title: 'Coach View'});
 });
 
@@ -51,18 +51,22 @@ router.get('/executiveProfile', function(req,res,next){
 	res.render('executiveProfile.pug', {title: 'Executive Profile'});
 });
 
-router.get('/coachProfile', function(req,res,next){
-	res.render('coachProfile.pug', {title: 'Coach Profile'});
+router.get('/coachProfile_coach', function(req,res,next){
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
+});
+
+router.get('/coachProfile_executive', function(req,res,next){
+	res.render('coachProfile_executive.pug', {title: 'Coach Profile'});
 });
 
 
 router.post('/coachProfile', function(req, res) {
-	var name = req.body.clientName; 
+	var name = req.body.clientName;
 	var email = req.body.emailAddress;
-	var message = req.body.message;  
-	emailServices.sendEmail(name, email, message); 
+	var message = req.body.message;
+	emailServices.sendEmail(name, email, message);
 	res.render('coachProfile.pug', {title: 'Coach Profile'});
-}); 
+});
 
 router.get('/addGoal', function(req,res,next){
 	res.render('addGoal.pug', {title: 'Add Goal'});
