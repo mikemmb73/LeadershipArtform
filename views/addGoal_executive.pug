@@ -15,7 +15,7 @@ block content
 					a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
 				li
 					a.nav-item.nav-link.active(href='/addGoal_executive') Add Goal
-				li 
+				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
 	div.jumbotron
 		h3 Frequency Reminder
@@ -33,10 +33,10 @@ block content
 					br
 					input(type='radio', name='gender', value='other')
 					|  Monthly
-	div.jumbotron
+	div.jumbotron#questionJumbotron
 		h3 Insert Question
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
+			div.card-body#questionCard
 				h5 Type of Question
 				form
 					input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
@@ -48,5 +48,6 @@ block content
 					input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
 					|  Likert Scale
 			div.jumbotron#questionDropdown(style="display:none")
-			div.card-footer Add additional +
+			div.card-footer
+				input(class='btn btn-secondary btn-sm' type='button', value='Add additional + ', onclick='addQuestion()')
 	input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
