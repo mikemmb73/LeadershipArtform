@@ -63,9 +63,16 @@ a {
 }
 
 #freeResponseQuestion{
-  height:100px;
   width: 800px;
   margin-left: 25px;
+}
+
+#likertQuestion{
+  width: 800px;
+}
+
+#likertScaleLeftRight{
+  width: 300px;
 }
 
 .client_button {
