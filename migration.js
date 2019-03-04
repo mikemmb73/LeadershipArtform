@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var migration = require('mysql-migrations');
 
 var connection = mysql.createPool({
@@ -8,5 +8,6 @@ var connection = mysql.createPool({
   password : 'Pickoftheweek1!',
   database : 'Leadership_Artform'
 });
+
 
 migration.init(connection, __dirname + '/migrations');
