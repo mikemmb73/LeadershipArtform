@@ -1,6 +1,8 @@
 extends layout
 
 block content
+	script
+		include js/addGoal.js
 	h1=title
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='index') Leadership as an Artform
@@ -55,13 +57,14 @@ block content
 			div.card-body
 				h5 Type of Question
 				form
-					input(type='radio', name='gender', value='male', checked='')
+					input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
 					|  Multiple Choice
 					br
-					input(type='radio', name='gender', value='female')
+					input(type='radio', name='gender', value='female', id='freeResponseButton', onclick='freeResponseDropdown()')
 					|  Free Response
 					br
-					input(type='radio', name='gender', value='other')
+					input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
 					|  Likert Scale
+			div.jumbotron#questionDropdown(style="display:none")
 			div.card-footer Add additional +
 	input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
