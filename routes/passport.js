@@ -30,6 +30,7 @@ module.exports = function(passport) {
     passReqToCallback : true
   },
   function(req, email, passport, done) {
+    connection.query("INSERT INTO executives (email, password) VALUES ('emalysz@usc.edu', 'password')");
     connection.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
       if (err) return done(err);
       if (!rows.length) {
@@ -43,12 +44,16 @@ module.exports = function(passport) {
 }
 
 
-/* POST login page. */
-router.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: true })
-);
+// /* POST login page. */
+// router.post('/login',
+//   passport.authenticate('local', { successRedirect: '/executiveView',
+//                                    failureRedirect: '/',
+//                                    failureFlash: true })
+// );
+
+router.post('/', function(req, res) {
+	res.render('executiveView.pug', {title: 'Coach Profile'});
+});
 
 // router.post('/login', function(req, res, next) {
 //   passport.authenticate('local', function(err, user, info) {

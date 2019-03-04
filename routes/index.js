@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var emailServices = require('../services/emailServices');
+var loginservices= require('../services/loginservices')
 const bodyParser = require("body-parser");
 const pug = require('pug');
 
@@ -70,6 +72,13 @@ router.post('/coachProfile', function(req, res) {
 
 router.get('/addGoal', function(req,res,next){
 	res.render('addGoal.pug', {title: 'Add Goal'});
+});
+
+router.post('/', function(req, res) {
+  var email = req.body.User;
+  var password = req.body.Password;
+  loginservices.authenticate(email, password);
+	res.render('executiveView.pug', {title: 'Coach Profile'});
 });
 
 
