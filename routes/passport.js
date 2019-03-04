@@ -19,7 +19,7 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    connection.query("SELECT * FROM 'coaches', 'executives' where id = "+id, function(err, rows) {
+    connection.query("SELECT * FROM coaches, executives WHERE id = "+id, function(err, rows) {
       done(err, rows[0]);
     });
   });
@@ -30,7 +30,7 @@ module.exports = function(passport) {
     passReqToCallback : true
   },
   function(req, email, passport, done) {
-    connection.query("select * from user where email = '" + email + "'", function(err, rows) {
+    connection.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
       if (err) return done(err);
       if (!rows.length) {
         return done(null, false, req.flash('loginMessage', 'No user found.'));
