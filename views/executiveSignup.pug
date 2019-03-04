@@ -9,22 +9,22 @@ block content
     .row
       .col-md-6.col-md-offset-3
         // register form
-        form(method='POST' action='/register')
+        form(method='POST' action='/executiveView')
           div.form-group
             label(for='fname') First Name:
-            input#fname.form-control(type='text', fname='fname')
+            input#fname.form-control(type='text', fname='fname', name='fname')
           div.form-group
             label(for='lname') Last Name:
-            input#lname.form-control(type='text', lname='lname')
+            input#lname.form-control(type='text', lname='lname', name='lname')
           div.form-group
             label(for='email') Email:
             input#email.form-control(type='email', name='email')
           div.form-group
             label(for='phoneNumber') Phone Number:
-            input#phoneNumber.form-control(type='text', name='phoneNumber')
+            input#phoneNumber.form-control(type='text', name='phone_number')
           div.form-group
             label(for='coachID') Coach's ID:
-            input#coachID.form-control(type='text', name='coachID')
+            input#coachID.form-control(type='text', name='coach_id')
           div.form-group
             label(for='pw') Password:
             input#pw.form-control(type='password' name='password')
@@ -36,5 +36,5 @@ block content
             input#bio.form-control(type='text' name='bio')
           div.form-group
             label(for='image') Photo:
-            input#image.form-control(type='file' name='image')
+            input#image.form-control(type='file' name='photo')
           button.btn.btn-primary(type='submit') Sign up
