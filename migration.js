@@ -1,13 +1,13 @@
-var mysql = require('/services/sqlconnect');
+var mysql = require('mysql2');
 var migration = require('mysql-migrations');
 
-// var connection = mysql.createPool({
-//   connectionLimit : 10,
-//   host     : 'localhost',
-//   user     : 'root',
-//   password : 'Pickoftheweek1!',
-//   database : 'Leadership_Artform'
-// });
+var connection = mysql.createPool({
+  connectionLimit : 10,
+  host     : 'localhost',
+  user     : 'root',
+  password : 'root',
+  database : 'Leadership_Artform'
+});
 
 
-migration.init(mysql.connect, __dirname + '/migrations');
+migration.init(connection, __dirname + '/migrations');
