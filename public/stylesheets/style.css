@@ -17,6 +17,14 @@ a {
   text-align: center;
 }
 
+.active{
+  background-color: grey; 
+}
+
+#signOut{
+  color: red; 
+}
+
 .orLabel{
   float:center;
   margin-top:50px;
