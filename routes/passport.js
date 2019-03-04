@@ -3,14 +3,14 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
 
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root'
-});
+var mysql = require('../services/sqlconnect');
+// var connection = mysql.createConnection({
+//       host: 'localhost',
+//       user: 'root',
+//       password: 'Chalked1512!'
+// });
 
-connection.query('USE LeaderShip_Artform');
+mysql.connect.query('USE LeaderShip_Artform');
 
 module.exports = function(passport) {
 
@@ -19,7 +19,7 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    connection.query("SELECT * FROM coaches, executives WHERE id = "+id, function(err, rows) {
+    mysql.connect.query("SELECT * FROM coaches, executives WHERE id = "+id, function(err, rows) {
       done(err, rows[0]);
     });
   });
@@ -30,8 +30,8 @@ module.exports = function(passport) {
     passReqToCallback : true
   },
   function(req, email, passport, done) {
-    connection.query("INSERT INTO executives (email, password) VALUES ('emalysz@usc.edu', 'password')");
-    connection.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
+    mysql.connect.query("INSERT INTO executives (email, password) VALUES ('emalysz@usc.edu', 'password')");
+    mysql.connect.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
       if (err) return done(err);
       if (!rows.length) {
         return done(null, false, req.flash('loginMessage', 'No user found.'));

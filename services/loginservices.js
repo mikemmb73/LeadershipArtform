@@ -3,14 +3,14 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
 
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root'
-});
+var mysql = require('./sqlconnect');
+// var connection = mysql.createConnection({
+//       host: 'localhost',
+//       user: 'root',
+//       password: 'Chalked1512!'
+// });
 
-connection.query('USE LeaderShip_Artform');
+mysql.connect.query('USE LeaderShip_Artform');
 
 module.exports = {
 	authenticate: function(email, password, passport) {
