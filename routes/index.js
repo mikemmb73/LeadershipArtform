@@ -64,6 +64,15 @@ router.get('/executiveView', function(req,res,next){
 	res.render('executiveView.pug', {title: 'Executive View'});
 });
 
+router.post('/executiveView', async function(req,res,next) {
+  var user = await signup.signUpExecutive(req.body.fname, req.body.lname,
+  req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
+  if (user == null) {
+    res.redirect('/executiveSignup');
+  } else {
+    res.render('executiveView.pug', {title: 'ExecutiveView', user: user});
+  }
+});
 router.get('/executiveProfile', function(req,res,next){
 	res.render('executiveProfile.pug', {title: 'Executive Profile'});
 });
