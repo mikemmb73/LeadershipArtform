@@ -1,0 +1,70 @@
+extends layout
+
+block content
+	script
+		include js/addGoal.js
+	h1=title
+	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+		a.navbar-brand(href='index') Leadership as an Artform
+		div.collapse.navbar-collapse#navbarColor02
+			ul.navbar-nav.ml-auto
+				li.nav-item.active View Profile
+					a.nav-link(href='executiveProfile')
+				li.nav-item View Coach's Profile
+					a.nav-link(href='#')
+				li.nav-item Add Goal
+					a.nav-link(href='addGoal')
+	div.jumbotron
+		h3 Add Recipient(s)
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-header Available Executives
+			div.card-body
+				li.dropdown.btn.btn-default
+					span.glyphicon.glyphicon-th-list
+						|	Select Executive
+						span.caret
+					ul.dropdown-menu.dropdown-toggle(data-toggle="dropdown")
+						li
+							a(href="#") Executive #1
+						li
+							a(href="#") Executive #2
+			div.card-footer Add additional +
+		br
+	div.jumbotron
+		h3 Previous Goals
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-body
+				h4 Goal Title
+	div.jumbotron
+		h3 Frequency Reminder
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-body
+				form
+					input(type='radio', name='gender', value='male', checked='')
+					|  Daily
+					br
+					input(type='radio', name='gender', value='female')
+					|  Weekly
+					br
+					input(type='radio', name='gender', value='other')
+					|  Bi-Weekly
+					br
+					input(type='radio', name='gender', value='other')
+					|  Monthly
+	div.jumbotron
+		h3 Insert Question
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-body
+				h5 Type of Question
+				form
+					input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
+					|  Multiple Choice
+					br
+					input(type='radio', name='gender', value='female', id='freeResponseButton', onclick='freeResponseDropdown()')
+					|  Free Response
+					br
+					input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
+					|  Likert Scale
+			div.jumbotron#questionDropdown(style="display:none")
+			div.card-footer Add additional +
+	input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
