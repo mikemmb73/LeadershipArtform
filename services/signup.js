@@ -16,8 +16,7 @@ module.exports = {
         console.log(photo);
         mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
         console.log("success!");
-        const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches where email = ?", [email.toLowerCase()]);
-        console.log(rows[0].coach_id);
+        const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
         const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("!!!!!!");
         console.log(currCoach[0]);
@@ -50,6 +49,22 @@ module.exports = {
       }
     }
     return null;
+  },
+
+  getClients: function(user) {
+    var id = user.coach_id_val; 
+    var clientList = []; 
+    console.log(id); 
+    mysql.connect.execute("SELECT * FROM executives WHERE coach_id = "+id, function(err, rows) {
+      var i;
+      console.log('in select statement'); 
+      console.log(rows.length); 
+      for (i = 0; i < rows.length; i++) {
+        clientList.push(rows[i]); 
+      }
+    }); 
+    console.log(clientList.length); 
+    return clientList; 
   },
 
   getCurrentExecutive: function() {

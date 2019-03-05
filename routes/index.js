@@ -8,6 +8,7 @@ const pug = require('pug');
 var ExecutiveCoach = require('../model/executiveCoach');
 var currExecutive; 
 var currCoach; 
+var clientList = []; 
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -46,11 +47,12 @@ router.post('/coachView', async function(req, res) {
       var user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
       currCoach = user; 
+      var clients = signup.getClients(user); 
     }
     if (user == null) {
       res.redirect('/coachSignup');
     } else {
-      res.render('coachView.pug', {title: 'CoachView', user: currCoach});
+      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
   } else {
     var name = req.body.clientName;
@@ -119,8 +121,9 @@ router.get('/addGoal_executive', function(req,res,next){
 router.post('/', function(req, res) {
   var email = req.body.User;
   var password = req.body.Password;
-  loginservices.authenticate(email, password);
-	res.render('executiveView.pug', {title: 'Coach Profile'});
+  currExecutive = loginservices.authenticate(email, password);
+
+	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
 });
 
 

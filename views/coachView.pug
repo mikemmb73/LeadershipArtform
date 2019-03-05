@@ -1,6 +1,9 @@
 extends layout
 
 block content
+	script 
+		include js/coachView.js
+		formatClients(clients) 
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -34,7 +37,7 @@ block content
 								input(type="textarea" name = "message")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
-	div.row.jumbotron
+	div.row.jumbotron#clientRow
 		.modal(role="dialog", id="sendReminderModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
@@ -49,25 +52,9 @@ block content
 							input(type="text")
 					.modal-footer
 						button(data-dismiss="modal").btn.btn-primary Submit
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
+	.script
+		goToFunction()
+		formatClients(clients) 
 	div.row.jumbotron
 		div.col.navbar-nav
 		a(href="executiveProfile").nav-item.nav-link.div.col-md-2

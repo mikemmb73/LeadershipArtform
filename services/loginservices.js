@@ -46,5 +46,10 @@ module.exports = {
 	      return done(null, rows[0]);
 	    });
 	  }));
+	},
+
+	getUser: function () {
+		console.log('here'); 
+		return currUser; 
 	}
 };
