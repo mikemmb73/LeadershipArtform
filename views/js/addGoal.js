@@ -1,9 +1,11 @@
 var jCount = 0;
-
+var likertIndex = 0;
+var mcIndex = 0;
+var freeResponseIndex = 0;
 function mcDropdown(){
-  document.getElementById('mcButton').disabled=true;
-  document.getElementById('freeResponseButton').disabled=true;
-  document.getElementById('likertButton').disabled=true;
+  //document.getElementById('mcButton').disabled=true;
+  //document.getElementById('freeResponseButton').disabled=true;
+  //document.getElementById('likertButton').disabled=true;
 
 //  var jumbotron = document.getElementById('questionDropdown');
 // if (jumbotron.style.display === "none") {
@@ -84,6 +86,7 @@ function mcDropdown(){
 
   //Add Option button
   var addOptionButton = document.createElement("button");
+  addOptionButton.type = "button";
   var buttonText = document.createTextNode("Add Option");
   addOptionButton.appendChild(buttonText);
   var addOptionButtonStyle = document.createAttribute("style");
@@ -138,9 +141,9 @@ function mcDropdown(){
 // ==================FREE RESPONSE====================================
 
 function freeResponseDropdown(){
-  document.getElementById('mcButton').disabled=true;
-  document.getElementById('freeResponseButton').disabled=true;
-  document.getElementById('likertButton').disabled=true;
+  //document.getElementById('mcButton').disabled=true;
+  //document.getElementById('freeResponseButton').disabled=true;
+  //document.getElementById('likertButton').disabled=true;
   // var jumbotron = document.getElementById('questionDropdown');
   //
   // if (jumbotron.style.display === "none") {
@@ -216,9 +219,9 @@ function freeResponseDropdown(){
 // ==================LIKERT====================================
 
 function likertDropdown(){
-  document.getElementById('mcButton').disabled=true;
-  document.getElementById('freeResponseButton').disabled=true;
-  document.getElementById('likertButton').disabled=true;
+  //document.getElementById('mcButton').disabled=true;
+  //document.getElementById('freeResponseButton').disabled=true;
+//  document.getElementById('likertButton').disabled=true;
   // var jumbotron = document.getElementById('questionDropdown');
   // if (jumbotron.style.display === "none") {
   //   jumbotron.style.display = "block";
