@@ -19,6 +19,7 @@ block content
 	div.row.client_title
 		h1 Clients. Welcome, #{user.first_name}
 			button(class="btn btn-primary",type="button").client_button Remind All
+			button(class="btn btn-primary",type="button",data-toggle="modal", data-target="#addClientModal").client_button Add Client
 		.modal(role="dialog", id="addClientModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content

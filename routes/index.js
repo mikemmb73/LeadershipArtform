@@ -67,11 +67,11 @@ router.post('/coachView', async function(req, res) {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else {
-    var name = req.body.clientName;
-	   var email = req.body.emailAddress;
-	   var message = req.body.message;
+      var name = req.body.clientName;
+      var email = req.body.emailAddress;
+      var message = req.body.message;
 	    emailServices.sendEmail(name, email, message);
-      res.render('coachView.pug', {title: 'Coach View'});
+      res.render('coachView.pug', {title: 'Coach View', user: currCoach});
     }
 
 });
