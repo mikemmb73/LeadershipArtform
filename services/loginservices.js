@@ -67,5 +67,13 @@ module.exports = {
 	      } 
 	    }
 	    return null;
+	},
+
+	getExecutiveCoach: async function(executive) {
+		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coachID + ", coach_id)"; 
+	    const [rows, fields] = await mysql.connect.execute(getStatement);
+	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+	    console.log(currCoach[0].first_name); 
+	    return currCoach[0];
 	}
 };

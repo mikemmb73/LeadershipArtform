@@ -119,9 +119,13 @@ router.post('/coachProfile_coach', async function(req,res,next) {
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
-	res.render('coachProfile_executive.pug', {title: 'Coach Profile'});
+  currCoach  = loginservices.getExecutiveCoach(currExecutive); 
+  var promise = Promise.resolve(currCoach);
+  promise.then(function(value) { 
+    res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
+  }); 
+  console.log("CURR COACH" + loginservices.getExecutiveCoach(currExecutive));
 });
-
 
 router.post('/coachProfile_coach', function(req, res) {
 	var name = req.body.clientName;
