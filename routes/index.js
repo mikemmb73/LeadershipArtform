@@ -9,6 +9,7 @@ var ExecutiveCoach = require('../model/executiveCoach');
 var currExecutive; 
 var currCoach; 
 var clientList = []; 
+var clients; 
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -38,22 +39,33 @@ router.get('../model/executiveCoach.js', function(req, res) {
 
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
-  res.render('coachView.pug', { title: 'Coach View',  });
+  res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
 router.post('/coachView', async function(req, res) {
+  var user; 
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
       var user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
       currCoach = user; 
-      var clients = signup.getClients(user); 
+      clients = signup.getClients(user); 
     }
     if (user == null) {
       res.redirect('/coachSignup');
     } else {
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
+  } else if (req.body.username != null) { //signin a user
+      loginservices.authenticate(req.body.email, req.body.password);
+      user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
+      currCoach = user; 
+      clients = signup.getClients(user); 
+      if (user == null) {
+        res.redirect('/coachSignup');
+      } else {
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+      }
   } else {
     var name = req.body.clientName;
 	   var email = req.body.emailAddress;
@@ -69,13 +81,22 @@ router.get('/executiveView', function(req,res,next){
 });
 
 router.post('/executiveView', async function(req,res,next) {
+  var user; 
   if (currExecutive == null) {
-    var user = await signup.signUpExecutive(req.body.fname, req.body.lname,
-    req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-    currExecutive = user; 
+    if (req.body.fname != null) {
+      user = await signup.signUpExecutive(req.body.fname, req.body.lname,
+      req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
+      currExecutive = user; 
+    } else {
+      loginservices.authenticate(req.body.email, req.body.password);
+      user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
+      currExecutive = user; 
+    }
   }
-  if (user == null) {
+  if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
+  } else if (user == null && req.body.username2 != null) {
+    res.redirect('/'); 
   } else {
     res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
@@ -121,8 +142,7 @@ router.get('/addGoal_executive', function(req,res,next){
 router.post('/', function(req, res) {
   var email = req.body.User;
   var password = req.body.Password;
-  currExecutive = loginservices.authenticate(email, password);
-
+  loginservices.authenticate(email, password);
 	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
 });
 

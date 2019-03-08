@@ -25,13 +25,12 @@ block content
         div.col-md-5
       div.row
         div.col-md-4
-        div.form-group
-          form(method="post", id="loginFormCoach")
-            input.input-small(id="username", type="text", name="User", placeholder="Username")
-            br
-            input.input-small(id="password", type="password", name="Password", placeholder="Password")
-            br
-            input.btn.btn-outline-primary.btn-sm(type="submit", value="Sign In", id="submitButton")
+          form(method='POST' action='/coachView')
+            div.form-group
+              input.input-small#username2.form-control(type='text', name='username', placeholder="Username")
+            div.form-group
+              input.input-small#password2.form-control(type='password', name='password', placeholder="Password")
+            button.btn.btn-primary.btn-small(type='submit') Sign In
             p#loginPrompt.pull-right.login-prompt
       h2#IndexHeader AS COACH
 
@@ -51,13 +50,12 @@ block content
           div.col-md-5
       div.row
         div.col-md-4
-        div.form-group
-          form(method="post", id="loginForm")
-            input.input-small(id="username", type="text", name="User", placeholder="Username")
-            br
-            input.input-small(id="password", type="password", name="Password", placeholder="Password")
-            br
-            input.btn.btn-outline-primary.btn-sm(type="submit", value="Sign In" id="submitButton")
+          form(method='POST' action='/executiveView' id="loginForm")
+            div.form-group
+              input.input-small#username2.form-control(type='text', name='username2', placeholder="Username")
+            div.form-group
+              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password")
+            button.btn.btn-primary.btn-small(type='submit') Sign In
             p#loginPrompt.pull-right.login-prompt
       h2#IndexHeader AS EXECUTIVE
     div.col
