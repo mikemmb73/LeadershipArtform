@@ -50,6 +50,10 @@ router.post('/coachView', async function(req, res) {
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
       currCoach = user; 
       clients = signup.getClients(user); 
+      var i;
+      for (i = 0; i < clients.length; i++) {
+        console.log(clients[i]); 
+      }
     }
     if (user == null) {
       res.redirect('/coachSignup');
@@ -60,7 +64,11 @@ router.post('/coachView', async function(req, res) {
       loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user; 
-      clients = signup.getClients(user); 
+      clients = loginservices.getClients(user); 
+      var promise = Promise.resolve(clients);
+      promise.then(function(value) { 
+        console.log(clients); 
+      }); 
       if (user == null) {
         res.redirect('/coachSignup');
       } else {
@@ -124,7 +132,6 @@ router.get('/coachProfile_executive', function(req,res,next){
   promise.then(function(value) { 
     res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
   }); 
-  console.log("CURR COACH" + loginservices.getExecutiveCoach(currExecutive));
 });
 
 router.post('/coachProfile_coach', function(req, res) {

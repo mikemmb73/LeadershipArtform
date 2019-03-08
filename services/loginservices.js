@@ -69,11 +69,19 @@ module.exports = {
 	    return null;
 	},
 
+	getClients: async function(user) {
+	    var id = user.coach_id_val; 
+	    console.log("ID HERE" + id); 
+	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + id + ", coach_id)"; 
+	    const [rows, fields] = await mysql.connect.execute(getStatement);
+	    const currCoach = rows.map(x => new Executive.Executive(x));
+	    return currCoach; 
+  	},
+
 	getExecutiveCoach: async function(executive) {
 		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coachID + ", coach_id)"; 
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
-	    console.log(currCoach[0].first_name); 
 	    return currCoach[0];
 	}
 };
