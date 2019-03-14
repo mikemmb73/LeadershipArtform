@@ -1,20 +1,73 @@
 class Goal {
- 	constructor(name, deadline, description) {
-		this.name = name;
-		this.description = description;
-		this.deadline = deadline; 
+ 	constructor(obj) {
+		this.title = obj.title;
+		this.description = obj.description;
+    this.goal_id = obj.goal_id;
+    this.coach_id = obj.coach_id;
+    this.executive_id = obj.executive_id;
+    this.progress = obj.progess;
+    this.frequency = obj.frequency;
+    this.date_assigned = obj.date_assigned;
+
 	}
 
-	get name() {
-		return this.name; 
+	get goal_title() {
+		return this.title;
+	}
+  set goal_title(val) {
+    this.title = val;
+  }
+
+	get goal_description() {
+		return this.description;
+	}
+  set goal_description(val) {
+    this.description = val;
+  }
+
+	get goal_date() {
+		return this.date_assigned;
 	}
 
-	get description() {
-		return this.description; 
-	}
+  set goal_date(val) {
+    this.date_assigned = val;
+  }
 
-	get deadline() {
-		return this.deadline; 
-	}
+  set id(val) {
+    this.goal_id = val;
+  }
+  get id() {
+    return this.goal_id;
+  }
+  get goal_coach_id(){
+    return this.coach_id;
+  }
+  set goal_coach_id(val) {
+    this.coach_id = val;
+  }
+
+  get goal_exec_id() {
+    return this.executive_id;
+  }
+  set goal_exec_id(val) {
+    this.executive_id = val;
+  }
+  get goal_progress() {
+    return this.progress;
+  }
+  set goal_progress(val) {
+    this.progress = val;
+  }
+
+  set goal_frequency(val) {
+    this.frequency = val;
+  }
+  get goal_frequency() {
+    return this.frequency;
+  }
 
 }
+
+module.exports =  {
+  Goal
+};
