@@ -17,22 +17,22 @@ block content
 					a.nav-item.nav-link.active(href='/addGoal_executive') Add Goal
 				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
-	form(method='POST', action='/#')
+	form(method='POST', action='/viewGoal')
 		div.jumbotron
 			h3 Frequency Reminder
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 				div.card-body
 					form
-						input(type='radio', name='gender', value='male', checked='')
+						input(type='radio', name='frequency', value='daily', checked='')
 						|  Daily
 						br
-						input(type='radio', name='gender', value='female')
+						input(type='radio', name='frequency', value='weekly')
 						|  Weekly
 						br
-						input(type='radio', name='gender', value='other')
+						input(type='radio', name='frequency', value='biweekly')
 						|  Bi-Weekly
 						br
-						input(type='radio', name='gender', value='other')
+						input(type='radio', name='frequency', value='monthly')
 						|  Monthly
 			div.jumbotron#questionJumbotron
 				h3 Add Questions
@@ -50,7 +50,7 @@ block content
 						//	|  Likert Scale
 					div.jumbotron#questionDropdown(style="display:none")
 					div.card-footer
-						h4 Add Another Question:
+						h4 Choose Question Type:
 						input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
 						input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
 						input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')

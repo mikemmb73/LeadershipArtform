@@ -3,19 +3,15 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var signup = require('../services/signup');
-const bodyParser = require("body-parser");
+var qs = require('qs');
 const pug = require('pug');
 var ExecutiveCoach = require('../model/executiveCoach');
-var currExecutive; 
-var currCoach; 
-var clientList = []; 
-var clients; 
+var currExecutive;
+var currCoach;
+var clientList = [];
+var clients;
 
-router.use(bodyParser.urlencoded({
-    extended: true
-}));
 
-router.use(bodyParser.json());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -43,16 +39,16 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  var user; 
+  var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
       var user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      currCoach = user; 
-      clients = signup.getClients(user); 
+      currCoach = user;
+      clients = signup.getClients(user);
       var i;
       for (i = 0; i < clients.length; i++) {
-        console.log(clients[i]); 
+        console.log(clients[i]);
       }
     }
     if (user == null) {
@@ -63,12 +59,12 @@ router.post('/coachView', async function(req, res) {
   } else if (req.body.username != null) { //signin a user
       loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
-      currCoach = user; 
-      clients = loginservices.getClients(user); 
+      currCoach = user;
+      clients = loginservices.getClients(user);
       var promise = Promise.resolve(clients);
-      promise.then(function(value) { 
-        console.log(clients); 
-      }); 
+      promise.then(function(value) {
+        console.log(clients);
+      });
       if (user == null) {
         res.redirect('/coachSignup');
       } else {
@@ -89,22 +85,22 @@ router.get('/executiveView', function(req,res,next){
 });
 
 router.post('/executiveView', async function(req,res,next) {
-  var user; 
+  var user;
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      currExecutive = user; 
+      currExecutive = user;
     } else {
       loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
-      currExecutive = user; 
+      currExecutive = user;
     }
   }
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
   } else if (user == null && req.body.username2 != null) {
-    res.redirect('/'); 
+    res.redirect('/');
   } else {
     res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
@@ -127,11 +123,11 @@ router.post('/coachProfile_coach', async function(req,res,next) {
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
-  currCoach  = loginservices.getExecutiveCoach(currExecutive); 
+  currCoach  = loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
-  promise.then(function(value) { 
+  promise.then(function(value) {
     res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
-  }); 
+  });
 });
 
 router.post('/coachProfile_coach', function(req, res) {
@@ -155,6 +151,14 @@ router.post('/', function(req, res) {
   var password = req.body.Password;
   loginservices.authenticate(email, password);
 	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+});
+
+router.post('/viewGoal', function(req, res) {
+  console.log(req.body);
+  //console.log(req.body["mcQuestions[0]"]);
+  var data = qs.parse(req.body);
+  console.log(data);
+  res.send('hey!');
 });
 
 
