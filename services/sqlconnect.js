@@ -5,6 +5,7 @@ const connection = mysql2.createPool({
   host     : 'localhost',
   user     : 'root',
   password : 'rootroot',
+
   database : 'Leadership_Artform'
 });
 

@@ -15,38 +15,43 @@ block content
 					a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
 				li
 					a.nav-item.nav-link.active(href='/addGoal_executive') Add Goal
-				li 
+				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
-	div.jumbotron
-		h3 Frequency Reminder
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				form
-					input(type='radio', name='gender', value='male', checked='')
-					|  Daily
-					br
-					input(type='radio', name='gender', value='female')
-					|  Weekly
-					br
-					input(type='radio', name='gender', value='other')
-					|  Bi-Weekly
-					br
-					input(type='radio', name='gender', value='other')
-					|  Monthly
-	div.jumbotron
-		h3 Insert Question
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				h5 Type of Question
-				form
-					input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
-					|  Multiple Choice
-					br
-					input(type='radio', name='gender', value='female', id='freeResponseButton', onclick='freeResponseDropdown()')
-					|  Free Response
-					br
-					input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
-					|  Likert Scale
-			div.jumbotron#questionDropdown(style="display:none")
-			div.card-footer Add additional +
-	input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+	form(method='POST', action='/#')
+		div.jumbotron
+			h3 Frequency Reminder
+			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+				div.card-body
+					form
+						input(type='radio', name='gender', value='male', checked='')
+						|  Daily
+						br
+						input(type='radio', name='gender', value='female')
+						|  Weekly
+						br
+						input(type='radio', name='gender', value='other')
+						|  Bi-Weekly
+						br
+						input(type='radio', name='gender', value='other')
+						|  Monthly
+			div.jumbotron#questionJumbotron
+				h3 Add Questions
+				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+					div.card-body#questionCard
+						//h5 Type of Question
+						//form
+							//input(type='radio', name='gender', value='male', id='mcButton', onclick='mcDropdown()')
+						//	|  Multiple Choice
+						//	br
+						//	input(type='radio', name='gender', value='female', id='freeResponseButton', onclick='freeResponseDropdown()')
+						//	|  Free Response
+						//	br
+						//	input(type='radio', name='gender', value='other', id='likertButton', onclick='likertDropdown()')
+						//	|  Likert Scale
+					div.jumbotron#questionDropdown(style="display:none")
+					div.card-footer
+						h4 Add Another Question:
+						input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
+						input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
+						input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
+			input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
