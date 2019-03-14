@@ -19,20 +19,22 @@ block content
 					a.nav-item.nav-link#signOut(href='/') Sign Out
 	form(method='POST', action='/viewGoal')
 		div.jumbotron
+			h3 Goal Title
+			input(type='text', name='goalTitle')
 			h3 Frequency Reminder
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 				div.card-body
 					form
-						input(type='radio', name='frequency', value='daily', checked='')
+						input(type='radio', name='frequency', value='0', checked='')
 						|  Daily
 						br
-						input(type='radio', name='frequency', value='weekly')
+						input(type='radio', name='frequency', value='1')
 						|  Weekly
 						br
-						input(type='radio', name='frequency', value='biweekly')
+						input(type='radio', name='frequency', value='2')
 						|  Bi-Weekly
 						br
-						input(type='radio', name='frequency', value='monthly')
+						input(type='radio', name='frequency', value='3')
 						|  Monthly
 			div.jumbotron#questionJumbotron
 				h3 Add Questions

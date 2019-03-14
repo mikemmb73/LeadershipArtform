@@ -6,6 +6,7 @@ var signup = require('../services/signup');
 var qs = require('qs');
 const pug = require('pug');
 var ExecutiveCoach = require('../model/executiveCoach');
+var addGoalService = require('../services/addGoalServices');
 var currExecutive;
 var currCoach;
 var clientList = [];
@@ -157,6 +158,7 @@ router.post('/viewGoal', function(req, res) {
   console.log(req.body);
   //console.log(req.body["mcQuestions[0]"]);
   var data = qs.parse(req.body);
+  addGoalService.addGoalExecutive(data, currExecutive);
   console.log(data);
   res.send('hey!');
 });
