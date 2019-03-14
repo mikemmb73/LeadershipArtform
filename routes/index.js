@@ -45,8 +45,12 @@ router.post('/coachView', async function(req, res) {
     if (currCoach == null) {
       var user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      currCoach = user;
-      clients = signup.getClients(user);
+      var promise = Promise.resolve(user);
+      promise.then(function(value) { 
+        console.log("PROMISE"); 
+      }); 
+      currCoach = user; 
+      clients = signup.getClients(user); 
       var i;
       for (i = 0; i < clients.length; i++) {
         console.log(clients[i]);
