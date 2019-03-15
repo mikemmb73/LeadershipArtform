@@ -31,7 +31,7 @@ module.exports = {
 	  },
 	  function(req, email, passport, done) {
 	    connection.query("SELECT * FROM user WHERE email = '" + email + "'", function(err, rows) {
-				console.log("GOES INTO FUNCTION");
+				
 	      if (err) {
 	      	return done(err);
 	      }
