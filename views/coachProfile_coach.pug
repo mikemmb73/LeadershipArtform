@@ -11,7 +11,7 @@ block content
 					a.nav-link.nav-item.active(href='/coachProfile_coach') Profile
 				li
 					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
-				li 
+				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
 	div.row
 		div.col-md-1
@@ -20,7 +20,7 @@ block content
 		div.col-md-1
 		div.col-md-6
 			br
-			h1 #{user.full_name} 
+			h1 #{user.full_name}
 			h3 #{user.user_email}
 			h5 #{user.biography}
 		div.col-md-1
@@ -46,7 +46,7 @@ block content
 								input(type="textarea" name = "message")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
-	div.row.jumbotron
+	div.row
 		.modal(role="dialog", id="sendReminderModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
@@ -61,43 +61,17 @@ block content
 							input(type="text")
 					.modal-footer
 						button(data-dismiss="modal").btn.btn-primary Submit
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="butn btn-sm", data-toggle="modal", data-target='#addNoteModal') Add Notes
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
+
 	div.row.jumbotron
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
+		each obj in clients
+			.col-md-1
+			.col-md-2
+				a(href="executiveProfile")
+				img#clientImage(src=obj.photo)
+			.col-md-2
+				a(href="executiveProfile")
+					h3 #{obj.fname} #{obj.lname}
+					p #{obj.bio}
+					button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+			.col-md-1
+		.row
