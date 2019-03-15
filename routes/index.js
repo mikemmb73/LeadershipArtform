@@ -3,19 +3,16 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var signup = require('../services/signup');
-const bodyParser = require("body-parser");
+var qs = require('qs');
 const pug = require('pug');
 var ExecutiveCoach = require('../model/executiveCoach');
+var addGoalService = require('../services/addGoalServices');
 var currExecutive;
 var currCoach;
 var clientList = [];
 var clients;
 
-router.use(bodyParser.urlencoded({
-    extended: true
-}));
 
-router.use(bodyParser.json());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -161,6 +158,15 @@ router.post('/', function(req, res) {
   var password = req.body.Password;
   loginservices.authenticate(email, password);
 	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+});
+
+router.post('/viewGoal', function(req, res) {
+  console.log(req.body);
+  //console.log(req.body["mcQuestions[0]"]);
+  var data = qs.parse(req.body);
+  addGoalService.addGoalExecutive(data, currExecutive);
+  console.log(data);
+  res.send('hey!');
 });
 
 

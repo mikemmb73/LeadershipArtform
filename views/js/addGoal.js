@@ -11,6 +11,7 @@ function mcDropdown(){
 // if (jumbotron.style.display === "none") {
 //   jumbotron.style.display = "block";
 // }
+  var thisIndex = mcIndex;
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
   jumbotronAtt.value = "jumbotron";
@@ -51,15 +52,20 @@ function mcDropdown(){
  //Area for coach to type in Question Title
   var inputTitle = document.createElement("input");
   var inputType = document.createAttribute("type");
+  var inputName = document.createAttribute("name");
   inputType.value="textarea";
+  inputName.value="mcQuestions[" + mcIndex + "][0]";
   inputTitle.setAttributeNode(inputType);
+  inputTitle.setAttributeNode(inputName);
   jumbotron.appendChild(inputTitle);
+
 
   var br2 = document.createElement("br");
   jumbotron.appendChild(br2);
 
   //Multiple Choice Options
   //Option1 Title
+
   var option1TitleLabel_ = document.createElement("label");
   var option1TitleLabel = document.createTextNode("Option 1 Value: ");
   questionTitleLabel_.appendChild(option1TitleLabel);
@@ -67,22 +73,30 @@ function mcDropdown(){
   //Area for coach to type in Question Title
   var option1Title = document.createElement("input");
   var option1Type = document.createAttribute("type");
+  var option1Name = document.createAttribute("name");
   option1Type.value="textarea";
+  option1Name.value = "mcQuestions[" + mcIndex + "][1]";
   option1Title.setAttributeNode(option1Type);
+  option1Title.setAttributeNode(option1Name);
   jumbotron.appendChild(option1Title);
   var br2 = document.createElement("br");
   jumbotron.appendChild(br2);
   //Option2 Title
   var option2TitleLabel_ = document.createElement("label");
   var option2TitleLabel = document.createTextNode("Option 2 Value: ");
+
   questionTitleLabel_.appendChild(option2TitleLabel);
   jumbotron.appendChild(option2TitleLabel);
   //Area for coach to type in Question Title
   var option2Title = document.createElement("input");
   var option2Type = document.createAttribute("type");
+  var option2Name = document.createAttribute("name");
   option2Type.value="textarea";
+  option2Name.value="mcQuestions[" + mcIndex + "][2]";
   option2Title.setAttributeNode(option2Type);
+  option2Title.setAttributeNode(option2Name);
   jumbotron.appendChild(option2Title);
+
 
   //Add Option button
   var addOptionButton = document.createElement("button");
@@ -97,27 +111,30 @@ function mcDropdown(){
   addOptionButton.setAttributeNode(addOptionButtonClass);
   jumbotron.appendChild(addOptionButton);  
 
+  var br2 = document.createElement("br");
+   jumbotron.appendChild(br2);
+
 
   //Save button
-  var saveButton = document.createElement("button");
-  var buttonText = document.createTextNode("Save");
-  saveButton.appendChild(buttonText);
-  var saveButtonStyle = document.createAttribute("style");
-  saveButtonStyle.value = "margin-left:10px;"
-  saveButton.setAttributeNode(saveButtonStyle);
-  var saveButtonClass = document.createAttribute("class");
-  saveButtonClass.value="btn-primary";
-  var saveButtonFunc = document.createAttribute("onclick");
-  saveButtonFunc.value="displaySave()";
-  saveButton.setAttributeNode(saveButtonFunc);
-  saveButton.setAttributeNode(saveButtonClass);
-  jumbotron.appendChild(saveButton);
-  var br2 = document.createElement("br");
-  jumbotron.appendChild(br2);
+//   var saveButton = document.createElement("button");
+//   var buttonText = document.createTextNode("Save");
+//   saveButton.appendChild(buttonText);
+//   var saveButtonStyle = document.createAttribute("style");
+//   saveButtonStyle.value = "margin-left:10px;"
+//   saveButton.setAttributeNode(saveButtonStyle);
+//   var saveButtonClass = document.createAttribute("class");
+//   saveButtonClass.value="btn-primary";
+//   var saveButtonFunc = document.createAttribute("onclick");
+//   saveButtonFunc.value="displaySave()";
+//   saveButton.setAttributeNode(saveButtonFunc);
+//   saveButton.setAttributeNode(saveButtonClass);
+//   jumbotron.appendChild(saveButton);
+//   var br2 = document.createElement("br");
+//   jumbotron.appendChild(br2);
 
 
   var num = 3;
-
+  var optionIndex = 3;
   addOptionButton.onclick = function() {
     var option3TitleLabel_ = document.createElement("label");
     var numVal = "Option " + num + " Value: ";
@@ -128,13 +145,20 @@ function mcDropdown(){
 //Area for coach to type in Question Title
     var option3Title = document.createElement("input");
     var option3Type = document.createAttribute("type");
+    var option3Name = document.createAttribute("name");
     option3Type.value="textarea";
+    //option3Name.value = "mcQuestions[" + thisIndex + "][option" + optionIndex + "]";
+    option3Name.value = "mcQuestions[" + thisIndex + "][" + optionIndex + "]";
     option3Title.setAttributeNode(option3Type);
+    option3Title.setAttributeNode(option3Name);
     jumbotron.appendChild(option3Title);
     var br2 = document.createElement("br");
     jumbotron.appendChild(br2);
     num++;
+    optionIndex++;
   };
+
+  mcIndex = mcIndex + 1;
 
 }
 
@@ -189,8 +213,11 @@ function freeResponseDropdown(){
   //Area for coach to type in Question
   var inputTitle = document.createElement("input");
   var inputType = document.createAttribute("type");
+  var inputName = document.createAttribute("name");
+  inputName.value="frQuestions[" + freeResponseIndex  + "]";
   inputType.value="textarea";
   inputTitle.setAttributeNode(inputType);
+  inputTitle.setAttributeNode(inputName);
   var inputTitleID = document.createAttribute("id");
   inputTitleID.value="freeResponseQuestion";
   inputTitle.setAttributeNode(inputTitleID);
@@ -199,23 +226,9 @@ function freeResponseDropdown(){
   var br2 = document.createElement("br");
   jumbotron.appendChild(br2);
 
-  //Save button
-  var saveButton = document.createElement("button");
-  var buttonText = document.createTextNode("Save");
-  saveButton.appendChild(buttonText);
-  var saveButtonClass = document.createAttribute("class");
-  saveButtonClass.value="btn-primary";
-  saveButton.setAttributeNode(saveButtonClass);
-  // var saveButtonID = document.createAttribute("id");
-  // saveButtonID.value="saveButton" + jCount;
-  // console.log("saveButtonID is " + saveButtonID.value);
-  // saveButton.setAttributeNode(saveButtonID);
-  // var saveButtonFunc = document.createAttribute("onclick");
-  // saveButtonFunc.value="displaySave(\'' + jCount + '\')";
-  // saveButton.setAttributeNode(saveButtonFunc);
-  jumbotron.appendChild(saveButton);
-  //console.log("jCount is now " + jCount);
+  freeResponseIndex++;
 }
+
 // ==================LIKERT====================================
 
 function likertDropdown(){
@@ -244,6 +257,7 @@ function likertDropdown(){
   //Close Button
   var closeButton = document.createElement("button");
   var closeButtonType= document.createAttribute("type");
+
   closeButtonType.value="button";
   closeButton.setAttributeNode(closeButtonType);
   closeButton.style.float="right";
@@ -271,9 +285,12 @@ function likertDropdown(){
   var inputQuestion = document.createElement("input");
   var inputQuestionType = document.createAttribute("type");
   var inputQuestionID = document.createAttribute("id");
+  var inputQuestionName = document.createAttribute("name");
+  inputQuestionName.value = "likertQuestions[" + likertIndex + "][0]";
   inputQuestionID.value="likertQuestion";
   inputQuestion.setAttributeNode(inputQuestionType);
   inputQuestion.setAttributeNode(inputQuestionID);
+  inputQuestion.setAttributeNode(inputQuestionName);
   jumbotron.appendChild(inputQuestion);
 
   var br = document.createElement("br");
@@ -287,9 +304,12 @@ function likertDropdown(){
   var leftSideInput = document.createElement("input");
   var leftSideInputType = document.createAttribute("type");
   var lSideID = document.createAttribute("id");
+  var leftSideName = document.createAttribute("name");
+  leftSideName.value = "likertQuestions[" + likertIndex + "][1]";
   lSideID.value="likertScaleLeft";
   leftSideInput.setAttributeNode(leftSideInputType);
   leftSideInput.setAttributeNode(lSideID);
+  leftSideInput.setAttributeNode(leftSideName);
   jumbotron.appendChild(leftSideInput);
 
   var br2 = document.createElement("br");
@@ -303,31 +323,21 @@ function likertDropdown(){
   var rightSideInput = document.createElement("input");
   var rightSideInputType = document.createAttribute("type");
   var rSideID = document.createAttribute("id");
+  var rightSideName = document.createAttribute("name");
   rSideID.value="likertScaleRight";
+  rightSideName.value = "likertQuestions[" + likertIndex + "][2]";
   rightSideInput.setAttributeNode(rightSideInputType);
   rightSideInput.setAttributeNode(rSideID);
+  rightSideInput.setAttributeNode(rightSideName);
   jumbotron.appendChild(rightSideInput);
 
   var br3 = document.createElement("br");
   jumbotron.appendChild(br3);
 
-  //Save Button
-  var saveButton = document.createElement("button");
-  var buttonText = document.createTextNode("Save");
-  saveButton.appendChild(buttonText);
-  var saveButtonClass = document.createAttribute("class");
-  saveButtonClass.value="btn-primary";
-  saveButton.setAttributeNode(saveButtonClass);
-  var saveButtonFunc = document.createAttribute("onclick");
+  likertIndex++;
 
-  var saveButtonID = document.createAttribute("id");
-  saveButtonID.value="saveButton" + jCount;
-  //console.log("saveButtonID is " + saveButtonID.value);
-  saveButton.setAttributeNode(saveButtonID);
-  saveButtonFunc.value="displaySave(\'' + jCount + '\')";
-  saveButton.setAttributeNode(saveButtonFunc);
-  jumbotron.appendChild(saveButton);
-  //console.log("jCount is now " + jCount);
+  //Save Button
+
 
 }
 
