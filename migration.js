@@ -10,4 +10,4 @@ var connection = mysql.createPool({
 });
 
 
-migration.init(connection, __dirname + '/migrations');
+migration.init(connection, __dirname + '/migrations');4
