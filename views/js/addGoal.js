@@ -227,24 +227,8 @@ function freeResponseDropdown(){
   jumbotron.appendChild(br2);
 
   freeResponseIndex++;
-
-  //Save button
-  // var saveButton = document.createElement("button");
-  // var buttonText = document.createTextNode("Save");
-  // saveButton.appendChild(buttonText);
-  // var saveButtonClass = document.createAttribute("class");
-  // saveButtonClass.value="btn-primary";
-  // saveButton.setAttributeNode(saveButtonClass);
-  // // var saveButtonID = document.createAttribute("id");
-  // // saveButtonID.value="saveButton" + jCount;
-  // // console.log("saveButtonID is " + saveButtonID.value);
-  // // saveButton.setAttributeNode(saveButtonID);
-  // // var saveButtonFunc = document.createAttribute("onclick");
-  // // saveButtonFunc.value="displaySave(\'' + jCount + '\')";
-  // // saveButton.setAttributeNode(saveButtonFunc);
-  // jumbotron.appendChild(saveButton);
-  console.log("jCount is now " + jCount);
 }
+
 // ==================LIKERT====================================
 
 function likertDropdown(){
@@ -263,8 +247,8 @@ function likertDropdown(){
   //jumbotron id
   var jumbotronID = document.createAttribute("id");
   jumbotronID.value="newQuestionJumbotron" + jCount;
-  console.log("jumbotronID is " + jumbotronID.value);
-  console.log("jCount is now " + jCount);
+  //console.log("jumbotronID is " + jumbotronID.value);
+  //console.log("jCount is now " + jCount);
   jumbotron.setAttributeNode(jumbotronID);
   jumbotron.setAttributeNode(jumbotronAtt);
   var bigJumbo = document.getElementById("questionCard");
@@ -353,28 +337,13 @@ function likertDropdown(){
   likertIndex++;
 
   //Save Button
-  // var saveButton = document.createElement("button");
-  // var buttonText = document.createTextNode("Save");
-  // saveButton.appendChild(buttonText);
-  // var saveButtonClass = document.createAttribute("class");
-  // saveButtonClass.value="btn-primary";
-  // saveButton.setAttributeNode(saveButtonClass);
-  // var saveButtonFunc = document.createAttribute("onclick");
-  //
-  // var saveButtonID = document.createAttribute("id");
-  // saveButtonID.value="saveButton" + jCount;
-  // console.log("saveButtonID is " + saveButtonID.value);
-  // saveButton.setAttributeNode(saveButtonID);
-  // saveButtonFunc.value="displaySave(\'' + jCount + '\')";
-  // saveButton.setAttributeNode(saveButtonFunc);
-  // jumbotron.appendChild(saveButton);
-  // console.log("jCount is now " + jCount);
+
 
 }
 
 // ==================ADD QUESTION====================================
 function addQuestion(){
-  console.log("in add question");
+  //console.log("in add question");
   var card = document.createElement("div");
   var cardAtt = document.createAttribute("class");
   cardAtt.value="card text-black bg-primary-mb-3";
@@ -464,7 +433,7 @@ function displaySave(result){
   var likertScaleRight = document.getElementById("likertScaleRight").value;
 
   var id = "newQuestionJumbotron" + count;
-  console.log("id is " + id);
+  //console.log("id is " + id);
   var jumbotron = document.getElementById(id);
   while (jumbotron.firstChild) {
     jumbotron.removeChild(jumbotron.firstChild);

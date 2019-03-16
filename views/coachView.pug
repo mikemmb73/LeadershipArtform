@@ -1,9 +1,10 @@
 extends layout
 
 block content
-	script 
+	script
 		include js/coachView.js
-		formatClients(clients) 
+	script.
+		goToFunction()
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -38,7 +39,7 @@ block content
 								input(type="textarea" name = "message")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
-	div.row.jumbotron#clientRow
+	div.row#clientRow
 		.modal(role="dialog", id="sendReminderModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
@@ -53,26 +54,16 @@ block content
 							input(type="text")
 					.modal-footer
 						button(data-dismiss="modal").btn.btn-primary Submit
-	.script
-		goToFunction()
-		formatClients(clients) 
 	div.row.jumbotron
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
-		a(href="executiveProfile").nav-item.nav-link.div.col-md-2
-			img#clientImage(src='https://vignette.wikia.nocookie.net/pixar/images/3/38/Mike1.png/revision/latest?cb=20170807223616')
-		nav-item.nav-link.div.col-md-2
-			a(href="executiveProfile")
-				h3 Name
-				h5 Monsters Inc Co
-				h6 Biography info
-			button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
-		div.col.navbar-nav
+		each obj in clients
+			.col-md-1
+			.col-md-2
+				a(href="executiveProfile")
+				img#clientImage(src='obj.photo')
+			.col-md-2
+				a(href="executiveProfile")
+					h3 #{obj.fname} #{obj.lname}
+					p #{obj.bio}
+					button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+			.col-md-1
+		.row

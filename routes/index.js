@@ -46,11 +46,11 @@ router.post('/coachView', async function(req, res) {
       var user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
       var promise = Promise.resolve(user);
-      promise.then(function(value) { 
-        console.log("PROMISE"); 
-      }); 
-      currCoach = user; 
-      clients = signup.getClients(user); 
+      promise.then(function(value) {
+        console.log("PROMISE");
+      });
+      currCoach = user;
+      clients = signup.getClients(user);
       var i;
       for (i = 0; i < clients.length; i++) {
         console.log(clients[i]);
@@ -65,9 +65,10 @@ router.post('/coachView', async function(req, res) {
       loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
-      clients = loginservices.getClients(user);
+      clients = await loginservices.getClients(user);
       var promise = Promise.resolve(clients);
       promise.then(function(value) {
+        console.log("testing if client is empty");
         console.log(clients);
       });
       if (user == null) {
@@ -120,10 +121,11 @@ router.post('/executiveProfile', async function(req,res,next) {
 });
 
 router.get('/coachProfile_coach', function(req,res,next){
-	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach});
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
 
 router.post('/coachProfile_coach', async function(req,res,next) {
+
   res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
