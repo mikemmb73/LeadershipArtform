@@ -3,8 +3,28 @@ var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 var currentExecutive;
 var currentCoach;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = {
+
+  // passport.serializeUser(function(user, done) {
+  //   console.log("inside serialize");
+  //   done(null, user.id);
+  // });
+  //
+  // passport.deserializeUser(function(id, done) {
+  //   connection.query("SELECT * FROM coaches, executives WHERE id = "+id, function(err, rows) {
+  //     done(err, rows[0]);
+  //   });
+  // });
+  //
+  // passport.use('local-login', new LocalStrategy({
+  //   usernameField : 'email',
+  //   passwordField : 'password',
+  //   passReqToCallback : true
+  // },
+
   signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
     if (rows != null) {

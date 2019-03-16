@@ -36,7 +36,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
-  res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
+  res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients}, { message: req.flash('loginMessage') });
 });
 
 router.post('/coachView', async function(req, res) {
@@ -62,7 +62,7 @@ router.post('/coachView', async function(req, res) {
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
   } else if (req.body.username != null) { //signin a user
-      loginservices.authenticate(req.body.email, req.body.password);
+      loginservices.authenticate('local', req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
       clients = await loginservices.getClients(user);
@@ -87,7 +87,7 @@ router.post('/coachView', async function(req, res) {
 });
 
 router.get('/executiveView', function(req,res,next){
-	res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+	res.render('executiveView.pug', {title: 'Executive View', user: currExecutive}, { message: req.flash('loginMessage') });
 });
 
 router.post('/executiveView', async function(req,res,next) {
@@ -98,7 +98,7 @@ router.post('/executiveView', async function(req,res,next) {
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
       currExecutive = user;
     } else {
-      loginservices.authenticate(req.body.email, req.body.password);
+      loginservices.authenticate('local', req.body.email, req.body.password);
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
@@ -133,7 +133,7 @@ router.get('/coachProfile_executive', function(req,res,next){
   currCoach  = loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
-    res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
+    res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value}, );
   });
 });
 
