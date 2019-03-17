@@ -36,6 +36,8 @@ router.get('../model/executiveCoach.js', function(req, res) {
 
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
+  console.log("COACH VIEW"); 
+  emailServices.sendAllReminders(clients); 
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
