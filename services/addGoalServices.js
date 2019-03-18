@@ -10,6 +10,10 @@ module.exports = {
     console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
+
+    currExecutive.addGoal(currGoal);
+    console.log("currGoal is " + currGoal.id);
+    console.log("THIS EXECUTIVES GOALS ARE" + currExecutive.goals_list);
     //console.log(goalData.mcQuestions.length);
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {

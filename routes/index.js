@@ -146,7 +146,7 @@ router.post('/coachProfile_coach', function(req, res) {
 });
 
 router.get('/addGoal_coach', function(req,res,next){
-	res.render('addGoal_coach.pug', {title: 'Add Goal'});
+	res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients});
 });
 
 router.get('/addGoal_executive', function(req,res,next){
