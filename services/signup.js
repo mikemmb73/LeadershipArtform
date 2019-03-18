@@ -24,6 +24,25 @@ module.exports = {
   //   passwordField : 'password',
   //   passReqToCallback : true
   // },
+  // function(req, email, password, done) {
+  //   connection.query("SELECT * FROM coaches, executives WHERE email = '" + email + "'", function (err,rows) {
+  //     if (err) {
+  //       return done(err);
+  //     }
+  //     if (rows.length) {
+  //       return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+  //     }
+  //     else {  // user is ready to sign up (email not taken)
+  //       // create newUser object
+  //       // if stmt for coach
+  //       var insertQuery = "INSERT INTO coaches (email, password) values ('" + email +"','"+ password +"')";
+  //       // else stmt for executive
+  //       var insertQuery = "INSERT INTO executives (email, password) values ('" + email +"','"+ password +"')";
+  //       newUser.id = rows.insertId; // this is why I think login serialization doesn't work?
+  //       // then use this insert query below in the async functions? is that possible
+  //     }
+  //   }
+  // }
 
   signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
