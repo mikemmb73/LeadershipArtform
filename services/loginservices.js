@@ -56,15 +56,13 @@ module.exports = {
 	getCoachAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
 	    if (rows != null) {
-				int num = 0;
-				const currCoach;
 	      if (rows.length != 0) {
 	        const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
 	        const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 	        currentCoach = currCoach[0];
 	        return currCoach[0];
 	      }
-				if (!(rows[0].password == password) // this is where we'd check if password matches user.password
+				// if (!(rows[0].password == password) // this is where we'd check if password matches user.password
 				// check if password is null
 				// check if password matches user's pw
 	    }
