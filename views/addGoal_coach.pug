@@ -28,19 +28,6 @@ block content
 							option(value=recipName) #{obj.fname} #{obj.lname}
 		br
 	div.jumbotron
-		h3 Previous Goals
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				- var allGoals = [];
-					each cli in clients
-						if (cli.goals_list.length)
-						- var cliGoals = cli.goals_list;
-							each cliGoal in cliGoals
-								allGoals.push(cliGoal)
-					each goal in allGoals
-						p #{goal.goal_title}
-
-	div.jumbotron
 		h3 Frequency Reminder
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 			div.card-body
@@ -56,8 +43,19 @@ block content
 					br
 					input(type='radio', name='gender', value='other')
 					|  Monthly
+	div.jumbotron
+		h3 Previous Goals
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-body
+				- var allGoals = [];
+					each cli in clients2
+						each goal in cli.goals_list
+							p #{goal.goal_title}
+
+
 	div.jumbotron#questionJumbotron
-		h3 Add Questions
+		h6 OR
+		h5 Create New Goal
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 			div.card-body#questionCard
 				| Choose Question Type

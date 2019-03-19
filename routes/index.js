@@ -146,7 +146,13 @@ router.post('/coachProfile_coach', function(req, res) {
 });
 
 router.get('/addGoal_coach', function(req,res,next){
-	res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients});
+  var clients2 = loginservices.getClientGoals(currCoach);
+  console.log("trying to print clients2: " + clients2);
+  var promise = Promise.resolve(clients2);
+  promise.then(function(value) {
+    console.log("printing within promise" + value); 
+    res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
+  });
 });
 
 router.get('/addGoal_executive', function(req,res,next){
@@ -166,7 +172,7 @@ router.post('/viewGoal', function(req, res) {
   var data = qs.parse(req.body);
   addGoalService.addGoalExecutive(data, currExecutive);
   console.log(data);
-  res.send('hey!');
+  res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
 
