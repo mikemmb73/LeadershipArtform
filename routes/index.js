@@ -64,7 +64,7 @@ router.post('/coachView', async function(req, res) {
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
   } else if (req.body.username != null) { //signin a user
-      loginservices.authenticate('local', req.body.email, req.body.password);
+      // loginservices.authenticate('local', req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
       clients = await loginservices.getClients(user);

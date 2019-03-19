@@ -3,8 +3,8 @@ var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 var currentExecutive;
 var currentCoach;
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+// var passport = require('passport');
+// var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = {
 
