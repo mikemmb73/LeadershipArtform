@@ -100,7 +100,7 @@ router.post('/executiveView', async function(req,res,next) {
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
       currExecutive = user;
     } else {
-      loginservices.authenticate('local', req.body.email, req.body.password);
+      // loginservices.authenticate('local', req.body.email, req.body.password);
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
