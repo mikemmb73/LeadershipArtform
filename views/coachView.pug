@@ -3,6 +3,7 @@ extends layout
 block content
 	script
 		include js/coachView.js
+	script. 
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -40,31 +41,17 @@ block content
 								input(type="textarea" name = "message")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
-	div.row#clientRow
-		.modal(role="dialog", id="sendReminderModal")
-			.modal-dialog-centered.custom_modal_dialog(role="document")
-				.modal-content
-					.modal-header
-						h5 Send a Reminder
-						button(class="close",data-dismiss="modal")
-							span &times;
-					.modal-body
-						p Choose Executive:
-							input(type="text")
-						p Choose Goal:
-							input(type="text")
-					.modal-footer
-						button(data-dismiss="modal").btn.btn-primary Submit
-	div.row.jumbotron
-		each obj in clients
-			.col-md-1
-			.col-md-2
-				a(href="executiveProfile")
-				img#clientImage(src='obj.photo')
-			.col-md-2
-				a(href="executiveProfile")
-					h3 #{obj.fname} #{obj.lname}
-					p #{obj.bio}
-			.col-md-1
-				button(class="btn btn-sm",data-toggle="modal",data-target="#sendReminderModal") Send Reminder
+		div.row.jumbotron
+			each obj in clients
+				.col-md-1
+				.col-md-2
+					a(href="executiveProfile?param1=hi")
+					img#clientImage(src='obj.photo')
+				.col-md-2
+					a(href="executiveProfile")
+						h3 #{obj.fname} #{obj.lname}
+						p #{obj.email}
+						p #{obj.bio}
+				.col-md-1
+					button(class="btn btn-sm",type="submit") Send Reminder
 		.row

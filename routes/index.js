@@ -42,6 +42,7 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
+  console.log("POSTING"); 
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
@@ -78,7 +79,10 @@ router.post('/coachView', async function(req, res) {
       } else {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
+  } else if (req.body.emailMessage != null) {
+      console.log("IN HERE"); 
   } else {
+      console.log("otherwise i'm here"); 
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
