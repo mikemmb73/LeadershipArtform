@@ -65,7 +65,6 @@ router.post('/coachView', async function(req, res) {
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
   } else if (req.body.username != null) { //signin a user
-      // loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
       clients = await loginservices.getClients(user);
@@ -104,7 +103,6 @@ router.post('/executiveView', async function(req,res,next) {
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
       currExecutive = user;
     } else {
-      // loginservices.authenticate(req.body.email, req.body.password);
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
@@ -162,7 +160,6 @@ router.get('/addGoal_executive', function(req,res,next){
 router.post('/', function(req, res) {
   var email = req.body.User;
   var password = req.body.Password;
-  // loginservices.authenticate(email, password);
 	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
 });
 
