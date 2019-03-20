@@ -147,10 +147,11 @@ router.post('/coachProfile_coach', function(req, res) {
 
 router.get('/addGoal_coach', function(req,res,next){
   var clients2 = loginservices.getClientGoals(currCoach);
+  
   console.log("trying to print clients2: " + clients2);
   var promise = Promise.resolve(clients2);
   promise.then(function(value) {
-    console.log("printing within promise" + value); 
+    console.log("printing within promise" + value);
     res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
   });
 });

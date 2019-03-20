@@ -2,6 +2,7 @@ var jCount = 0;
 var likertIndex = 0;
 var mcIndex = 0;
 var freeResponseIndex = 0;
+
 function mcDropdown(){
 
   var thisIndex = mcIndex;

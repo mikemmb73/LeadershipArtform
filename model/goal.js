@@ -9,6 +9,9 @@ class Goal {
     this.frequency = obj.frequency;
     this.date_assigned = obj.date_assigned;
 
+    var questions = [];
+    this.questions = questions;
+
 	}
 
 	get goal_title() {
@@ -18,6 +21,14 @@ class Goal {
     this.title = val;
   }
 
+  get goal_questions(){
+    return this.questions;
+  }
+
+  set goal_questions(val){
+    this.questions = val;
+  }
+  
 	get goal_description() {
 		return this.description;
 	}

@@ -26,7 +26,7 @@ block content
 						each obj in clients
 							var recipName = obj.fname + obj.lname;
 							option(value=recipName) #{obj.fname} #{obj.lname}
-		br
+		
 	div.jumbotron
 		h3 Frequency Reminder
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
@@ -50,17 +50,28 @@ block content
 				- var allGoals = [];
 					each cli in clients2
 						each goal in cli.goals_list
-							p #{goal.goal_title}
+							h6 #{goal.goal_title}
+							input.btn-primary(type='submit' value='Use')
+							each question in goal.goal_questions
+								p #{question.title}
+
+
 
 
 	div.jumbotron#questionJumbotron
 		h6 OR
-		h5 Create New Goal
+		h3 Create New Goal
+		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			div.card-body
+				| Goal Title
+			div.card-footer
+				input(type='text', name='goalTitle')
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 			div.card-body#questionCard
 				| Choose Question Type
 			div.jumbotron#questionDropdown(style="display:none")
 			div.card-footer
+				p Add Question
 				input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
 				input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
 				input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
