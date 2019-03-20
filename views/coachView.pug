@@ -53,5 +53,8 @@ block content
 						p #{obj.email}
 						p #{obj.bio}
 				.col-md-1
-					button(class="btn btn-sm",type="submit") Send Reminder
+					form(method='POST' action='/coachView')
+						-var emailAddress = obj.email
+						input(type="hidden" name="emailReminder" value=emailAddress)
+						button(class="btn btn-sm",type="submit") Send Reminder
 		.row
