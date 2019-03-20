@@ -46,14 +46,20 @@ block content
 				.col-md-1
 				.col-md-2
 					img#clientImage(src='obj.photo')
-					form(method='POST' action='/executiveProfile_coach')
-						.col-md-2
-							-var emailAddress = obj.email
-							input(type="hidden" name="profileClick" value=emailAddress)
-							button(class="btn btn-primary",type="submit") #{obj.fname} #{obj.lname} #{obj.email} #{obj.bio}
+				.col-md-2
+					h3 #{obj.fname} #{obj.lname}
+					p #{obj.email}
+					p #{obj.bio}
+					br
+					br
+					br
 				.col-md-1
 					form(method='POST' action='/coachView')
 						-var emailAddress = obj.email
 						input(type="hidden" name="emailReminder" value=emailAddress)
 						button(class="btn btn-sm",type="submit") Send Reminder
+					form(method='POST' action='/executiveProfile_coach')
+						-var emailAddress = obj.email
+						input(type="hidden" name="profileClick" value=emailAddress)
+						button(class="btn btn-sm",type="submit") View Profile
 		.row
