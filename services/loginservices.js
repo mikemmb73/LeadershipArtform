@@ -83,5 +83,11 @@ module.exports = {
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 	    return currCoach[0];
+	},
+
+	getExecutive: async function(email) {
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+	    const currExecutive = rows.map(x => new Executive.Executive(x));
+	    return currExecutive[0];
 	}
 };

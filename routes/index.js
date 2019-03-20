@@ -43,6 +43,7 @@ router.get('/coachView', function(req, res, next) {
 
 router.post('/coachView', async function(req, res) {
   console.log("POSTING"); 
+  console.log(req.body.emailReminder); 
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
@@ -79,10 +80,9 @@ router.post('/coachView', async function(req, res) {
       } else {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
-  } else if (req.body.emailMessage != null) {
-      console.log("IN HERE"); 
+  } else if (req.body.emailReminder != null) {
+      emailServices.sendOneReminder(req.body.emailReminder); 
   } else {
-      console.log("otherwise i'm here"); 
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -124,6 +124,19 @@ router.get('/executiveProfile', function(req,res,next){
 
 router.post('/executiveProfile', async function(req,res,next) {
   res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
+});
+
+router.get('/executiveProfile_coach', function(req,res,next){
+  console.log("GET _COACH"); 
+  res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive});
+});
+
+router.post('/executiveProfile_coach', async function(req,res,next) {
+  currExecutive = loginservices.getExecutive(req.body.profileClick); 
+  var promise = Promise.resolve(currExecutive);
+  promise.then(function(value) {
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
+  });
 });
 
 router.get('/coachProfile_coach', function(req,res,next){
