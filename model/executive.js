@@ -19,6 +19,13 @@ class Executive {
 
 	}
 
+  get exec_goals() {
+    return this.goals;
+  }
+  set exec_goals(val) {
+    this.goals = val;
+  }
+
 	get name() {
 		return this.fname + " " + this.lname;
 	}

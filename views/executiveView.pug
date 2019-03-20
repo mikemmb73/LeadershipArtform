@@ -16,8 +16,11 @@ block content
 				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
 	div.jumbotron
-		h3 Hello, #{user.name}
+		h2 Hello, #{user.name}
+	div.jumbotron
 		h3 Current Goals
+		each goal in user.exec_goals
+			+print_goal(goal)
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 			div.card-header Due Date/Assigned Date
 			div.card-body
