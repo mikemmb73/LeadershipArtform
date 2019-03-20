@@ -42,12 +42,7 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-<<<<<<< HEAD
   console.log("POSTING"); 
-  console.log(req.body.emailReminder); 
-=======
-  console.log("POSTING");
->>>>>>> d72ecfaa99f7ecc0aae79a1bc949a2b434890151
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
