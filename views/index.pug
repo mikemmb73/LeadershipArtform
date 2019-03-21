@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  p Leadership as an Art Form is a platform for Coaches and Executives to achieve their leadership goals. Through an interactive site, coaches and executives can track progress on individual goals and access all completed milestones. What are your aspirations for your leadership development? Let Leadership as an Art Form guide you. 
+  p Leadership as an Art Form is a platform for Coaches and Executives to achieve their leadership goals. Through an interactive site, coaches and executives can track progress on individual goals and access all completed milestones. What are your aspirations for your leadership development? Let Leadership as an Art Form guide you.
   br
   br
   div.row
@@ -24,7 +24,7 @@ block content
         div.col-md-8
           form(method='POST' action='/coachView')
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username', placeholder="Username", style="text-align: center")
+              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: center")
             div.form-group
               input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: center")
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:90px") Sign In
@@ -51,7 +51,7 @@ block content
         div.col-md-8
           form(method='POST' action='/executiveView' id="loginForm")
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username2', placeholder="Username", style="text-align: center")
+              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: center")
             div.form-group
               input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: center")
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:75px") Sign In

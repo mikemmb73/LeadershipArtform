@@ -3,7 +3,7 @@ extends layout
 block content
 	script
 		include js/coachView.js
-	script. 
+	script.
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -19,7 +19,7 @@ block content
 	div.row.client_title
 		script.
 			var clients = !{JSON.stringify(clients)};
-		h1 Clients. Welcome, #{user.first_name}
+		h1 Welcome, #{user.first_name}
 			form(method='GET' action='/coachView')
 				button(class="btn btn-primary",type="submit").client_button Remind All
 				button(class="btn btn-primary",type="button",data-toggle="modal", data-target="#addClientModal").client_button Add Client
