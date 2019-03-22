@@ -87,6 +87,10 @@ a {
   margin-left: 40px;
 }
 
+.signOut_button {
+  color: red;
+}
+
 .custom_modal_dialog {
   padding-left: 300px;
   padding-right: 300px;

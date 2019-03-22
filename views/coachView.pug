@@ -15,13 +15,15 @@ block content
 				li
 					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
 				li
-					a.nav-item.nav-link#signOut(href='/') Sign Out
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	div.row.client_title
 		script.
 			var clients = !{JSON.stringify(clients)};
 		h1 Clients. Welcome, #{user.first_name}
 			form(method='GET' action='/coachView')
-				input(type="hidden" name="remindAll")
+				input(type="hidden" name="remindAll" value="remindAll")
 				button(class="btn btn-primary",type="submit").client_button Remind All
 				button(class="btn btn-primary",type="button",data-toggle="modal", data-target="#addClientModal").client_button Add Client
 		.modal(role="dialog", id="addClientModal")

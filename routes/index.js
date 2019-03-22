@@ -9,7 +9,6 @@ var ExecutiveCoach = require('../model/executiveCoach');
 var addGoalService = require('../services/addGoalServices');
 var currExecutive;
 var currCoach;
-var clientList = [];
 var clients;
 
 
@@ -184,9 +183,16 @@ router.get('/addGoal_executive', function(req,res,next){
 });
 
 router.post('/', function(req, res) {
-  var email = req.body.User;
-  var password = req.body.Password;
-	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+  if (req.body.signOut != null) {
+    currExecutive = null;
+    currCoach = null;
+    clients = null;
+    res.render('index', { title: 'Leadership as an Artform' });
+  } else {
+    var email = req.body.User;
+    var password = req.body.Password;
+    res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+  }
 });
 
 router.post('/viewGoal', function(req, res) {
