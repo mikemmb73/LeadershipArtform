@@ -92,6 +92,7 @@ class Executive {
 
 	addGoal(goal) {
 		this.goals.push(goal);
+    console.log("length in exec.js is " + this.goals.length);
 	}
 }
 
