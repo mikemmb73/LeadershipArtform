@@ -42,7 +42,7 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  console.log("POSTING"); 
+  console.log("POSTING");
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
@@ -67,19 +67,19 @@ router.post('/coachView', async function(req, res) {
   } else if (req.body.username != null) { //signin a user
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
-      clients = await loginservices.getClients(user);
-      var promise = Promise.resolve(clients);
-      promise.then(function(value) {
-        console.log("testing if client is empty");
-        console.log(clients);
-      });
-      if (user == null) {
-        res.redirect('/coachSignup');
+      if (user == null) {   // auth passes null if username doesn't match pass
+        res.redirect('/');
       } else {
+        clients = await loginservices.getClients(user);
+        var promise = Promise.resolve(clients);
+        promise.then(function(value) {
+          console.log("testing if client is empty");
+          console.log(clients);
+        });
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else if (req.body.emailReminder != null) {
-      emailServices.sendOneReminder(req.body.emailReminder); 
+      emailServices.sendOneReminder(req.body.emailReminder);
   } else {
       console.log("otherwise i'm here");
       var name = req.body.clientName;
@@ -109,10 +109,10 @@ router.post('/executiveView', async function(req,res,next) {
   }
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
-  } else if (user == null && req.body.username2 != null) {
-    res.redirect('/');
+  } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
+      res.redirect('/');
   } else {
-    res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
+      res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
 
@@ -125,12 +125,12 @@ router.post('/executiveProfile', async function(req,res,next) {
 });
 
 router.get('/executiveProfile_coach', function(req,res,next){
-  console.log("GET _COACH"); 
+  console.log("GET _COACH");
   res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive});
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  currExecutive = loginservices.getExecutive(req.body.profileClick); 
+  currExecutive = loginservices.getExecutive(req.body.profileClick);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
     res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
@@ -164,7 +164,7 @@ router.post('/coachProfile_coach', function(req, res) {
 
 router.get('/addGoal_coach', function(req,res,next){
   var clients2 = loginservices.getClientGoals(currCoach);
-  
+
   console.log("trying to print clients2: " + clients2);
   var promise = Promise.resolve(clients2);
   promise.then(function(value) {

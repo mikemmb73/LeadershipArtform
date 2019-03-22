@@ -10,18 +10,18 @@ module.exports = {
 
 	getExecutiveAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
-	    if (rows != null) {
+			const currExecutive = rows.map(x => new Executive.Executive(x));
+			if (rows != null) {
 	      if (rows.length != 0) {
-	        const currExecutive = rows.map(x => new Executive.Executive(x));
 	        currentExecutive = currExecutive[0];
 					var pw = currentExecutive.pass;
 					if (pw == password) {
-						return currExecutive[0];
+						return currentExecutive;
 					}
 					else console.log("PASSWORD DOESNT MATCH");
 	      }
 	    }
-	    return null;
+	    return currentExecutive[0];
 	},
 
 	getClientGoals: async function(coach) {
