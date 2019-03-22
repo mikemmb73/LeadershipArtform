@@ -42,7 +42,7 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  console.log("POSTING");
+  console.log("POSTING"); 
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
@@ -78,8 +78,8 @@ router.post('/coachView', async function(req, res) {
       } else {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
-  } else if (req.body.emailMessage != null) {
-      console.log("IN HERE");
+  } else if (req.body.emailReminder != null) {
+      emailServices.sendOneReminder(req.body.emailReminder); 
   } else {
       console.log("otherwise i'm here");
       var name = req.body.clientName;
@@ -124,6 +124,19 @@ router.post('/executiveProfile', async function(req,res,next) {
   res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
 });
 
+router.get('/executiveProfile_coach', function(req,res,next){
+  console.log("GET _COACH"); 
+  res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive});
+});
+
+router.post('/executiveProfile_coach', async function(req,res,next) {
+  currExecutive = loginservices.getExecutive(req.body.profileClick); 
+  var promise = Promise.resolve(currExecutive);
+  promise.then(function(value) {
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
+  });
+});
+
 router.get('/coachProfile_coach', function(req,res,next){
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
@@ -150,7 +163,14 @@ router.post('/coachProfile_coach', function(req, res) {
 });
 
 router.get('/addGoal_coach', function(req,res,next){
-	res.render('addGoal_coach.pug', {title: 'Add Goal'});
+  var clients2 = loginservices.getClientGoals(currCoach);
+  
+  console.log("trying to print clients2: " + clients2);
+  var promise = Promise.resolve(clients2);
+  promise.then(function(value) {
+    console.log("printing within promise" + value);
+    res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
+  });
 });
 
 router.get('/addGoal_executive', function(req,res,next){
@@ -169,7 +189,7 @@ router.post('/viewGoal', function(req, res) {
   var data = qs.parse(req.body);
   addGoalService.addGoalExecutive(data, currExecutive);
   console.log(data);
-  res.send('hey!');
+  res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
 

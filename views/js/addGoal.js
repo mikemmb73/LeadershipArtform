@@ -2,15 +2,9 @@ var jCount = 0;
 var likertIndex = 0;
 var mcIndex = 0;
 var freeResponseIndex = 0;
-function mcDropdown(){
-  //document.getElementById('mcButton').disabled=true;
-  //document.getElementById('freeResponseButton').disabled=true;
-  //document.getElementById('likertButton').disabled=true;
 
-//  var jumbotron = document.getElementById('questionDropdown');
-// if (jumbotron.style.display === "none") {
-//   jumbotron.style.display = "block";
-// }
+function mcDropdown(){
+
   var thisIndex = mcIndex;
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
@@ -114,25 +108,6 @@ function mcDropdown(){
   var br2 = document.createElement("br");
    jumbotron.appendChild(br2);
 
-
-  //Save button
-//   var saveButton = document.createElement("button");
-//   var buttonText = document.createTextNode("Save");
-//   saveButton.appendChild(buttonText);
-//   var saveButtonStyle = document.createAttribute("style");
-//   saveButtonStyle.value = "margin-left:10px;"
-//   saveButton.setAttributeNode(saveButtonStyle);
-//   var saveButtonClass = document.createAttribute("class");
-//   saveButtonClass.value="btn-primary";
-//   var saveButtonFunc = document.createAttribute("onclick");
-//   saveButtonFunc.value="displaySave()";
-//   saveButton.setAttributeNode(saveButtonFunc);
-//   saveButton.setAttributeNode(saveButtonClass);
-//   jumbotron.appendChild(saveButton);
-//   var br2 = document.createElement("br");
-//   jumbotron.appendChild(br2);
-
-
   var num = 3;
   var optionIndex = 3;
   addOptionButton.onclick = function() {
@@ -165,14 +140,6 @@ function mcDropdown(){
 // ==================FREE RESPONSE====================================
 
 function freeResponseDropdown(){
-  //document.getElementById('mcButton').disabled=true;
-  //document.getElementById('freeResponseButton').disabled=true;
-  //document.getElementById('likertButton').disabled=true;
-  // var jumbotron = document.getElementById('questionDropdown');
-  //
-  // if (jumbotron.style.display === "none") {
-  //   jumbotron.style.display = "block";
-  // }
 
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
@@ -232,14 +199,6 @@ function freeResponseDropdown(){
 // ==================LIKERT====================================
 
 function likertDropdown(){
-  //document.getElementById('mcButton').disabled=true;
-  //document.getElementById('freeResponseButton').disabled=true;
-//  document.getElementById('likertButton').disabled=true;
-  // var jumbotron = document.getElementById('questionDropdown');
-  // if (jumbotron.style.display === "none") {
-  //   jumbotron.style.display = "block";
-  // }
-
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
   jumbotronAtt.value = "jumbotron";
@@ -335,10 +294,6 @@ function likertDropdown(){
   jumbotron.appendChild(br3);
 
   likertIndex++;
-
-  //Save Button
-
-
 }
 
 // ==================ADD QUESTION====================================
@@ -451,16 +406,6 @@ function displaySave(result){
   var savedRightText = document.createTextNode(likertScaleRight);
   savedRight.appendChild(savedRightText);
   jumbotron.appendChild(savedRight);
-
-  //Free response
-  // var freeResponse = document.getElementById("freeResponseQuestion").value;
-  // var freeResponseQuestion = document.createElement("p");
-  // var freeResponseText = document.createTextNode(freeResponse);
-  // freeResponseQuestion.appendChild(freeResponseText);
-  // jumbotron.appendChild(freeResponseQuestion);
-
-
-
 
 
 }
