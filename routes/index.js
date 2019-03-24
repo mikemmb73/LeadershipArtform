@@ -212,6 +212,7 @@ router.post('/editGoal_executive', async function(req, res) {
 
 router.post('/viewGoal_executive', function(req, res) {
   console.log(req.body);
+  res.render('viewGoal_executive.pug');
 });
 
 

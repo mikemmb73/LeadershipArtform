@@ -10,7 +10,7 @@ mixin print_goal(goal)
           h4 #{goal.goal_title}
           p Description of goal
         div.form_view_goal.col-md-6
-          form(method="POST", action="/viewGoal")
+          form(method="POST", action="/viewGoal_executive")
             input(type="hidden" name="goal_id" value=goal.id)
             button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:75px") View Goal
       div.progress.row
