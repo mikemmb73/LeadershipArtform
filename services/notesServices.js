@@ -3,20 +3,38 @@ var Executive = require("../model/executive");
 var Note = require("../model/note");
 
 module.exports = {
+
+  addNote: async function(execID, coachID, note) {
+    console.log("in addNote");
+    const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE executive_id = ?", [execID]);
+    const execRowsArray = execRows.map(x => new Executive.Executive(x));
+    const exec = execRowsArray[0];
+
+    const [noteRows, noteFields] = await mysql.connect.execute("SELECT * FROM notes WHERE executive_id = ? AND coach_id = ? AND info = ?", [execID, coachID, note]);
+    if (noteRows.length){
+      return;
+    }
+    await mysql.connect.execute("INSERT INTO notes(executive_id, coach_id, info) VALUES(?, ?, ?);", [execID, coachID, note]);
+
+    console.log("noteRows is: " + noteRows);
+    const currNoteArray = noteRows.map(x => new Note.Note(x));
+    const currNote = currNoteArray[0];
+    exec.addNote(currNote);
+  },
+
   viewNotes: async function(execID, coachID) {
-    const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE executive_id = ?", execID);
-    const exec = execRows.map(x => new Executive.Executive(x));
+    console.log("in viewNotes");
+    const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE executive_id = ?", [execID]);
+    const execRowsArray = execRows.map(x => new Executive.Executive(x));
+    const exec = execRowsArray[0];
+
+    const [noteRows, noteFields] = await mysql.connect.execute("SELECT * FROM notes WHERE executive_id = ? AND coach_id = ?", [execID, coachID]);
+    const currNoteArray = noteRows.map(x => new Note.Note(x));
+    //console.log("currNote Array is:");
+    // for (var i = 0; i < currNoteArray.length; i++){
+    //   console.log(currNoteArray[i]);
+    // }
+    exec.notes_list = currNoteArray;
+    return currNoteArray;
   }
 };
-
-
-
-if (rows != null){
-  const currGoalArray = rows.map(x => new Goal.Goal(x));
-  const currGoal = currGoalArray[0];
-  var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
-  const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
-  const currQuestionArray = questionRows.map(x => new Question.Question(x));
-  currGoal.goal_questions = currQuestionArray;
-  return currGoal;
-}

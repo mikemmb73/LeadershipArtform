@@ -32,10 +32,26 @@ block content
 	div.row
 		div.col-md-4
 		div.col-md-4
-			form(method='POST' action='/')
-				input(type="hidden" name="viewNotes" value="viewNotes")
-				button.btn-btn-block.btn-sm.btn-info(type='submit') View Notes
+			button.btn-btn-block.btn-sm.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal") Add Note
 
+			.modal(role="dialog", id="addNoteModal")
+				.modal-dialog-centered.custom_modal_dialog(role="document")
+					.modal-content
+						form(id = "form" method='POST' action='/executiveProfile_coach')
+							.modal-header
+								h5 Add Note
+								button.close(type='button' data-dismiss="modal")
+									span &times;
+							.modal-body
+									input(type="text" name="noteContent" size="75px")
+									input(type="hidden" name="currExecID" value=user.execID)
+							.modal-footer
+								button.btn.btn-primary(type='submit') Submit
+
+	div.jumbotron
+		h3 Notes
+		each note in notes
+			p #{note.note_content}
 	div.jumbotron
 		h3 Current Goals
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')

@@ -74,6 +74,10 @@ class Executive {
     this.goals = value;
   }
 
+  get notes_list(){
+    return this.notes;
+  }
+
   get coachID() {
     return this.coach_id;
   }
@@ -102,7 +106,8 @@ class Executive {
 
   addNote(note) {
     this.notes.push(note);
-    console.log("adding note");
+    console.log("ADDING NOTE");
+    console.log("notes size is now " + this.notes.length);
   }
 }
 

@@ -2,7 +2,7 @@ class Note {
  	constructor(object) {
 		this.coach_id = object.coach_id;
     this.executive_id = object.executive_id;
-    this.note = object.note;
+    this.info = object.info;
 	}
 
   get coachID() {
@@ -20,10 +20,14 @@ class Note {
   }
 
   get note_content(){
-    return this.note;
+    return this.info;
   }
 
   set note_content(value){
-    this.note = value;
+    this.info = value;
   }
 }
+
+module.exports =  {
+  Note
+};
