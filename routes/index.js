@@ -38,7 +38,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   console.log("COACH VIEW");
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
@@ -133,6 +133,7 @@ router.get('/executiveProfile_coach', function(req,res,next){
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
   currExecutive = loginservices.getExecutive(req.body.profileClick);
+  var notes = notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
     res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
@@ -158,7 +159,7 @@ router.get('/coachProfile_executive', function(req,res,next){
 
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   } else {
     var name = req.body.clientName;
     var email = req.body.emailAddress;
