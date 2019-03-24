@@ -4,24 +4,28 @@ var Executive = require('../model/executive');
 var Goal = require("../model/goal")
 var Question = require("../model/question")
 var currentExecutive;
+var currentCoach;
+var isCorrectPass = false;
 
 module.exports = {
-
 
 	getExecutiveAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
 			const currExecutive = rows.map(x => new Executive.Executive(x));
 			if (rows != null) {
 	      if (rows.length != 0) {
-	        currentExecutive = currExecutive[0];
-					var pw = currentExecutive.pass;
+					var pw = currExecutive[0].pass;
 					if (pw == password) {
-						return currentExecutive;
+						isCorrectPass = true;
+						currentExecutive = currExecutive[0];
 					}
-					else console.log("PASSWORD DOESNT MATCH");
-	      }
-	    }
-	    return currentExecutive[0];
+					else {
+						console.log("Password doesn't match (inside loginservices)");
+						currentExecutive = null;
+					}
+				}
+			}
+	    return currentExecutive;
 	},
 
 	getClientGoals: async function(coach) {
@@ -50,17 +54,19 @@ module.exports = {
 	getCoachAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
 	    if (rows != null) {		// textbox not empty
-	      if (rows.length != 0) {		// email entry found
+	      if (rows.length != 0) {		// email entry found in DB
 	        const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
-	        currentCoach = currCoach[0];
-					var pw = currentCoach.pass;
-					if (pw == password) {		// password entered = password in db
-						return currCoach[0];
+					var pw = currCoach[0].pass;
+					if (pw == password) {		// password entered = password in DB
+						currentCoach = currCoach[0];
 					}
-					else console.log("PASSWORD DOESNT MATCH");
+					else {
+						console.log("Password doesn't match (inside loginservices)");
+						currentCoach = null;
+					}
 	      }
 	    }
-	    return null;
+	    return currentCoach;
 	},
 
 	getClients: async function(user) {
