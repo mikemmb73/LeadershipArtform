@@ -24,10 +24,17 @@ a {
   color: red;
 }
 
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
 .orLabel{
   float:center;
   margin-top:50px;
-  margin-left:43px;
   align: center;
 
 }
@@ -85,6 +92,10 @@ a {
 .client_button {
   font-size: 23px;
   margin-left: 40px;
+}
+
+.signOut_button {
+  color: red;
 }
 
 .custom_modal_dialog {
