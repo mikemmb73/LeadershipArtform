@@ -1,3 +1,19 @@
 extends layout
 
 block content
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href='/') Leadership as an Artform
+    div.collapse.navbar-collapse#navbarColor02
+      ul.navbar-nav.ml-auto
+        li
+          a.nav-item.nav-link(href='/executiveView') Home
+        li
+          a.nav-link.nav-item(href='/executiveProfile') Profile
+        li
+          a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
+        li
+          a.nav-item.nav-link(href='/addGoal_executive') Add Goal
+        li
+          form(method='POST' action='/')
+            input(type="hidden" name="signOut" value="signOut")
+            button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out

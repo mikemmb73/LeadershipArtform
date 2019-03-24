@@ -16,15 +16,10 @@ block content
 				li
 					a.nav-item.nav-link.active(href='/addGoal_executive') Add Goal
 				li
-<<<<<<< HEAD
-					a.nav-item.nav-link#signOut(href='/') Sign Out
-	form(method='POST', action='/editGoal_executive')
-=======
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	form(method='POST', action='/viewGoal')
->>>>>>> 56b630b6bb169fc133c1e08d5ad0d1bf3a6614f8
+	form(method='POST', action='/editGoal_executive')
 		div.jumbotron
 			h3 Goal Title
 			input(type='text', name='goalTitle')
