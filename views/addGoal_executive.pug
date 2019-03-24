@@ -16,13 +16,22 @@ block content
 				li
 					a.nav-item.nav-link.active(href='/addGoal_executive') Add Goal
 				li
+<<<<<<< HEAD
+					a.nav-item.nav-link#signOut(href='/') Sign Out
+	form(method='POST', action='/editGoal_executive')
+=======
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	form(method='POST', action='/viewGoal')
+>>>>>>> 56b630b6bb169fc133c1e08d5ad0d1bf3a6614f8
 		div.jumbotron
 			h3 Goal Title
 			input(type='text', name='goalTitle')
+		div.jumbotron
+			h3 Goal Description
+			input(type='text', name='goalDescription' size='150')
+		div.jumbotron
 			h3 Frequency Reminder
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 				div.card-body
@@ -38,14 +47,14 @@ block content
 						br
 						input(type='radio', name='frequency', value='3')
 						|  Monthly
-			div.jumbotron#questionJumbotron
-				h3 Add Questions
-				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-					div.card-body#questionCard
-						| Choose Question Type
-					div.jumbotron#questionDropdown(style="display:none")
-					div.card-footer
-						input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
-						input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
-						input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
-			input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+		div.jumbotron#questionJumbotron
+			h3 Add Questions
+			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+				div.card-body#questionCard
+					| Choose Question Type
+				div.jumbotron#questionDropdown(style="display:none")
+				div.card-footer
+					input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
+					input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
+					input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
+		input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
