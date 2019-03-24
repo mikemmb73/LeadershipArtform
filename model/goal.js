@@ -8,12 +8,18 @@ class Goal {
     this.progress = obj.progess;
     this.frequency = obj.frequency;
     this.date_assigned = obj.date_assigned;
-
+    this.currDueDate = obj.date_assigned;
     var questions = [];
     this.questions = questions;
 
 	}
 
+  get goal_due_date() {
+    return this.currDueDate;
+  }
+  set goal_due_date(val) {
+    this.currDueDate = val;
+  }
 	get goal_title() {
 		return this.title;
 	}
@@ -28,7 +34,7 @@ class Goal {
   set goal_questions(val){
     this.questions = val;
   }
-  
+
 	get goal_description() {
 		return this.description;
 	}

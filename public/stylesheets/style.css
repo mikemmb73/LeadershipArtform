@@ -17,11 +17,11 @@ a {
 }
 
 .active{
-  background-color: grey; 
+  background-color: grey;
 }
 
 #signOut{
-  color: red; 
+  color: red;
 }
 
 .orLabel{
@@ -115,4 +115,8 @@ a {
     top: 0;
     visibility: hidden;
     margin-top: -1px;
+}
+
+.view_goal_button {
+  left:100%;
 }
