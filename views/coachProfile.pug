@@ -14,6 +14,10 @@ block content
 						a.nav-item.nav-link(href='/',data-toggle="modal", data-target="#addClientModal") Invite Client
 					li
 						a.nav-item.nav-link(href='addGoal', data-toggle="modal", data-target="#addGoalModal") Add Goal
+					li 
+						form(method='POST' action='/')
+							input(type="hidden" name="signOut" value="signOut")
+							button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 			.modal(role="dialog", id="addGoalModal")
 				.modal-dialog-centered.custom_modal_dialog(role="document")
 					.modal-content

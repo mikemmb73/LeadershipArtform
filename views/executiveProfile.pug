@@ -14,7 +14,9 @@ block content
 				li
 					a.nav-item.nav-link(href='/addGoal_executive') Add Goal
 				li
-					a.nav-item.nav-link#signOut(href='/') Sign Out
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	div.row
 		div.col-md-1
 		div.col-md-2

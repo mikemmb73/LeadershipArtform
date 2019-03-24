@@ -9,7 +9,6 @@ var ExecutiveCoach = require('../model/executiveCoach');
 var addGoalService = require('../services/addGoalServices');
 var currExecutive;
 var currCoach;
-var clientList = [];
 var clients;
 var currGoal;
 
@@ -38,7 +37,9 @@ router.get('../model/executiveCoach.js', function(req, res) {
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
   console.log("COACH VIEW");
-  // emailServices.sendAllReminders(clients);
+  if (req.body.remindAll != null) {
+    emailServices.sendAllReminders(clients); 
+  }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
@@ -156,10 +157,14 @@ router.get('/coachProfile_executive', function(req,res,next){
 });
 
 router.post('/coachProfile_coach', function(req, res) {
-	var name = req.body.clientName;
-	var email = req.body.emailAddress;
-	var message = req.body.message;
-	emailServices.sendEmail(name, email, message);
+  if (req.body.remindAll != null) {
+    emailServices.sendAllReminders(clients); 
+  } else {
+    var name = req.body.clientName;
+    var email = req.body.emailAddress;
+    var message = req.body.message;
+    emailServices.sendEmail(name, email, message);
+  }
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
 });
 
@@ -179,9 +184,16 @@ router.get('/addGoal_executive', function(req,res,next){
 });
 
 router.post('/', function(req, res) {
-  var email = req.body.User;
-  var password = req.body.Password;
-	res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+  if (req.body.signOut != null) {
+    currExecutive = null;
+    currCoach = null;
+    clients = null;
+    res.render('index', { title: 'Leadership as an Artform' });
+  } else {
+    var email = req.body.User;
+    var password = req.body.Password;
+    res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+  }
 });
 
 router.post('/editGoal_executive', async function(req, res) {

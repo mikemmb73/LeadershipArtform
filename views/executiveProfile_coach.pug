@@ -6,15 +6,21 @@ block content
 		div.collapse.navbar-collapse#navbarColor02
 			ul.navbar-nav.ml-auto
 				li
-					a.nav-item.nav-link(href='/executiveView') Home
+					a.nav-item.nav-link.active(href='/coachView') Home
 				li
-					a.nav-link.nav-item.active(href='#') Profile
+					a.nav-link.nav-item(href='/coachProfile_coach') Profile
 				li
-					a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
+					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
 				li
+<<<<<<< HEAD
 					a.nav-item.nav-link(href='/addGoal_executive') Add Goal
 				li
 					a.nav-item.nav-link#signOut(href='/') Sign Out
+=======
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
+>>>>>>> 56b630b6bb169fc133c1e08d5ad0d1bf3a6614f8
 	div.row
 		div.col-md-1
 		div.col-md-2
