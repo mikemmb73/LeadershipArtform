@@ -68,6 +68,10 @@ router.post('/coachView', async function(req, res) {
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
       if (user == null) {   // auth passes null if username doesn't match pass
+        var message = document.getElementById('error-message');
+        var error = document.createElement("h6");
+        error.value = "incorrect";
+        message.appendChild(error);
         res.redirect('/');
       } else {
         clients = await loginservices.getClients(user);
