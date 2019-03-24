@@ -37,13 +37,13 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   console.log("COACH VIEW");
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
 router.post('/coachView', async function(req, res) {
-  console.log("POSTING"); 
+  console.log("POSTING");
   var user;
   if (req.body.fname != null) { // signup a new user
     if (currCoach == null) {
@@ -80,7 +80,7 @@ router.post('/coachView', async function(req, res) {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else if (req.body.emailReminder != null) {
-      emailServices.sendOneReminder(req.body.emailReminder); 
+      emailServices.sendOneReminder(req.body.emailReminder);
   } else {
       console.log("otherwise i'm here");
       var name = req.body.clientName;
@@ -126,12 +126,12 @@ router.post('/executiveProfile', async function(req,res,next) {
 });
 
 router.get('/executiveProfile_coach', function(req,res,next){
-  console.log("GET _COACH"); 
+  console.log("GET _COACH");
   res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive});
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  currExecutive = loginservices.getExecutive(req.body.profileClick); 
+  currExecutive = loginservices.getExecutive(req.body.profileClick);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
     res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
@@ -157,7 +157,7 @@ router.get('/coachProfile_executive', function(req,res,next){
 
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   } else {
     var name = req.body.clientName;
     var email = req.body.emailAddress;
@@ -169,7 +169,7 @@ router.post('/coachProfile_coach', function(req, res) {
 
 router.get('/addGoal_coach', function(req,res,next){
   var clients2 = loginservices.getClientGoals(currCoach);
-  
+
   console.log("trying to print clients2: " + clients2);
   var promise = Promise.resolve(clients2);
   promise.then(function(value) {
@@ -195,7 +195,7 @@ router.post('/', function(req, res) {
   }
 });
 
-router.post('/viewGoal', function(req, res) {
+router.post('/viewGoal_executive', function(req, res) {
   console.log(req.body);
   //console.log(req.body["mcQuestions[0]"]);
   var data = qs.parse(req.body);
