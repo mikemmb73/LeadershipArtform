@@ -5,6 +5,15 @@ var Question = require("../model/question")
 module.exports = {
   addGoalExecutive: async function(goalData, currExecutive) {
     var today = new Date();
+
+    const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
+    if (rowsTest.length) {
+      console.log("IT IS NOT NULL");
+      console.log("TITLE: " + goalData.goalTitle);
+      console.log("EXEC ID: " + currExecutive.executive_id);
+      return;
+    }
+
     await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, "", 0, goalData.frequency, today]);
     console.log("added goal");
     // const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [currExecutive.executive_id]);
@@ -24,8 +33,8 @@ module.exports = {
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
         var choices = "";
-        for (var j=1; j<goalData.mcQuestions[0].length; j++) {
-          choices += goalData.mcQuestions[0][j] + ",";
+        for (var j=1; j<goalData.mcQuestions[i].length; j++) {
+          choices += goalData.mcQuestions[i][j] + ",";
         }
         await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, "", choices]);
       }

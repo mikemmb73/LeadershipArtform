@@ -26,7 +26,7 @@ block content
 						each obj in clients
 							var recipName = obj.fname + obj.lname;
 							option(value=recipName) #{obj.fname} #{obj.lname}
-		
+
 	div.jumbotron
 		h3 Frequency Reminder
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
@@ -66,6 +66,10 @@ block content
 				| Goal Title
 			div.card-footer
 				input(type='text', name='goalTitle')
+			div.card-body
+				| Goal Description
+			div.card-footer
+					input(type='text', name='goalDescription' size='150')
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 			div.card-body#questionCard
 				| Choose Question Type
