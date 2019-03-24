@@ -13,7 +13,9 @@ block content
 				li.nav-item View Coach's Profile
 					a.nav-link(href='#')
 				li.nav-item Add Goal
-					a.nav-link(href='addGoal')
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	div.jumbotron
 		h3 Add Recipient(s)
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
