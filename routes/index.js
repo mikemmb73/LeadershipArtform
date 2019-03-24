@@ -38,7 +38,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   console.log("COACH VIEW");
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
@@ -158,7 +158,7 @@ router.get('/coachProfile_executive', function(req,res,next){
 
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   } else {
     var name = req.body.clientName;
     var email = req.body.emailAddress;
@@ -208,6 +208,11 @@ router.post('/editGoal_executive', async function(req, res) {
   console.log("rendering view");
   res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
   //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+});
+
+router.post('/viewGoal_executive', function(req, res) {
+  console.log(req.body);
+  res.render('viewGoal_executive.pug');
 });
 
 
