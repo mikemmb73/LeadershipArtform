@@ -13,25 +13,25 @@ block content
         form(id = "form" method='POST' action='/coachView')
           div.form-group
             label(for='fname') First Name:
-            input#fname.form-control(type='text', fname='fname', name='fname')
+            input#fname.form-control(type='text' fname='fname' name='fname' required)
           div.form-group
             label(for='lname') Last Name:
-            input#lname.form-control(type='text', lname='lname', name='lname')
+            input#lname.form-control(type='text' lname='lname' name='lname' required)
           div.form-group
             label(for='email') Email:
-            input#email.form-control(type='email', name='email')
+            input#email.form-control(type='email', name='email' required)
           div.form-group
             label(for='phoneNumber') Phone Number:
-            input#phoneNumber.form-control(type='text', name='phone_number')
+            input#phoneNumber.form-control(type='text', name='phone_number' required)
           div.form-group
             label(for='pw') Password:
-            input#pw.form-control(type='password' name='password')
+            input#pw.form-control(type='password' name='password' required)
           div.form-group
             label(for='pw2') Confirm Password:
-            input#pw2.form-control(type='password' name='confirmPassword')
+            input#pw2.form-control(type='password' name='confirmPassword' required)
           div.form-group
             label(for='bio') Professional Bio:
-            input#bio.form-control(type='text' name='bio')
+            input#bio.form-control(type='text' name='bio' required)
           div.form-group
             label(for='image') Photo:
             input#image.form-control(type='file' name='photo' accept='image/*')
