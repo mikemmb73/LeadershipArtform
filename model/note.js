@@ -3,6 +3,7 @@ class Note {
 		this.coach_id = object.coach_id;
     this.executive_id = object.executive_id;
     this.info = object.info;
+    this.date = object.date;
 	}
 
   get coachID() {
@@ -25,6 +26,10 @@ class Note {
 
   set note_content(value){
     this.info = value;
+  }
+
+  get note_date(){
+    return this.date;
   }
 }
 

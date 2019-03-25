@@ -136,13 +136,10 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
   var notes;
   if (req.body.noteContent == null) {
     currExecutive = await loginservices.getExecutive(req.body.profileClick);
-    //console.log("currExecutive is " + currExecutive.name);
-
-    //console.log("notes is " + notes)
   }
   if (req.body.noteContent != null){
     notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
-    
+    notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   }
   notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
