@@ -219,6 +219,11 @@ router.post('/editGoal_executive', async function(req, res) {
   //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
+router.post('/viewGoal_executive', function(req, res) {
+  console.log(req.body);
+  res.render('viewGoal_executive.pug');
+});
+
 
 
 module.exports = router;

@@ -1,6 +1,7 @@
 extends layout
 
 block content
+	include mixins/print_goal.pug
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -18,20 +19,8 @@ block content
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	div.jumbotron
-		h3 Hello, #{user.name}
+		h2 Hello, #{user.name}
+	div.jumbotron
 		h3 Current Goals
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Due Date/Assigned Date
-			div.card-body
-				h4 Goal Name
-				p Description of goal
-			div.progress
-				div.progress-bar.bg-warning(role='progressbar' style='width:5%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
-		br
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Due Date/Assigned Date
-			div.card-body
-				h4 Goal Name
-				p Description of goal
-			div.progress
-				div.progress-bar.bg-warning(role='progressbar' style='width:25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+		each goal in user.exec_goals
+			+print_goal(goal)
