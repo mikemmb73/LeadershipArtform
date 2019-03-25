@@ -11,20 +11,26 @@ module.exports = {
 
 	getExecutiveAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
-			const currExecutive = rows.map(x => new Executive.Executive(x));
-			if (rows != null) {
+		const currExecutive = rows.map(x => new Executive.Executive(x));
+		if (rows != null) {
 	      if (rows.length != 0) {
-					var pw = currExecutive[0].pass;
-					if (pw == password) {
-						isCorrectPass = true;
-						currentExecutive = currExecutive[0];
-					}
-					else {
-						console.log("Password doesn't match (inside loginservices)");
-						currentExecutive = null;
+				var pw = currExecutive[0].pass;
+				if (pw == password) {
+					isCorrectPass = true;
+					currentExecutive = currExecutive[0];
+					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
+				    const [rows2, fields2] = await mysql.connect.execute(getStatement);
+					const currGoalArray = rows2.map(x => new Goal.Goal(x));
+					for (var i = 0; i < currGoalArray.length; i++) {
+						currentExecutive.addGoal(currGoalArray[i]);
 					}
 				}
+				else {
+					console.log("Password doesn't match (inside loginservices)");
+					currentExecutive = null;
+				}
 			}
+		}
 	    return currentExecutive;
 	},
 

@@ -17,68 +17,72 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.jumbotron
-		h3 Add Recipient(s)
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Available Executives
-			div.card-body
-				.form-group
-					label(for="selRecip") To select multiple, hold command or shift (or drag with mouse)
-					select.form-control(multiple size=clients.length id="selRecip")
-						each obj in clients
-							var recipName = obj.fname + obj.lname;
-							option(value=recipName) #{obj.fname} #{obj.lname}
-
-	div.jumbotron
-		h3 Frequency Reminder
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				form
-					input(type='radio', name='gender', value='male', checked='')
-					|  Daily
-					br
-					input(type='radio', name='gender', value='female')
-					|  Weekly
-					br
-					input(type='radio', name='gender', value='other')
-					|  Bi-Weekly
-					br
-					input(type='radio', name='gender', value='other')
-					|  Monthly
-	div.jumbotron
-		h3 Previous Goals
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				- var allGoals = [];
-					each cli in clients2
-						each goal in cli.goals_list
-							h6 #{goal.goal_title}
-							input.btn-primary(type='submit' value='Use')
-							each question in goal.goal_questions
-								p #{question.title}
-
-
-
-
-	div.jumbotron#questionJumbotron
-		h6 OR
-		h3 Create New Goal
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body
-				| Goal Title
-			div.card-footer
-				input(type='text', name='goalTitle')
-			div.card-body
-				| Goal Description
-			div.card-footer
-					input(type='text', name='goalDescription' size='150')
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-body#questionCard
-				| Choose Question Type
-			div.jumbotron#questionDropdown(style="display:none")
-			div.card-footer
-				p Add Question
-				input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
-				input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
-				input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
-	input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+	form(method='POST', action='/viewGoal')
+		input(type="hidden" name="addCoachGoal" value="addCoachGoal")
+		div.jumbotron
+			h3 Add Recipient(s)
+			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+				div.card-header Available Executives
+				div.card-body
+					.form-group
+						label(for="selRecip") To select multiple, hold command or shift (or drag with mouse)
+						select.form-control(multiple size=clients.length id="selRecip" name="clientForm")
+							each obj in clients
+								var recipName = obj.fname + obj.lname;
+								option(value=recipName) #{obj.fname} #{obj.lname}
+		div.jumbotron
+			h3 Frequency Reminder
+			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+				div.card-body
+					form
+						input(type='radio', name='frequency', value='0', checked='')
+						|  Daily
+						br
+						input(type='radio', name='frequency', value='1')
+						|  Weekly
+						br
+						input(type='radio', name='frequency', value='2')
+						|  Bi-Weekly
+						br
+						input(type='radio', name='frequency', value='3')
+						|  Monthly
+			div.jumbotron
+				h3 Previous Goals
+				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+					div.card-body
+						- var allGoals = [];
+						- var goalCheck = true; 
+							each cli in clients2
+								each goal in cli.goals_list
+									each entry in allGoals
+										if entry.valueOf() == goal.goal_title.valueOf()
+											-goalCheck = false; 
+									if goalCheck
+										h6 #{goal.goal_title}
+										input.btn-primary(type='submit' value='Use')
+										each question in goal.goal_questions
+											p #{question.title}
+									-goalCheck = true; 
+									-allGoals.push(goal.goal_title); 
+			div.jumbotron#questionJumbotron
+				h6 OR
+				h3 Create New Goal
+				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+					div.card-body
+						| Goal Title
+					div.card-body
+						| Goal Description
+					div.card-footer
+						input(type='text', name='goalDescription' size='150')
+					div.card-footer
+						input(type='text', name='goalTitle')
+				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+					div.card-body#questionCard
+						| Choose Question Type
+					div.jumbotron#questionDropdown(style="display:none")
+					div.card-footer
+						p Add Question
+						input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
+						input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
+						input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
+			input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
