@@ -17,11 +17,11 @@ a {
 }
 
 .active{
-  background-color: grey; 
+  background-color: grey;
 }
 
 #signOut{
-  color: red; 
+  color: red;
 }
 
 .vertical-center {
@@ -66,8 +66,8 @@ a {
   width:650px;
 }
 #profileImage{
-  height: auto;
-  width:250px;
+  width:220px;
+  height:200px;
   padding: 20px;
 }
 
@@ -90,8 +90,7 @@ a {
 }
 
 .client_button {
-  font-size: 23px;
-  margin-left: 40px;
+  margin-left:40px;
 }
 
 .signOut_button {
@@ -126,4 +125,9 @@ a {
     top: 0;
     visibility: hidden;
     margin-top: -1px;
+}
+
+.view_goal_button {
+  left:100%;
+  float:right;
 }

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
+var notesServices = require('../services/notesServices');
 var signup = require('../services/signup');
 var qs = require('qs');
 const pug = require('pug');
@@ -38,7 +39,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   console.log("COACH VIEW");
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
@@ -69,15 +70,17 @@ router.post('/coachView', async function(req, res) {
   } else if (req.body.username != null) { //signin a user
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
-      clients = await loginservices.getClients(user);
-      var promise = Promise.resolve(clients);
-      promise.then(function(value) {
-        console.log("testing if client is empty");
-        console.log(clients);
-      });
-      if (user == null) {
-        res.redirect('/coachSignup');
-      } else {
+      if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
+        console.log("Password doesn't match (inside index.js)");
+        res.render("index", { title: 'Leadership as an Artform', message: 'Incorrect email or password! Try again.' });
+      }
+      else {
+        clients = await loginservices.getClients(user);
+        var promise = Promise.resolve(clients);
+        promise.then(function(value) {
+          console.log("testing if client is empty");
+          console.log(clients);
+        });
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else if (req.body.emailReminder != null) {
@@ -111,10 +114,10 @@ router.post('/executiveView', async function(req,res,next) {
   }
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
-  } else if (user == null && req.body.username2 != null) {
-    res.redirect('/');
+  } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
+      res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
   } else {
-    res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
+      res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
 
@@ -132,10 +135,18 @@ router.get('/executiveProfile_coach', function(req,res,next){
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  currExecutive = loginservices.getExecutive(req.body.profileClick);
+  var notes;
+  if (req.body.noteContent == null) {
+    currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  }
+  if (req.body.noteContent != null){
+    notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
+    notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+  }
+  notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
-    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes});
   });
 });
 
@@ -158,7 +169,7 @@ router.get('/coachProfile_executive', function(req,res,next){
 
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients); 
+    emailServices.sendAllReminders(clients);
   } else {
     var name = req.body.clientName;
     var email = req.body.emailAddress;
@@ -208,6 +219,28 @@ router.post('/editGoal_executive', async function(req, res) {
   console.log("rendering view");
   res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
   //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+});
+
+router.post('/viewGoal', function(req, res) {
+  console.log("posting to view goal"); 
+  if (req.body.addCoachGoal != null) {
+    console.log("coach's goal added"); 
+    var data2 = qs.parse(req.body);
+    console.log(data2); 
+    if (data2.goalTitle != "") {
+      addGoalService.addGoalCoach(data2, currCoach, clients); 
+    } else {
+      console.log("we are using a previous goal"); 
+      addPrevGoal(data2, currCoach, clients); 
+    }
+    res.render('viewGoal.pug', {title: 'View Goal', user: currExecutive}); 
+  } else {
+    var data = qs.parse(req.body);
+    addGoalService.addGoalExecutive(data, currExecutive);
+    console.log(data);
+    res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+  }
+  //console.log(req.body["mcQuestions[0]"]);
 });
 
 
