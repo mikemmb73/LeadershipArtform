@@ -196,12 +196,20 @@ router.post('/', function(req, res) {
 });
 
 router.post('/viewGoal', function(req, res) {
-  console.log(req.body);
+  console.log("posting to view goal"); 
+  if (req.body.addCoachGoal != null) {
+    console.log("coach's goal added"); 
+    var data2 = qs.parse(req.body);
+    console.log(data2); 
+    addGoalService.addGoalCoach(data2, currCoach, clients); 
+    res.render('viewGoal.pug', {title: 'View Goal', user: currExecutive}); 
+  } else {
+    var data = qs.parse(req.body);
+    addGoalService.addGoalExecutive(data, currExecutive);
+    console.log(data);
+    res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+  }
   //console.log(req.body["mcQuestions[0]"]);
-  var data = qs.parse(req.body);
-  addGoalService.addGoalExecutive(data, currExecutive);
-  console.log(data);
-  res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
 

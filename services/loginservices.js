@@ -15,13 +15,12 @@ module.exports = {
 	        const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives where email = ?", [email.toLowerCase()]);
 	        const currExecutive = rows.map(x => new Executive.Executive(x));
 	        currentExecutive = currExecutive[0];
-
-					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
-			    const [rows2, fields2] = await mysql.connect.execute(getStatement);
-					const currGoalArray = rows2.map(x => new Goal.Goal(x));
-					for (var i = 0; i < currGoalArray.length; i++) {
-						currentExecutive.addGoal(currGoalArray[i]);
-					}
+			var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
+		    const [rows2, fields2] = await mysql.connect.execute(getStatement);
+			const currGoalArray = rows2.map(x => new Goal.Goal(x));
+			for (var i = 0; i < currGoalArray.length; i++) {
+				currentExecutive.addGoal(currGoalArray[i]);
+			}
 
 	        return currExecutive[0];
 	      }
