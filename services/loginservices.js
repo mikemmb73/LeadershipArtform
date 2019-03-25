@@ -4,29 +4,28 @@ var Executive = require('../model/executive');
 var Goal = require("../model/goal")
 var Question = require("../model/question")
 var currentExecutive;
+var currentCoach;
+var isCorrectPass = false;
 
 module.exports = {
 
-
 	getExecutiveAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
-	    if (rows != null) {
+			const currExecutive = rows.map(x => new Executive.Executive(x));
+			if (rows != null) {
 	      if (rows.length != 0) {
-	        const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives where email = ?", [email.toLowerCase()]);
-	        const currExecutive = rows.map(x => new Executive.Executive(x));
-	        currentExecutive = currExecutive[0];
-
-					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
-			    const [rows2, fields2] = await mysql.connect.execute(getStatement);
-					const currGoalArray = rows2.map(x => new Goal.Goal(x));
-					for (var i = 0; i < currGoalArray.length; i++) {
-						currentExecutive.addGoal(currGoalArray[i]);
+					var pw = currExecutive[0].pass;
+					if (pw == password) {
+						isCorrectPass = true;
+						currentExecutive = currExecutive[0];
 					}
-
-	        return currExecutive[0];
-	      }
-	    }
-	    return null;
+					else {
+						console.log("Password doesn't match (inside loginservices)");
+						currentExecutive = null;
+					}
+				}
+			}
+	    return currentExecutive;
 	},
 
 	getClientGoals: async function(coach) {
@@ -54,20 +53,26 @@ module.exports = {
 
 	getCoachAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
-	    if (rows != null) {
+			const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+			if (rows != null) {
 	      if (rows.length != 0) {
-	        const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
-	        const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
-	        return currCoach[0];
-	      }
-	    }
-	    return null;
+					var pw = currCoach[0].pass;
+					if (pw == password) {
+						currentCoach = currCoach[0];
+					}
+					else {
+						console.log("Password doesn't match (inside loginservices)");
+						currentCoach = null;
+					}
+				}
+			}
+	    return currentCoach;
 	},
 
 	getClients: async function(user) {
 	    var id = user.coach_id_val;
-	    console.log("ID HERE" + id);
-	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + id + ", coach_id)";
+	    console.log("ID HERE: " + id);
+	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + user.coach_id_val + ", coach_id)";
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new Executive.Executive(x));
 	    return currCoach;

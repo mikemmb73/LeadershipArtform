@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  script
+    include ../routes/index.js
   h1= title
   p Leadership as an Art Form is a platform for Coaches and Executives to achieve their leadership goals. Through an interactive site, coaches and executives can track progress on individual goals and access all completed milestones. What are your aspirations for your leadership development? Let Leadership as an Art Form guide you.
   br
@@ -27,6 +29,7 @@ block content
               input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: center")
             div.form-group
               input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: center")
+              h6(style="color: red") #{message}
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:90px") Sign In
             p#loginPrompt.pull-right.login-prompt
         div.col-md-2
@@ -54,6 +57,7 @@ block content
               input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: center")
             div.form-group
               input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: center")
+            h6(style="color: red") #{message2}
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:75px") Sign In
             p#loginPrompt.pull-right.login-prompt
         div.col-md-2
