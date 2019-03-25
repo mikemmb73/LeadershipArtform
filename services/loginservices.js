@@ -53,19 +53,22 @@ module.exports = {
 
 	getCoachAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
-	    if (rows != null) {		// textbox not empty
-	      if (rows.length != 0) {		// email entry found in DB
-	        const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+			const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+			if (rows != null) {
+				console.log("Rows isn't null");
+	      if (rows.length != 0) {
+					console.log("Rows isn't empty");
 					var pw = currCoach[0].pass;
-					if (pw == password) {		// password entered = password in DB
+					if (pw == password) {
+						console.log("Password matches");
 						currentCoach = currCoach[0];
 					}
 					else {
 						console.log("Password doesn't match (inside loginservices)");
 						currentCoach = null;
 					}
-	      }
-	    }
+				}
+			}
 	    return currentCoach;
 	},
 

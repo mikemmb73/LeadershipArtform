@@ -68,9 +68,9 @@ router.post('/coachView', async function(req, res) {
   } else if (req.body.username != null) { //signin a user
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
       currCoach = user;
-      if (user == null) {   // auth passes null if username doesn't match pass
+      if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
         console.log("Password doesn't match (inside index.js)");
-        res.render("index", { message: 'Incorrect password! Try again.' });
+        res.render("index", { title: 'Leadership as an Artform', message: 'Incorrect email or password! Try again.' });
       }
       else {
         clients = await loginservices.getClients(user);
@@ -113,7 +113,7 @@ router.post('/executiveView', async function(req,res,next) {
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
-      res.render("index", { message2: 'Incorrect password! Try again.' });
+      res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
   } else {
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
