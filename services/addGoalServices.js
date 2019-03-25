@@ -1,10 +1,7 @@
 var mysql = require("./sqlconnect.js");
 var Goal = require("../model/goal")
-<<<<<<< HEAD
 var Question = require("../model/question")
-=======
 var Executive = require('../model/executive');
->>>>>>> emma
 // MC =0, FR = 1, L = 2
 module.exports = {
   addGoalExecutive: async function(goalData, currExecutive) {
