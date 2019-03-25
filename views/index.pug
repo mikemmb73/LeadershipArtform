@@ -26,10 +26,10 @@ block content
         div.col-md-8
           form(method='POST' action='/coachView')
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: center")
+              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: center" required)
             div.form-group
-              input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: center")
-              h6(style="color: red") #{message}
+              input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: center" required)
+              h6(style="color: red; text-align: center") #{message}
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:90px") Sign In
             p#loginPrompt.pull-right.login-prompt
         div.col-md-2
@@ -54,10 +54,10 @@ block content
         div.col-md-8
           form(method='POST' action='/executiveView' id="loginForm")
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: center")
+              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: center" required)
             div.form-group
-              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: center")
-            h6(style="color: red") #{message2}
+              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: center" required)
+            h6(style="color: red; text-align: center") #{message}
             button.btn.btn-primary.btn-small(type='submit', style="margin-left:75px") Sign In
             p#loginPrompt.pull-right.login-prompt
         div.col-md-2
