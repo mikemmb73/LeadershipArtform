@@ -118,5 +118,12 @@ module.exports = {
           }
       }
     }
+  }, 
+
+  addPrevGoal: async function(goalData, currCoach, clients) {
+    var today = new Date();
+    // const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE  = ?", [email.toLowerCase()]);
+    // await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, "", 0, goalData.frequency, today]);
+    console.log("GOAL DATA" + goalData); 
   }
 };

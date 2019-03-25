@@ -201,7 +201,12 @@ router.post('/viewGoal', function(req, res) {
     console.log("coach's goal added"); 
     var data2 = qs.parse(req.body);
     console.log(data2); 
-    addGoalService.addGoalCoach(data2, currCoach, clients); 
+    if (data2.goalTitle != "") {
+      addGoalService.addGoalCoach(data2, currCoach, clients); 
+    } else {
+      console.log("we are using a previous goal"); 
+      addPrevGoal(data2, currCoach, clients); 
+    }
     res.render('viewGoal.pug', {title: 'View Goal', user: currExecutive}); 
   } else {
     var data = qs.parse(req.body);
