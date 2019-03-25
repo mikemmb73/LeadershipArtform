@@ -55,12 +55,9 @@ module.exports = {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
 			const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 			if (rows != null) {
-				console.log("Rows isn't null");
 	      if (rows.length != 0) {
-					console.log("Rows isn't empty");
 					var pw = currCoach[0].pass;
 					if (pw == password) {
-						console.log("Password matches");
 						currentCoach = currCoach[0];
 					}
 					else {
