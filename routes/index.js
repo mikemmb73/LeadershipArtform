@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
+var notesServices = require('../services/notesServices');
 var signup = require('../services/signup');
 var qs = require('qs');
 const pug = require('pug');
@@ -132,10 +133,18 @@ router.get('/executiveProfile_coach', function(req,res,next){
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  currExecutive = loginservices.getExecutive(req.body.profileClick);
+  var notes;
+  if (req.body.noteContent == null) {
+    currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  }
+  if (req.body.noteContent != null){
+    notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
+    notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+  }
+  notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
-    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes});
   });
 });
 

@@ -1,4 +1,4 @@
-extends layout
+sextends layout
 
 block content
 	script
@@ -19,6 +19,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
+
 	form(method='POST', action='/editGoal_executive')
 		div.jumbotron
 			h3 Goal Title
