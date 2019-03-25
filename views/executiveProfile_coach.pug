@@ -23,12 +23,41 @@ block content
 		div.col-md-6
 			br
 			h1 #{user.name}
-			h3 #{user.username}
-			h5 #{user.bio_info}
+			h6 #{user.username}
+			p #{user.bio_info}
 		div.col-md-2
 
 
 		br
+	div.row
+		div.col-md-4
+		div.col-md-4
+			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal") Add Note
+			.modal(role="dialog", id="addNoteModal")
+				.modal-dialog-centered.custom_modal_dialog(role="document")
+					.modal-content
+						form(id = "form" method='POST' action='/executiveProfile_coach')
+							.modal-header
+								h5 Add Note
+								button.close(type='button' data-dismiss="modal")
+									span &times;
+							.modal-body
+									input(type="text" name="noteContent" size="75px")
+									input(type="hidden" name="currExecID" value=user.execID)
+							.modal-footer
+								button.btn.btn-primary(type='submit') Submit
+
+	br
+	div.card.border-dark
+		.card-header
+			h3 Notes
+		.card-body
+			each note in notes
+				- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+				- var dateFormat = note.note_date.toLocaleDateString("en-US", options);
+				h6 #{dateFormat}
+				p #{note.note_content}
+	br
 	div.jumbotron
 		h3 Current Goals
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
+var notesServices = require('../services/notesServices');
 var signup = require('../services/signup');
 var qs = require('qs');
 const pug = require('pug');
@@ -10,6 +11,7 @@ var addGoalService = require('../services/addGoalServices');
 var currExecutive;
 var currCoach;
 var clients;
+var currGoal;
 
 
 
@@ -133,10 +135,18 @@ router.get('/executiveProfile_coach', function(req,res,next){
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  currExecutive = loginservices.getExecutive(req.body.profileClick);
+  var notes;
+  if (req.body.noteContent == null) {
+    currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  }
+  if (req.body.noteContent != null){
+    notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
+    notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+  }
+  notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
-    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value});
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes});
   });
 });
 
@@ -197,13 +207,23 @@ router.post('/', function(req, res) {
   }
 });
 
-router.post('/viewGoal', function(req, res) {
-  console.log(req.body);
+router.post('/editGoal_executive', async function(req, res) {
+  //console.log(req.body);
   //console.log(req.body["mcQuestions[0]"]);
   var data = qs.parse(req.body);
-  addGoalService.addGoalExecutive(data, currExecutive);
-  console.log(data);
-  res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+  await addGoalService.addGoalExecutive(data, currExecutive);
+  console.log("adding goal");
+  var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
+  console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
+  //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
+  console.log("rendering view");
+  res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
+});
+
+router.post('/viewGoal_executive', function(req, res) {
+  console.log(req.body);
+  res.render('viewGoal_executive.pug');
 });
 
 

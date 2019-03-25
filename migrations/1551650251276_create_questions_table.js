@@ -1,5 +1,5 @@
 module.exports = {
     "up": "CREATE TABLE questions(" +
-    "goal_id INT, title VARCHAR(255), type INT, answer VARCHAR(8000), qs VARCHAR(8000))",
+    "question_id INT NOT NULL AUTO_INCREMENT, goal_id INT, title VARCHAR(255), type INT, qs VARCHAR(8000), PRIMARY KEY(question_id))",
     "down": "DROP TABLE questions"
 }
