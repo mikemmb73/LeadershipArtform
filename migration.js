@@ -5,7 +5,7 @@ var connection = mysql.createPool({
   connectionLimit : 10,
   host     : 'localhost',
   user     : 'root',
-  password : 'Pickoftheweek1!',
+  password : 'Chalked1512!',
   database : 'Leadership_Artform'
 });
 

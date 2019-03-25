@@ -210,9 +210,16 @@ router.post('/editGoal_executive', async function(req, res) {
   //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
-router.post('/viewGoal_executive', function(req, res) {
+router.post('/viewGoal_executive', async function(req, res) {
   console.log(req.body);
-  res.render('viewGoal_executive.pug');
+  var goal = await addGoalService.getGoalWithId(req.body.goal_id);
+  console.log(goal);
+  var currResponse = null;
+  if (goal.goal_responses.length > 0) {
+    currResponse = goal.goal_responses[0]
+  }
+  console.log(currResponse.answers_array)
+  res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
 });
 
 
