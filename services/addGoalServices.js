@@ -17,7 +17,7 @@ module.exports = {
       return;
     }
 
-    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, "", 0, goalData.frequency, today]);
+    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today]);
     console.log("added goal");
     // const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [currExecutive.executive_id]);
     // var getStatement = "SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
@@ -102,15 +102,15 @@ module.exports = {
       return currGoal;
     }
     return null;
-  }, 
+  },
 
   addGoalCoach: async function(goalData, currCoach, clients) {
-    console.log("CLIENT FORM" + goalData.clientForm.length); 
-    typeof clientForm; 
+    console.log("CLIENT FORM" + goalData.clientForm.length);
+    typeof clientForm;
     if (Array.isArray(goalData.clientForm)) {
       for (var x = 0; x < goalData.clientForm.length; x++) {
-        console.log("goal data is array" + goalData.clientForm[x]); 
-        var fullName = goalData.clientForm[x].split(" "); 
+        console.log("goal data is array" + goalData.clientForm[x]);
+        var fullName = goalData.clientForm[x].split(" ");
         var today = new Date();
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
@@ -145,8 +145,8 @@ module.exports = {
         }
       }
     } else {
-        console.log("goal data is not array" + goalData.clientForm[i]); 
-        var fullName = goalData.clientForm.split(" "); 
+        console.log("goal data is not array" + goalData.clientForm[i]);
+        var fullName = goalData.clientForm.split(" ");
         var today = new Date();
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
@@ -179,7 +179,7 @@ module.exports = {
           }
       }
     }
-  }, 
+  },
 
   addPrevGoal: async function(goalData, goalTitle, currCoach, clients) {
     var today = new Date();
@@ -189,7 +189,7 @@ module.exports = {
 
     if (Array.isArray(goalData.clientForm)) {
       for (var x = 0; x < goalData.clientForm.length; x++) {
-        var fullName = goalData.clientForm[x].split(" "); 
+        var fullName = goalData.clientForm[x].split(" ");
         var today = new Date();
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
@@ -222,7 +222,7 @@ module.exports = {
         }
       }
     } else {
-        var fullName = goalData.clientForm.split(" "); 
+        var fullName = goalData.clientForm.split(" ");
         var today = new Date();
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
