@@ -66,8 +66,8 @@ a {
   width:650px;
 }
 #profileImage{
-  height: auto;
-  width:250px;
+  width:220px;
+  height:200px;
   padding: 20px;
 }
 
@@ -90,8 +90,7 @@ a {
 }
 
 .client_button {
-  font-size: 23px;
-  margin-left: 40px;
+  margin-left:40px;
 }
 
 .signOut_button {

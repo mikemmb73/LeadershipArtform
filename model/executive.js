@@ -13,6 +13,9 @@ class Executive {
 		var goals = [];
 		this.goals = goals;
 
+    var notes = [];
+    this.notes = notes;
+
 		// var executive = getExecutive(coachID);
 		// this.executive = executive;
 
@@ -78,6 +81,10 @@ class Executive {
     this.goals = value;
   }
 
+  get notes_list(){
+    return this.notes;
+  }
+
   get coachID() {
     return this.coach_id;
   }
@@ -85,6 +92,9 @@ class Executive {
     this.coach_id = value;
   }
 
+  get execID(){
+    return this.executive_id;
+  }
 	// getExecutive(coachID) {
 	// 	//we should loop through all of the available coach's and see which ID matches
 	// 	// var allExecutives = controller.getExecutives();
@@ -99,8 +109,13 @@ class Executive {
 
 	addGoal(goal) {
 		this.goals.push(goal);
-    console.log("length in exec.js is " + this.goals.length);
 	}
+
+  addNote(note) {
+    this.notes.push(note);
+    console.log("ADDING NOTE");
+    console.log("notes size is now " + this.notes.length);
+  }
 }
 
 module.exports = {
