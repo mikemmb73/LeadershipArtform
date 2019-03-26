@@ -17,7 +17,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	form(method='POST', action='/viewGoal')
+	form(method='POST', action='/coachView')
 		input(type="hidden" name="addCoachGoal" value="addCoachGoal")
 		div.jumbotron
 			h3 Add Recipient(s)
@@ -59,7 +59,8 @@ block content
 											-goalCheck = false; 
 									if goalCheck
 										h6 #{goal.goal_title}
-										input.btn-primary(type='submit' value='Use')
+										-var name = goal.goal_title; 
+										input.btn-primary(type='submit' value=name name="GoalButton")
 										each question in goal.goal_questions
 											p #{question.title}
 									-goalCheck = true; 
