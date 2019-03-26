@@ -150,7 +150,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
     currExecutive = await loginservices.getExecutive(req.body.profileClick);
   }
   if (req.body.noteContent != null){
-    notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
+    await notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
     notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   }
   notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);

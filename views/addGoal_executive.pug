@@ -19,6 +19,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
+
 	form(method='POST', action='/editGoal_executive')
 			div.jumbotron
 				h3 Goal Title
@@ -53,3 +54,4 @@ block content
 							input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
 							input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
 				input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+

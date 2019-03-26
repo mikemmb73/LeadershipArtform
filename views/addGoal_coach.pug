@@ -51,32 +51,32 @@ block content
 				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 					div.card-body
 						- var allGoals = [];
-						- var goalCheck = true; 
+						- var goalCheck = true;
 							each cli in clients2
 								each goal in cli.goals_list
 									each entry in allGoals
 										if entry.valueOf() == goal.goal_title.valueOf()
-											-goalCheck = false; 
+											-goalCheck = false;
 									if goalCheck
 										h6 #{goal.goal_title}
-										-var name = goal.goal_title; 
+										-var name = goal.goal_title;
 										input.btn-primary(type='submit' value=name name="GoalButton")
 										each question in goal.goal_questions
 											p #{question.title}
-									-goalCheck = true; 
-									-allGoals.push(goal.goal_title); 
+									-goalCheck = true;
+									-allGoals.push(goal.goal_title);
 			div.jumbotron#questionJumbotron
 				h6 OR
 				h3 Create New Goal
 				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 					div.card-body
 						| Goal Title
+					div.card-footer
+						input(type='text', name='goalTitle')
 					div.card-body
 						| Goal Description
 					div.card-footer
 						input(type='text', name='goalDescription' size='150')
-					div.card-footer
-						input(type='text', name='goalTitle')
 				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 					div.card-body#questionCard
 						| Choose Question Type
