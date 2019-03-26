@@ -2,10 +2,18 @@ class Question {
   constructor(obj) {
     this.title = obj.title;
     this.type = obj.type;
-    this.answer = obj.answer;
     this.qs = obj.qs;
     this.goal_id = obj.goal_id;
 
+    this.answers = []
+    this.answers = this.qs.split(',');
+  }
+
+  get answer_array() {
+    return this.answers;
+  }
+  set answer_array(val) {
+    this.answers = val;
   }
 
   get question_title() {
@@ -20,14 +28,6 @@ class Question {
   }
   set question_type(val) {
     this.type = val;
-  }
-
-  get question_answer() {
-    return this.answer;
-  }
-
-  set question_answer(val) {
-    this.answer = val;
   }
 
   set question_qs(val) {
