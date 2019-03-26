@@ -86,13 +86,13 @@ router.post('/coachView', async function(req, res) {
   } else if (req.body.emailReminder != null) {
       emailServices.sendOneReminder(req.body.emailReminder);
   } else if (req.body.addCoachGoal != null) {
-    console.log("coach's goal added"); 
+    console.log("coach's goal added");
     var data2 = qs.parse(req.body);
-    console.log(data2); 
+    console.log(data2);
     if (data2.goalTitle != "") {
-      addGoalService.addGoalCoach(data2, currCoach, clients); 
+      addGoalService.addGoalCoach(data2, currCoach, clients);
     } else {
-      addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients); 
+      addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else {
