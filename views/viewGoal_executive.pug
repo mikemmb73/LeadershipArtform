@@ -1,3 +1,44 @@
 extends layout
 
 block content
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href='/') Leadership as an Artform
+    div.collapse.navbar-collapse#navbarColor02
+      ul.navbar-nav.ml-auto
+        li
+          a.nav-item.nav-link(href='/executiveView') Home
+        li
+          a.nav-link.nav-item(href='/executiveProfile') Profile
+        li
+          a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
+        li
+          a.nav-item.nav-link(href='/addGoal_executive') Add Goal
+        li
+          form(method='POST' action='/')
+            input(type="hidden" name="signOut" value="signOut")
+  div.jumbotron.row
+    div.col-md-6.goal-info
+      h2 Goal: #{goal.goal_title}
+        h3 Description: #{goal.goal_description}
+    div.col-md-6.write-response
+      button.btn.btn-secondary(type="button", style="float: right;") Fill Out New Response
+  div.jumbotron
+    script.
+      function updateResponse(val) {
+        document.getElementById('dropdownMenuButton').innerHTML = document.getElementById('val0').innerHTML;
+      };
+    div.dropdown
+      button.btn.btn-secondary.dropdown-toggle(type="button", data-toggle="dropdown", id="dropdownMenuButton", aria-haspopup="true", aria-expanded="false") Choose Response
+      div.dropdown-menu(aria-labelledby="dropdownMenuButton")
+        each r,index in goal.goal_responses
+          a(href="javascript:updateResponse('val" + index + "')").dropdown-item(id="val" + index ) #{formatDate(r.date)}
+      - function formatDate(date) {
+        - var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        - var day = date.getDate();
+        - var month = date.getMonth();
+        - var year = date.getFullYear();
+        - return monthNames[month] + ' ' + day + ', ' + year; }
+    each q, index in goal.goal_questions
+      div.jumbotron
+        h3 #{q.question_title}
+        p answer: #{currResponse.answers_array[index].response_answer}
