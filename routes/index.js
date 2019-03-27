@@ -45,16 +45,12 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  console.log("POSTING");
   if (currCoach == null) {
     if (req.body.fname != null) {
-      console.log("inside where currCoach is null and fname isn't blank");
       user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      console.log("user inside index.js: " + user);
       if (user == null) {
-        console.log("going inside if user == null");
-        res.redirect('/coachSignup');
+        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       else {
         var promise = Promise.resolve(user);
@@ -62,7 +58,6 @@ router.post('/coachView', async function(req, res) {
         });
         currCoach = user;
         var clientList = [];
-        console.log("going to render statement");
         res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
       }
     }
@@ -114,6 +109,9 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
+      if (user == null) {   // duplicate email
+        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+      }
       currExecutive = user;
     } else {
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
