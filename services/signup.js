@@ -45,7 +45,6 @@ module.exports = {
   },
 
 
-
   getClients: function(user) {
     var id = user.coach_id_val;
     var clientList = [];
