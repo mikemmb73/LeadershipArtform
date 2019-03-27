@@ -45,8 +45,8 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  if (currCoach == null) {
-    if (req.body.fname != null) {
+  if (req.body.fname != null) {
+    if (currCoach == null) {
       user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
       if (user == null) {
@@ -62,7 +62,9 @@ router.post('/coachView', async function(req, res) {
       }
     }
   } else if (req.body.username != null) { //signin a user
+      console.log("going into signup a user");
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
+      console.log("user: " + user);
       currCoach = user;
       if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
         console.log("Password doesn't match (inside index.js)");
