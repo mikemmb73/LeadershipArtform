@@ -31,16 +31,18 @@ block content
           - var mcOptionCount = 1;
           - var frResponseCount = 0;
           - var mcQuestionName
+          - var mcOptionName
           if question.question_type == 0
             - mcQuestionCount++
             - mcQuestionName = 'mcQuestion' + index
             - var qs = question.question_qs.split(',')
             each q in qs
+              - mcOptionName = 'MC'+mcOptionCount
               if q != ' '
                 .form-group
                   .form-check
                     .label
-                        input(type='radio', value=mcOptionCount, name=mcQuestionName)
+                        input(type='radio', value=mcOptionName, name=mcQuestionName)
                         |   #{q}
                         -
                           mcOptionCount++
@@ -53,19 +55,19 @@ block content
               .form-group
                 .form-check
                   .label
-                    input(type='radio', value='1', name='likert')
+                    input(type='radio', value='1L', name='likert')
                     |   #{qs[0]}
                   .label
-                    input(type='radio', value='2', name='likert')
+                    input(type='radio', value='2L', name='likert')
                     |
                   .label
-                    input(type='radio', value='3', name='likert')
+                    input(type='radio', value='3L', name='likert')
                     |
                   .label
-                    input(type='radio', value='4', name='likert')
+                    input(type='radio', value='4L', name='likert')
                     |
                   .label
-                    input(type='radio', value='5', name='likert')
+                    input(type='radio', value='5L', name='likert')
                     |   #{qs[1]}
           br
         input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)

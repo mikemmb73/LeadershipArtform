@@ -236,6 +236,8 @@ router.post('/viewGoal_executive', async function(req, res) {
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
+    console.log("req.body is:");
+    console.log(req.body);
     await responseServices.addResponses(goal, req.body, mcQuestionCount);
 
 

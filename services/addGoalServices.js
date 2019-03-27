@@ -53,10 +53,12 @@ module.exports = {
         await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
       }
     }
+    var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
+    const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
+    const currQuestionArray = questionRows.map(x => new Question.Question(x));
   },
 
   viewGoalExecutive: async function(goalData, currExecutive) {
-    console.log("====in viewGoalExecutive====")
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     if (rows != null){
       const currGoalArray = rows.map(x => new Goal.Goal(x));
@@ -64,6 +66,9 @@ module.exports = {
       var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
       const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
       const currQuestionArray = questionRows.map(x => new Question.Question(x));
+      for (var i = 0; i < currQuestionArray.length; i++){
+        console.log("===CURRQUESTIONARRAY[I] IS ==== " + currQuestionArray[i].question_id + " and title is " + currQuestionArray[i].question_title);
+      }
       currGoal.goal_questions = currQuestionArray;
       return currGoal;
     }

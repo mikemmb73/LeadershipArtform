@@ -23,29 +23,21 @@ module.exports = {
   },
 
   addResponses: async function(goal, responses, mcQuestionCount) {
-    console.log("made it");
-    console.log("mcQuestionCount is " + mcQuestionCount);
+
     var goal_id = goal.id;
 
     var responseArray = [];
     var mcQuestion = null;
-    for (var i = 1; i < mcQuestionCount; i++){
-      mcQuestion = "mcQuestion"+i+1;
-      console.log("in here only once and mcQuestion is " + mcQuestion);
+    for (var i = 0; i < mcQuestionCount; i++){
+      mcQuestion = "mcQuestion"+i;
+      console.log("mcQuestion is " + mcQuestion);
       console.log("printing " + responses[mcQuestion])
-      //responseArray.push(responses.mcQuestionCount[i]);
+      responseArray.push(responses[mcQuestion]);
     }
-    // var mcResponse = responses.mcQuestio
+
     var frResponse = responses.frResponse;
     var likertResponse = responses.likert;
-    // if (mcResponse instanceof Array){
-    //   for (var i = 0; i < mcResponse.length; i++){
-    //     responseArray.push(mcResponse[i]);
-    //   }
-    // }
-    // else {
-    //   responseArray.push(mcResponse);
-    // }
+
     if (frResponse instanceof Array){
       for (var i = 0; i < frResponse.length; i++){
         responseArray.push(frResponse[i]);
@@ -67,8 +59,28 @@ module.exports = {
 
     var today = new Date();
 
-    // const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
-    // const questionRowsArray = questionRows.map(x => new Question.Question(x));
+    const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
+    const questionRowsArray = questionRows.map(x => new Question.Question(x));
+
+    for (var j = 0; j < questionRowsArray.length; j++){       //goes through the questions for a given goal
+      if (questionRowsArray[j].question_type == 0){           //if it is a multiple choice question
+        console.log("questionRowsArray[j] is " + questionRowsArray[j].question_title);
+        var qs = questionRowsArray[j].question_qs.split(','); //split the qs into options
+        if (responseArray[j].includes("MC")){
+          var mcOptionNum = responseArray[j].slice(2, 3);
+          console.log("mcOptionNum is " + mcOptionNum);
+          var mcOption = mcOptionNum - 1;
+          var answer = qs[mcOption];
+          console.log("putting questionID " + questionRowsArray[j].question_id + ", today as " + today + " and answer as " + answer);
+          console.log("mcOption is " + mcOption);
+          console.log("qs is " + qs);
+          console.log("qs[mcOption] is " + qs[mcOption]);
+          //await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+          //console.log("including " + qs[1] + " in the database");
+          //console.log("going to include " + qs[mcOption] + " in the database");
+        }
+      }
+    }
     //
     // for (var i = 0; i < questionRowsArray.length; i++){
     //   var question_id = questionRowsArray[i].question_id;
