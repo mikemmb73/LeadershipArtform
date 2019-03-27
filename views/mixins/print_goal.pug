@@ -8,7 +8,7 @@ mixin print_goal(goal)
       div.goal_info.row
         div.goal_data.col-md-6
           h4 #{goal.goal_title}
-          p Description of goal
+          p #{goal.goal_description}
         div.form_view_goal.col-md-6
           form(method="POST", action="/viewGoal_executive")
             input(type="hidden" name="goal_id" value=goal.id)

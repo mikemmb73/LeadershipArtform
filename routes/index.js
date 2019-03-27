@@ -3,6 +3,7 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
+var responseServices = require('../services/responseServices');
 var signup = require('../services/signup');
 var qs = require('qs');
 const pug = require('pug');
@@ -218,11 +219,8 @@ router.post('/', function(req, res) {
 });
 
 router.post('/editGoal_executive', async function(req, res) {
-  //console.log(req.body);
-  //console.log(req.body["mcQuestions[0]"]);
   var data = qs.parse(req.body);
   await addGoalService.addGoalExecutive(data, currExecutive);
-  console.log("adding goal");
   var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
   //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
@@ -233,15 +231,27 @@ router.post('/editGoal_executive', async function(req, res) {
 
 
 router.post('/viewGoal_executive', async function(req, res) {
-  console.log(req.body);
-  var goal = await addGoalService.getGoalWithId(req.body.goal_id);
-  console.log(goal);
-  var currResponse = null;
-  if (goal.goal_responses.length > 0) {
-    currResponse = goal.goal_responses[0]
+  if (req.body.isEditGoalExec == 'yes'){
+    console.log("hi");
+    var goal = await responseServices.getGoalWithID(req.body.goalID);
+    var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
+    var mcQuestionCount = req.body.mcQuestionCount;
+    await responseServices.addResponses(goal, req.body, mcQuestionCount);
+
+
   }
-  console.log(currResponse.answers_array)
-  res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
+  else {
+    console.log(req.body);
+    var goal = await addGoalService.getGoalWithId(req.body.goal_id);
+    console.log(goal);
+    var currResponse = null;
+    if (goal.goal_responses.length > 0) {
+      currResponse = goal.goal_responses[0]
+    }
+    console.log(currResponse.answers_array)
+    res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
+  }
+
 
 });
 

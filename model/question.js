@@ -1,6 +1,7 @@
 class Question {
   constructor(obj) {
     this.title = obj.title;
+    this.id = obj.id;
     this.type = obj.type;
     this.qs = obj.qs;
     this.goal_id = obj.goal_id;
@@ -21,6 +22,14 @@ class Question {
   }
   set question_title(val) {
     this.title = val;
+  }
+
+  get question_id(){
+    return this.id;
+  }
+
+  set question_id(val){
+    this.id = val;
   }
 
   get question_type() {

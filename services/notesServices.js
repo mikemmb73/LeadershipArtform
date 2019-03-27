@@ -5,7 +5,6 @@ var Note = require("../model/note");
 module.exports = {
 
   addNote: async function(execID, coachID, note) {
-    console.log("in addNote");
     var today = new Date();
     const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE executive_id = ?", [execID]);
     const execRowsArray = execRows.map(x => new Executive.Executive(x));
