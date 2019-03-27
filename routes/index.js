@@ -12,7 +12,7 @@ var currExecutive;
 var currCoach;
 var clients;
 var currGoal;
-
+var user;
 
 
 /* GET home page. */
@@ -46,26 +46,25 @@ router.get('/coachView', function(req, res, next) {
 
 router.post('/coachView', async function(req, res) {
   console.log("POSTING");
-  var user;
-  if (req.body.fname != null) { // signup a new user
-    if (currCoach == null) {
-      var user = await signup.signUpCoach(req.body.fname, req.body.lname,
+  if (currCoach == null) {
+    if (req.body.fname != null) {
+      console.log("inside where currCoach is null and fname isn't blank");
+      user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      var promise = Promise.resolve(user);
-      promise.then(function(value) {
-        console.log("PROMISE");
-      });
-      currCoach = user;
-      clients = signup.getClients(user);
-      var i;
-      for (i = 0; i < clients.length; i++) {
-        console.log(clients[i]);
+      console.log("user inside index.js: " + user);
+      if (user == null) {
+        console.log("going inside if user == null");
+        res.redirect('/coachSignup');
       }
-    }
-    if (user == null) {
-      res.redirect('/coachSignup');
-    } else {
-      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+      else {
+        var promise = Promise.resolve(user);
+        promise.then(function(value) {
+        });
+        currCoach = user;
+        var clientList = [];
+        console.log("going to render statement");
+        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
+      }
     }
   } else if (req.body.username != null) { //signin a user
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
@@ -111,7 +110,6 @@ router.get('/executiveView', function(req,res,next){
 });
 
 router.post('/executiveView', async function(req,res,next) {
-  var user;
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
