@@ -11,9 +11,16 @@ class Goal {
     this.currDueDate = obj.date_assigned;
     var questions = [];
     this.questions = questions;
+    var responses = [];
+    this.responses = responses;
 
 	}
-
+  get goal_responses() {
+    return this.responses;
+  }
+  set goal_responses(val) {
+    this.responses = val;
+  }
   get goal_due_date() {
     return this.currDueDate;
   }

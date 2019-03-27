@@ -21,36 +21,37 @@ block content
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 
 	form(method='POST', action='/editGoal_executive')
-		div.jumbotron
-			h3 Goal Title
-			input(type='text', name='goalTitle')
-		div.jumbotron
-			h3 Goal Description
-			input(type='text', name='goalDescription' size='150')
-		div.jumbotron
-			h3 Frequency Reminder
-			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-				div.card-body
-					form
-						input(type='radio', name='frequency', value='0', checked='')
-						|  Daily
-						br
-						input(type='radio', name='frequency', value='1')
-						|  Weekly
-						br
-						input(type='radio', name='frequency', value='2')
-						|  Bi-Weekly
-						br
-						input(type='radio', name='frequency', value='3')
-						|  Monthly
-		div.jumbotron#questionJumbotron
-			h3 Add Questions
-			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-				div.card-body#questionCard
-					| Choose Question Type
-				div.jumbotron#questionDropdown(style="display:none")
-				div.card-footer
-					input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
-					input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
-					input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
-		input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+			div.jumbotron
+				h3 Goal Title
+				input(type='text', name='goalTitle')
+			div.jumbotron
+				h3 Goal Description
+				input(type='text', name='goalDescription' size='150')
+			div.jumbotron
+				h3 Frequency Reminder
+				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+					div.card-body
+						form
+							input(type='radio', name='frequency', value='0', checked='')
+							|  Daily
+							br
+							input(type='radio', name='frequency', value='1')
+							|  Weekly
+							br
+							input(type='radio', name='frequency', value='2')
+							|  Bi-Weekly
+							br
+							input(type='radio', name='frequency', value='3')
+							|  Monthly
+				div.jumbotron#questionJumbotron
+					h3 Add Questions
+					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+						div.card-body#questionCard
+							| Choose Question Type
+						div.jumbotron#questionDropdown(style="display:none")
+						div.card-footer
+							input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
+							input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
+							input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
+				input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
+
