@@ -75,10 +75,23 @@ module.exports = {
           console.log("mcOption is " + mcOption);
           console.log("qs is " + qs);
           console.log("qs[mcOption] is " + qs[mcOption]);
-          //await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+          await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
           //console.log("including " + qs[1] + " in the database");
           //console.log("going to include " + qs[mcOption] + " in the database");
         }
+      }
+      if (questionRowsArray[j].question_type == 1){
+        var answer = responseArray[j];
+        await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+      }
+      if (questionRowsArray[j].question_type == 2){
+        //console.log("going to insert " + responseArray[j] + " for " + questionsArray[j].question_title);
+        // if (responseArray[j].includes("L")){
+        //   var answer = responseArray[j].slice(0,1);
+        //   console.log(likertOption);
+        //   console.log("going to insert " + likertOption + " for question " + questionRowsArray[j].question_title);
+        // //  await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+        // }
       }
     }
     //

@@ -1,7 +1,7 @@
 class Question {
   constructor(obj) {
     this.title = obj.title;
-    this.id = obj.id;
+    this.question_id = obj.question_id;
     this.type = obj.type;
     this.qs = obj.qs;
     this.goal_id = obj.goal_id;

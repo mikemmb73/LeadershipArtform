@@ -29,9 +29,10 @@ block content
         each question,index in goal.goal_questions
           h5 #{question.question_title}
           - var mcOptionCount = 1;
-          - var frResponseCount = 0;
           - var mcQuestionName
           - var mcOptionName
+          - var likertQuestionName
+          - var likertQuestionCount = 0
           if question.question_type == 0
             - mcQuestionCount++
             - mcQuestionName = 'mcQuestion' + index
@@ -51,23 +52,25 @@ block content
             .form-group
               input.form-control(type='textarea' id="frAnswer" name="frResponse")
           if question.question_type == 2
+            - likertQuestionCount++
+            - likertQuestionName = "likert"+index;
             - var qs = question.question_qs.split(',')
               .form-group
                 .form-check
                   .label
-                    input(type='radio', value='1L', name='likert')
+                    input(type='radio', value='1L', name=likertQuestionName)
                     |   #{qs[0]}
                   .label
-                    input(type='radio', value='2L', name='likert')
+                    input(type='radio', value='2L', name=likertQuestionName)
                     |
                   .label
-                    input(type='radio', value='3L', name='likert')
+                    input(type='radio', value='3L', name=likertQuestionName)
                     |
                   .label
-                    input(type='radio', value='4L', name='likert')
+                    input(type='radio', value='4L', name=likertQuestionName)
                     |
                   .label
-                    input(type='radio', value='5L', name='likert')
+                    input(type='radio', value='5L', name=likertQuestionName)
                     |   #{qs[1]}
           br
         input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)

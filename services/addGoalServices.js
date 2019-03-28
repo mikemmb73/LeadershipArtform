@@ -11,14 +11,14 @@ module.exports = {
 
     const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     if (rowsTest.length) {
-      console.log("IT IS NOT NULL");
-      console.log("TITLE: " + goalData.goalTitle);
-      console.log("EXEC ID: " + currExecutive.executive_id);
+      // console.log("IT IS NOT NULL");
+      // console.log("TITLE: " + goalData.goalTitle);
+      // console.log("EXEC ID: " + currExecutive.executive_id);
       return;
     }
 
     await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today]);
-    console.log("added goal");
+
     // const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [currExecutive.executive_id]);
     // var getStatement = "SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     // const [rows, fields] = await mysql.connect.execute(getStatement);
@@ -27,12 +27,6 @@ module.exports = {
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
 
-
-    // console.log("BEfore we add it, this is the length of goals list " + currExecutive.goals_list.length);
-    // currExecutive.addGoal(currGoal);
-    // console.log("currGoal is " + currGoal.id + " and currExecutive is " + currExecutive.name);
-    // console.log("THIS EXECUTIVES GOALS HAS " + currExecutive.goals_list.length + " goals");
-    //console.log(goalData.mcQuestions.length);
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
         var choices = "";
@@ -66,9 +60,6 @@ module.exports = {
       var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
       const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
       const currQuestionArray = questionRows.map(x => new Question.Question(x));
-      for (var i = 0; i < currQuestionArray.length; i++){
-        console.log("===CURRQUESTIONARRAY[I] IS ==== " + currQuestionArray[i].question_id + " and title is " + currQuestionArray[i].question_title);
-      }
       currGoal.goal_questions = currQuestionArray;
       return currGoal;
     }
