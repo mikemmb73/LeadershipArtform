@@ -1,5 +1,5 @@
 module.exports = {
-	sendEmail: function(name, email, message) {
+	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function"); 
 		var nodemailer = require('nodemailer');
 		var newMessage = "Dear " + name + ", " + "\n" + message; 
@@ -15,7 +15,7 @@ module.exports = {
 		var mailOptions = {
 		  from: 'leadershipartform@gmail.com',
 		  to: email,
-		  subject: 'You have been invited to join Leadership as an Artform!',
+		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Your coach ID is ' + currCoach.coach_id '. Please go to this website and sign up as an executive.',
 		  text: newMessage
 		};
 

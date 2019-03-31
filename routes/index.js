@@ -94,7 +94,7 @@ router.post('/coachView', async function(req, res) {
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
-	    emailServices.sendEmail(name, email, message);
+	    emailServices.sendEmail(currCoach, name, email, message);
       res.render('coachView.pug', {title: 'Coach View', user: currCoach});
     }
 
