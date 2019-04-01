@@ -100,8 +100,14 @@ router.post('/coachView', async function(req, res) {
 
 });
 
-router.get('/executiveView', function(req,res,next){
-	res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+router.get('/executiveView', async function(req,res,next){
+  if (currExecutive == null) {
+    res.redirect('/');
+  } else {
+    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
+    currExecutive = user;
+	   res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+   }
 });
 
 router.post('/executiveView', async function(req,res,next) {
