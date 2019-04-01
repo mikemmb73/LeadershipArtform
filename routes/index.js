@@ -49,8 +49,10 @@ router.post('/coachView', async function(req, res) {
     if (currCoach == null) {
       user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
+        console.log("from inside index: " + req.body.email);
+        console.log("user = " + user);
       if (user == null) {
-        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+        res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       else {
         var promise = Promise.resolve(user);
