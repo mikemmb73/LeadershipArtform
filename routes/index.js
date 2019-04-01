@@ -236,7 +236,7 @@ router.post('/viewGoal_executive', async function(req, res) {
   if (goal.goal_responses.length > 0) {
     currResponse = goal.goal_responses[0]
   }
-  console.log(currResponse.answers_array)
+
   res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
 
 });

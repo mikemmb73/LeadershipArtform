@@ -1,8 +1,8 @@
 module.exports = {
 	sendEmail: function(currCoach, name, email, message) {
-		console.log("in function"); 
+		console.log("in function");
 		var nodemailer = require('nodemailer');
-		var newMessage = "Dear " + name + ", " + "\n" + message; 
+		var newMessage = "Dear " + name + ", " + "\n" + message;
 
 		var transporter = nodemailer.createTransport({
 		  service: 'gmail',
@@ -15,7 +15,7 @@ module.exports = {
 		var mailOptions = {
 		  from: 'leadershipartform@gmail.com',
 		  to: email,
-		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Your coach ID is ' + currCoach.coach_id '. Please go to this website and sign up as an executive.',
+		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Your coach ID is ' + currCoach.coach_id + '. Please go to this website and sign up as an executive.',
 		  text: newMessage
 		};
 
@@ -29,12 +29,12 @@ module.exports = {
 	},
 
 	sendAllReminders: function(clients) {
-		console.log("EMAIL CLIENTS"); 
-		console.log(clients); 
+		console.log("EMAIL CLIENTS");
+		console.log(clients);
 		clients.forEach(function(entry) {
 			var nodemailer = require('nodemailer');
 			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks."
-			var newMessage = "Hello, " + "\n" + message; 
+			var newMessage = "Hello, " + "\n" + message;
 
 			var transporter = nodemailer.createTransport({
 			  service: 'gmail',
@@ -60,12 +60,12 @@ module.exports = {
 			});
 		 });
 
-	}, 
+	},
 
 	sendOneReminder: function(email) {
 		var nodemailer = require('nodemailer');
 		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks."
-		var newMessage = "Hello, " + "\n" + message; 
+		var newMessage = "Hello, " + "\n" + message;
 
 		var transporter = nodemailer.createTransport({
 		  service: 'gmail',
@@ -91,4 +91,4 @@ module.exports = {
 		});
 
 	}
-}; 
+};
