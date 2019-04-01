@@ -26,9 +26,13 @@ module.exports = {
 
   signUpExecutive: async function(fname, lname, email, phone, password, bio, photo, coach_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+    const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = ?", [coach_id]);
     currentExecutive = null;
     if (rows != null) {
-      if (rows.length != 0) {
+      if (rows.length != 0) {         // if email already exists
+        currentExecutive = null;
+      }
+      else if (rowsID.length == 0) {  // if coach ID isn't found
         currentExecutive = null;
       }
       else {
