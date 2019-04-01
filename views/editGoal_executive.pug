@@ -37,6 +37,7 @@ block content
             - mcQuestionCount++
             - mcQuestionName = 'mcQuestion' + index
             - var qs = question.question_qs.split(',')
+            - qs = qs.slice(0,qs.length-1)
             each q in qs
               - mcOptionName = 'MC'+mcOptionCount
               if q != ' '
@@ -57,21 +58,27 @@ block content
             - var qs = question.question_qs.split(',')
               .form-group
                 .form-check
-                  .label
-                    input(type='radio', value='1L', name=likertQuestionName)
-                    |   #{qs[0]}
-                  .label
-                    input(type='radio', value='2L', name=likertQuestionName)
-                    |
-                  .label
-                    input(type='radio', value='3L', name=likertQuestionName)
-                    |
-                  .label
-                    input(type='radio', value='4L', name=likertQuestionName)
-                    |
-                  .label
-                    input(type='radio', value='5L', name=likertQuestionName)
-                    |   #{qs[1]}
+                  ul.likert
+                    li 
+                      .label
+                        input(type='radio', value='1L', name=likertQuestionName)
+                        |   1. #{qs[0]}
+                    li
+                      .label
+                        input(type='radio', value='2L', name=likertQuestionName)
+                        | 2
+                    li
+                      .label
+                        input(type='radio', value='3L', name=likertQuestionName)
+                        | 3
+                    li
+                      .label
+                        input(type='radio', value='4L', name=likertQuestionName)
+                        | 4
+                    li
+                      .label
+                        input(type='radio', value='5L', name=likertQuestionName)
+                        |   5. #{qs[1]}
           br
         input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)
         input.btn.btn-outline-primary.btn-lg(type="submit" value="Submit" id="editGoalButton")

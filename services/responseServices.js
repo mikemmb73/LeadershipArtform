@@ -36,7 +36,7 @@ module.exports = {
     }
 
     var frResponse = responses.frResponse;
-    var likertResponse = responses.likert;
+    var likertResponse = responses.likert0;
 
     if (frResponse instanceof Array){
       for (var i = 0; i < frResponse.length; i++){
@@ -49,13 +49,11 @@ module.exports = {
     if (likertResponse instanceof Array){
       for (var i = 0; i < likertResponse.length; i++){
         likertArray.push(likertResponse[i]);
-      }
+      } 
     }
     else if (likertResponse != null){
       responseArray.push(likertResponse);
     }
-    console.log("responseArray:");
-    console.log(responseArray);
 
     var today = new Date();
 
@@ -85,13 +83,10 @@ module.exports = {
         await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
       }
       if (questionRowsArray[j].question_type == 2){
-        //console.log("going to insert " + responseArray[j] + " for " + questionsArray[j].question_title);
-        // if (responseArray[j].includes("L")){
-        //   var answer = responseArray[j].slice(0,1);
-        //   console.log(likertOption);
-        //   console.log("going to insert " + likertOption + " for question " + questionRowsArray[j].question_title);
-        // //  await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
-        // }
+        for (var k = 0; k < responseArray.length; k++) {
+          var answer = responseArray[k].substring(0,1); 
+          await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+        }
       }
     }
     //

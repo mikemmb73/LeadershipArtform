@@ -220,13 +220,13 @@ router.post('/', function(req, res) {
 
 router.post('/editGoal_executive', async function(req, res) {
   var data = qs.parse(req.body);
+  console.log("i guess it is null"); 
   await addGoalService.addGoalExecutive(data, currExecutive);
   var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
   //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
   console.log("rendering view");
   res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
-  //res.send("currExecutive's goal length " + currExecutive.goals_list.length);
 });
 
 
@@ -239,8 +239,7 @@ router.post('/viewGoal_executive', async function(req, res) {
     console.log("req.body is:");
     console.log(req.body);
     await responseServices.addResponses(goal, req.body, mcQuestionCount);
-
-
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else {
     console.log(req.body);
