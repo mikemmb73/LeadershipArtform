@@ -73,19 +73,26 @@ module.exports = {
           console.log("mcOption is " + mcOption);
           console.log("qs is " + qs);
           console.log("qs[mcOption] is " + qs[mcOption]);
-          await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+          goal.goal_responses = answer; 
+          // questionRowsArray[j].answer_array(answer); 
+          // console.log("HEY" + questionRowsArray[j].answer_array); 
+          await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
           //console.log("including " + qs[1] + " in the database");
           //console.log("going to include " + qs[mcOption] + " in the database");
         }
       }
       if (questionRowsArray[j].question_type == 1){
         var answer = responseArray[j];
-        await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+        goal.goal_responses = answer; 
+        // questionRowsArray[j].answer_array(answer); 
+        await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
       }
       if (questionRowsArray[j].question_type == 2){
         for (var k = 0; k < responseArray.length; k++) {
           var answer = responseArray[k].substring(0,1); 
-          await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionRowsArray[j].question_id, today, answer]);
+          goal.goal_responses = answer; 
+          // questionRowsArray[j].answer_array(answer); 
+          await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
         }
       }
     }

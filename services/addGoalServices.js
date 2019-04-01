@@ -26,6 +26,7 @@ module.exports = {
     console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
+    console.log("CURR GOAL HAS THIS DATE: " + currGoal.goal_date); 
 
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
@@ -50,6 +51,7 @@ module.exports = {
     var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
     const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
     const currQuestionArray = questionRows.map(x => new Question.Question(x));
+    currExecutive.exec_goals = currGoal; 
   },
 
   viewGoalExecutive: async function(goalData, currExecutive) {

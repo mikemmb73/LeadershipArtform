@@ -108,11 +108,17 @@ router.post('/coachView', async function(req, res) {
 });
 
 router.get('/executiveView', function(req,res,next){
+  console.log("ARE WE GETTING"); 
+  for (var i = 0; i < currExecutive.goals.length; i++) {
+    console.log("****");
+    console.log(currExecutive.goals[i].currDueDate + "!!!"); 
+  }
 	res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
 });
 
 router.post('/executiveView', async function(req,res,next) {
   var user;
+  console.log("ARE WE POSTING"); 
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
@@ -219,29 +225,36 @@ router.post('/', function(req, res) {
 });
 
 router.post('/editGoal_executive', async function(req, res) {
-  var data = qs.parse(req.body);
-  console.log("i guess it is null"); 
+  var data = qs.parse(req.body); 
   await addGoalService.addGoalExecutive(data, currExecutive);
   var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
   //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
   console.log("rendering view");
-  res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  if (req.body.addingGoal != null) {
+    console.log("**********************NOT NULL"); 
+    res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
+  } else {
+    console.log("********************IS NULL"); 
+    res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  }
 });
 
 
 router.post('/viewGoal_executive', async function(req, res) {
   if (req.body.isEditGoalExec == 'yes'){
-    console.log("hi");
+    console.log("&&&&&");
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
     console.log("req.body is:");
     console.log(req.body);
     await responseServices.addResponses(goal, req.body, mcQuestionCount);
+    console.log("WE SHOULD BE GOING HERE"); 
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else {
+    console.log("WE SHOULD NOT BE HERE"); 
     console.log(req.body);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     console.log(goal);
@@ -249,7 +262,10 @@ router.post('/viewGoal_executive', async function(req, res) {
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
-    console.log(currResponse.answers_array)
+    for (var i = 0; i < goal.questions[0].answers.length; i++) {
+      console.log("In for loop");
+      console.log(goal.questions[0].answers[i]); 
+    }
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
   }
 

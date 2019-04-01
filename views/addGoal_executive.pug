@@ -21,6 +21,7 @@ block content
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 
 	form(method='POST', action='/editGoal_executive')
+			input(type="hidden" name="addingGoal" value="addingGoal")
 			div.jumbotron
 				h3 Goal Title
 				input(type='text', name='goalTitle')

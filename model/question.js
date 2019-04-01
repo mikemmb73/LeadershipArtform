@@ -13,8 +13,9 @@ class Question {
   get answer_array() {
     return this.answers;
   }
+  // 
   set answer_array(val) {
-    this.answers = val;
+    this.answers.push(val);
   }
 
   get question_title() {
