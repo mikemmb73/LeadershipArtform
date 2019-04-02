@@ -2,6 +2,7 @@ var Executive = require("../model/executive");
 var QResponse = require("../model/qresponse");
 var Question = require("../model/question");
 var Goal = require("../model/goal");
+var mysql = require("./sqlconnect.js");
 
 module.exports = {
 

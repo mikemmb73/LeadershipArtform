@@ -51,7 +51,7 @@ module.exports = {
     var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
     const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
     const currQuestionArray = questionRows.map(x => new Question.Question(x));
-    currExecutive.exec_goals = currGoal; 
+    currExecutive.addGoal(currGoal); 
   },
 
   viewGoalExecutive: async function(goalData, currExecutive) {
