@@ -1,4 +1,3 @@
-var mysql = require("./sqlconnect.js");
 var Executive = require("../model/executive");
 var QResponse = require("../model/qresponse");
 var Question = require("../model/question");
@@ -49,7 +48,7 @@ module.exports = {
     if (likertResponse instanceof Array){
       for (var i = 0; i < likertResponse.length; i++){
         likertArray.push(likertResponse[i]);
-      } 
+      }
     }
     else if (likertResponse != null){
       responseArray.push(likertResponse);
@@ -73,9 +72,9 @@ module.exports = {
           console.log("mcOption is " + mcOption);
           console.log("qs is " + qs);
           console.log("qs[mcOption] is " + qs[mcOption]);
-          goal.goal_responses = answer; 
-          // questionRowsArray[j].answer_array(answer); 
-          // console.log("HEY" + questionRowsArray[j].answer_array); 
+          goal.goal_responses = answer;
+          // questionRowsArray[j].answer_array(answer);
+          // console.log("HEY" + questionRowsArray[j].answer_array);
           await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
           //console.log("including " + qs[1] + " in the database");
           //console.log("going to include " + qs[mcOption] + " in the database");
@@ -83,15 +82,15 @@ module.exports = {
       }
       if (questionRowsArray[j].question_type == 1){
         var answer = responseArray[j];
-        goal.goal_responses = answer; 
-        // questionRowsArray[j].answer_array(answer); 
+        goal.goal_responses = answer;
+        // questionRowsArray[j].answer_array(answer);
         await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
       }
       if (questionRowsArray[j].question_type == 2){
         for (var k = 0; k < responseArray.length; k++) {
-          var answer = responseArray[k].substring(0,1); 
-          goal.goal_responses = answer; 
-          // questionRowsArray[j].answer_array(answer); 
+          var answer = responseArray[k].substring(0,1);
+          goal.goal_responses = answer;
+          // questionRowsArray[j].answer_array(answer);
           await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
         }
       }

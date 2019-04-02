@@ -22,9 +22,7 @@ class Goal {
     this.responses = val;
   }
   get goal_due_date() {
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var dateFormat = this.toLocaleDateString("en-US", options);
-    return dateFormat;
+    return this.currDueDate;
   }
   set goal_due_date(val) {
     this.currDueDate = val;

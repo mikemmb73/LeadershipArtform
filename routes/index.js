@@ -229,13 +229,9 @@ router.post('/editGoal_executive', async function(req, res) {
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
   //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
   console.log("rendering view");
-  if (req.body.addingGoal != null) {
-    console.log("**********************NOT NULL");
-    res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
-  } else {
-    console.log("********************IS NULL");
-    res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
-  }
+
+  res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+
 });
 
 
