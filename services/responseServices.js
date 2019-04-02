@@ -22,7 +22,7 @@ module.exports = {
 
   },
 
-  addResponses: async function(goal, responses, mcQuestionCount) {
+  addResponses: async function(goal, responses, mcQuestionCount, likertQuestionCount) {
 
     var goal_id = goal.id;
 
@@ -46,14 +46,28 @@ module.exports = {
     else if (frResponse != null){
       responseArray.push(frResponse);
     }
-    if (likertResponse instanceof Array){
-      for (var i = 0; i < likertResponse.length; i++){
-        likertArray.push(likertResponse[i]);
-      }
+
+    console.log("LIKERT QUESTION COUNT" )
+    for (var i = 0; i < likertQuestionCount; i++){
+      likertQuestion = "likert"+i;
+      console.log("likert is " + likertQuestion);
+      console.log("printing " + responses[likertQuestion])
+      responseArray.push(responses[likertQuestion]);
     }
-    else if (likertResponse != null){
-      responseArray.push(likertResponse);
-    }
+
+    console.log("response array value: " + responseArray); 
+
+    // if (likertResponse instanceof Array){
+    //   console.log("instance of array"); 
+    //   for (var i = 0; i < likertResponse.length; i++){
+    //     var targetLikert = 'likert' + i; 
+
+    //     likertArray.push(likertResponse[i]);
+    //   }
+    // }
+    // else if (likertResponse != null){
+    //   responseArray.push(likertResponse);
+    // }
 
     var today = new Date();
 
@@ -88,12 +102,12 @@ module.exports = {
         await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
       }
       if (questionRowsArray[j].question_type == 2){
-        for (var k = 0; k < responseArray.length; k++) {
-          var answer = responseArray[k].substring(0,1);
+        // for (var k = 0; k < responseArray.length; k++) {
+          var answer = responseArray[j].substring(0,1);
           goal.goal_responses = answer;
           // questionRowsArray[j].answer_array(answer);
           await mysql.connect.execute("INSERT INTO responses(question_id, goal_id, response_date, answer) VALUES(?, ?, ?, ?);", [questionRowsArray[j].question_id, goal_id, today, answer]);
-        }
+        // }
       }
     }
     //

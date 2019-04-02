@@ -241,9 +241,10 @@ router.post('/viewGoal_executive', async function(req, res) {
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
+    var likertQuestionCount = req.body.likertQuestionCount; 
     console.log("req.body is:");
     console.log(req.body);
-    await responseServices.addResponses(goal, req.body, mcQuestionCount);
+    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
     console.log("WE SHOULD BE GOING HERE");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
