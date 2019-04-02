@@ -7,49 +7,44 @@ var currentCoach;
 module.exports = {
   signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
+    currentCoach = null;
     if (rows != null) {
       if (rows.length != 0) {
-        console.log("duplicate email");
-        return null;
-      } else {
-        console.log("adding to coaches.");
-        console.log(photo);
+        currentCoach = null;
+      }
+      else {
+        console.log("Rows empty, adding to coaches.");
         mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
-        console.log("success!");
-        const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
-        const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
-        console.log("!!!!!!");
-        console.log(currCoach[0]);
+        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
+        const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
+        console.log("Current coach: " + currCoach[0]);
         currentCoach = currCoach[0];
-        return currCoach[0];
       }
     }
-    return null;
+    return currentCoach;
   },
 
   signUpExecutive: async function(fname, lname, email, phone, password, bio, photo, coach_id) {
-
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+    const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = ?", [coach_id]);
+    currentExecutive = null;
     if (rows != null) {
-      if (rows.length != 0) {
-        console.log("duplicate email");
-        return null;
-      } else {
-        console.log("adding to executives.");
-        console.log(photo);
+      if (rows.length != 0) {         // if email already exists
+        currentExecutive = null;
+      }
+      else if (rowsID.length == 0) {  // if coach ID isn't found
+        currentExecutive = null;
+      }
+      else {
         mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo, coach_id]);
-        console.log("success!");
-        const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives where email = ?", [email.toLowerCase()]);
-        //console.log(rows[0].coach_id);
-        const currExecutive = rows.map(x => new Executive.Executive(x));
-        console.log("!!!!!!");
-        console.log(currExecutive[0]);
+        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+        const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];
-        return currExecutive[0];
       }
     }
-    return null;
+    return currentExecutive;
   },
+
 
   getClients: function(user) {
     var id = user.coach_id_val;

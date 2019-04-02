@@ -13,7 +13,7 @@ var currExecutive;
 var currCoach;
 var clients;
 var currGoal;
-
+var user;
 
 
 /* GET home page. */
@@ -46,27 +46,23 @@ router.get('/coachView', function(req, res, next) {
 });
 
 router.post('/coachView', async function(req, res) {
-  console.log("POSTING");
-  var user;
-  if (req.body.fname != null) { // signup a new user
+  if (req.body.fname != null) {
     if (currCoach == null) {
-      var user = await signup.signUpCoach(req.body.fname, req.body.lname,
+      user = await signup.signUpCoach(req.body.fname, req.body.lname,
         req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      var promise = Promise.resolve(user);
-      promise.then(function(value) {
-        console.log("PROMISE");
-      });
-      currCoach = user;
-      clients = signup.getClients(user);
-      var i;
-      for (i = 0; i < clients.length; i++) {
-        console.log(clients[i]);
+        console.log("from inside index: " + req.body.email);
+        console.log("user = " + user);
+      if (user == null) {
+        res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
-    }
-    if (user == null) {
-      res.redirect('/coachSignup');
-    } else {
-      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+      else {
+        var promise = Promise.resolve(user);
+        promise.then(function(value) {
+        });
+        currCoach = user;
+        var clientList = [];
+        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
+      }
     }
   } else if (req.body.username != null) { //signin a user
       user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
@@ -101,28 +97,30 @@ router.post('/coachView', async function(req, res) {
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
-	    emailServices.sendEmail(name, email, message);
+	    emailServices.sendEmail(currCoach, name, email, message);
       res.render('coachView.pug', {title: 'Coach View', user: currCoach});
     }
 
 });
 
-router.get('/executiveView', function(req,res,next){
-  console.log("ARE WE GETTING"); 
-  for (var i = 0; i < currExecutive.goals.length; i++) {
-    console.log("****");
-    console.log(currExecutive.goals[i].currDueDate + "!!!"); 
-  }
-	res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+router.get('/executiveView', async function(req,res,next){
+  if (currExecutive == null) {
+    res.redirect('/');
+  } else {
+    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
+    currExecutive = user;
+	   res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+   }
 });
 
 router.post('/executiveView', async function(req,res,next) {
-  var user;
-  console.log("ARE WE POSTING"); 
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
+      if (user == null) {   // duplicate email
+        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+      }
       currExecutive = user;
     } else {
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
@@ -225,17 +223,17 @@ router.post('/', function(req, res) {
 });
 
 router.post('/editGoal_executive', async function(req, res) {
-  var data = qs.parse(req.body); 
+  var data = qs.parse(req.body);
   await addGoalService.addGoalExecutive(data, currExecutive);
   var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
   //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
   console.log("rendering view");
   if (req.body.addingGoal != null) {
-    console.log("**********************NOT NULL"); 
+    console.log("**********************NOT NULL");
     res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});
   } else {
-    console.log("********************IS NULL"); 
+    console.log("********************IS NULL");
     res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
   }
 });
@@ -250,21 +248,14 @@ router.post('/viewGoal_executive', async function(req, res) {
     console.log("req.body is:");
     console.log(req.body);
     await responseServices.addResponses(goal, req.body, mcQuestionCount);
-    console.log("WE SHOULD BE GOING HERE"); 
+    console.log("WE SHOULD BE GOING HERE");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else {
-    console.log("WE SHOULD NOT BE HERE"); 
-    console.log(req.body);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
-    console.log(goal);
     var currResponse = null;
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
-    }
-    for (var i = 0; i < goal.questions[0].answers.length; i++) {
-      console.log("In for loop");
-      console.log(goal.questions[0].answers[i]); 
     }
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
   }
