@@ -2,7 +2,7 @@ module.exports = {
 	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function");
 		var nodemailer = require('nodemailer');
-		var newMessage = "Dear " + name + ", " + "\n" + message;
+		var newMessage = "Dear " + name + ", " + "\n" + message + "\n" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up";
 
 		var transporter = nodemailer.createTransport({
 		  service: 'gmail',
@@ -15,7 +15,7 @@ module.exports = {
 		var mailOptions = {
 		  from: 'leadershipartform@gmail.com',
 		  to: email,
-		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Your coach ID is ' + currCoach.coach_id + '. Please go to this website and sign up as an executive.',
+		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Please go to this website and sign up as an executive.',
 		  text: newMessage
 		};
 

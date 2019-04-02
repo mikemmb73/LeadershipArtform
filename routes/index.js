@@ -92,13 +92,13 @@ router.post('/coachView', async function(req, res) {
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else {
+  } else { //sending an email to invite a client 
       console.log("otherwise i'm here");
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
 	    emailServices.sendEmail(currCoach, name, email, message);
-      res.render('coachView.pug', {title: 'Coach View', user: currCoach});
+      res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
     }
 
 });
@@ -246,6 +246,12 @@ router.post('/viewGoal_executive', async function(req, res) {
     console.log(req.body);
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
     console.log("WE SHOULD BE GOING HERE");
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }
+  if (req.body.progress != null){
+    console.log(req.body.progress);
+    console.log("MY GOAL ID " + req.body.goalID); 
+    // await addGoalService.updateProgress(req.body.progressValue);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else {
