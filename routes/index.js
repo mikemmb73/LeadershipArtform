@@ -224,6 +224,7 @@ router.post('/', function(req, res) {
 
 router.post('/editGoal_executive', async function(req, res) {
   var data = qs.parse(req.body);
+  console.log("I AM PRINTING DATA"); 
   await addGoalService.addGoalExecutive(data, currExecutive);
   var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
   console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
@@ -251,7 +252,7 @@ router.post('/viewGoal_executive', async function(req, res) {
   if (req.body.progress != null){
     console.log(req.body.progress);
     console.log("MY GOAL ID " + req.body.goalID); 
-    // await addGoalService.updateProgress(req.body.progressValue);
+    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else {
@@ -260,6 +261,8 @@ router.post('/viewGoal_executive', async function(req, res) {
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
+    console.log("are we in the else?");
+    console.log(goal.goal_progress + "!!!!!" + goal.goal_title); 
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
   }
 

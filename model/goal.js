@@ -5,7 +5,7 @@ class Goal {
     this.goal_id = obj.goal_id;
     this.coach_id = obj.coach_id;
     this.executive_id = obj.executive_id;
-    this.progress = obj.progess;
+    this.progress = obj.progress;
     this.frequency = obj.frequency;
     this.date_assigned = obj.date_assigned;
     this.currDueDate = obj.date_assigned;

@@ -26,7 +26,8 @@ block content
         - var likertQuestionCount = 0; 
         h1 #{goal.goal_title}
         .progress
-          div.progress-bar.bg-warning(role='progressbar' style='width:5%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+          -var progress = 'width: ' + goal.goal_progress + '%'; 
+          div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
         each question,index in goal.goal_questions
           h5 #{question.question_title}
           - var mcOptionCount = 1;
