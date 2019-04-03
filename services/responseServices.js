@@ -13,15 +13,13 @@ module.exports = {
     return goalRowsArray[0];
   },
 
-  setQuestions: async function(goal_id){
+  getQuestions: async function(goal_id){
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goal_id]);
     const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
     var goal =  goalRowsArray[0];
     const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
     const questionRowsArray = questionRows.map(x => new Question.Question(x));
-    console.log("questionRowsArray is: " + questionRowsArray);
-    goal.goal_questions = questionRowsArray;
-    console.log("setting goal questions to " + goal.goal_questions);
+    return questionRowsArray;
   },
 
 
