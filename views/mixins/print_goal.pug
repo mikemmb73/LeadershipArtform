@@ -3,7 +3,7 @@ mixin print_goal(goal)
     - var new_date = new Date(goal.goal_due_date.getTime() + 604800000)
     - goal.goal_due_date = new_date
   div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-    div.card-header Due Date: #{formatDate(goal.goal_due_date)}
+    div.card-header Update Due: #{formatDate(goal.goal_due_date)}
     div.card-body
       div.goal_info.row
         div.goal_data.col-md-6
