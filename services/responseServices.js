@@ -13,14 +13,15 @@ module.exports = {
     return goalRowsArray[0];
   },
 
-  getNumQuestions: async function(goal_id){
+  getQuestions: async function(goal_id){
+    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goal_id]);
+    const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
+    var goal =  goalRowsArray[0];
     const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
     const questionRowsArray = questionRows.map(x => new Question.Question(x));
-    console.log("questionRowsArray length is " + questionRowsArray.length);
-    return questionRowsArray.length;
-
-
+    return questionRowsArray;
   },
+
 
   addResponses: async function(goal, responses, mcQuestionCount, likertQuestionCount) {
 
@@ -55,12 +56,12 @@ module.exports = {
       responseArray.push(responses[likertQuestion]);
     }
 
-    console.log("response array value: " + responseArray); 
+    console.log("response array value: " + responseArray);
 
     // if (likertResponse instanceof Array){
-    //   console.log("instance of array"); 
+    //   console.log("instance of array");
     //   for (var i = 0; i < likertResponse.length; i++){
-    //     var targetLikert = 'likert' + i; 
+    //     var targetLikert = 'likert' + i;
 
     //     likertArray.push(likertResponse[i]);
     //   }

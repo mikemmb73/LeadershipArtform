@@ -3,6 +3,7 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
+var profileServices = require('../services/profileServices');
 var responseServices = require('../services/responseServices');
 var signup = require('../services/signup');
 var qs = require('qs');
@@ -132,7 +133,10 @@ router.get('/executiveProfile', function(req,res,next){
 });
 
 router.post('/executiveProfile', async function(req,res,next) {
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editExecutiveInfo(newInfo, currExecutive);
+  res.redirect('/executiveProfile');
 });
 
 router.get('/executiveProfile_coach', function(req,res,next){
@@ -160,8 +164,12 @@ router.get('/coachProfile_coach', function(req,res,next){
 });
 
 router.post('/coachProfile_coach', async function(req,res,next) {
-
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editCoachInfo(newInfo, currCoach);
+  console.log("after call to profileServices");
+  res.redirect('/coachProfile_coach');
+  // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
