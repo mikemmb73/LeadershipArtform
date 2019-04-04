@@ -103,6 +103,21 @@ router.get('/executiveView', async function(req,res,next){
 });
 
 router.post('/executiveView', async function(req,res,next) {
+  if (req.body.isEditGoalExec == 'yes'){
+    var goal = await responseServices.getGoalWithID(req.body.goalID);
+    var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
+    var mcQuestionCount = req.body.mcQuestionCount;
+    var likertQuestionCount = req.body.likertQuestionCount;
+    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
+    currExecutive = user;
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }
+  else if (req.body.progress != null){
+    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }
+
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
@@ -221,29 +236,12 @@ router.post('/editGoal_executive', async function(req, res) {
 
 
 router.post('/viewGoal_executive', async function(req, res) {
-  if (req.body.isEditGoalExec == 'yes'){
-    var goal = await responseServices.getGoalWithID(req.body.goalID);
-    var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
-    var mcQuestionCount = req.body.mcQuestionCount;
-    var likertQuestionCount = req.body.likertQuestionCount;
-    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
-    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
-    currExecutive = user;
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-  else if (req.body.progress != null){
-    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-  else {
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     var currResponse = null;
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
-  }
-
 
 });
 

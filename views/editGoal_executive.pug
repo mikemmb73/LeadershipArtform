@@ -19,14 +19,14 @@ block content
     .col-md-2
     .col-md-8
       br
-      form(method='POST', action='/viewGoal_executive')
+      form(method='POST', action='/executiveView')
         input(type='hidden' name='isEditGoalExec' value='yes')
         input(type='hidden' name='goalID' value=goal.id)
         - var mcQuestionCount = 0;
-        - var likertQuestionCount = 0; 
+        - var likertQuestionCount = 0;
         h1 #{goal.goal_title}
         .progress
-          -var progress = 'width: ' + goal.goal_progress + '%'; 
+          -var progress = 'width: ' + goal.goal_progress + '%';
           div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
         each question,index in goal.goal_questions
           h5 #{question.question_title}
@@ -60,7 +60,7 @@ block content
               .form-group
                 .form-check
                   ul.likert
-                    li 
+                    li
                       .label
                         input(type='radio', value='1L', name=likertQuestionName)
                         |   1. #{qs[0]}
