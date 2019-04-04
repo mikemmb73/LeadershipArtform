@@ -3,6 +3,7 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
+var profileServices = require('../services/profileServices');
 var responseServices = require('../services/responseServices');
 var signup = require('../services/signup');
 var qs = require('qs');
@@ -147,7 +148,10 @@ router.get('/executiveProfile', function(req,res,next){
 });
 
 router.post('/executiveProfile', async function(req,res,next) {
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editExecutiveInfo(newInfo, currExecutive);
+  res.redirect('/executiveProfile');
 });
 
 router.get('/executiveProfile_coach', function(req,res,next){
@@ -175,8 +179,12 @@ router.get('/coachProfile_coach', function(req,res,next){
 });
 
 router.post('/coachProfile_coach', async function(req,res,next) {
-
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editCoachInfo(newInfo, currCoach);
+  console.log("after call to profileServices");
+  res.redirect('/coachProfile_coach');
+  // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
@@ -225,12 +233,28 @@ router.post('/', function(req, res) {
 });
 
 router.post('/editGoal_executive', async function(req, res) {
-  var data = qs.parse(req.body);
-  await addGoalService.addGoalExecutive(data, currExecutive);
-  var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
-  console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
-  //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
-  res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  if (req.body.isViewGoal == "yes"){ //if coming from viewGoal_executive
+    console.log(req.body);
+    var goal_id = req.body.goal_id;
+    var goal = await responseServices.getGoalWithID(goal_id);
+    var questions = await responseServices.getQuestions(goal_id);
+    console.log("goal questions are: " + questions);
+    goal.goal_questions = questions;
+    console.log("NOW goal questions are: " + goal.goal_questions);
+    res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  }
+  else {      //if coming from addGoal_executive
+      var data = qs.parse(req.body);
+      await addGoalService.addGoalExecutive(data, currExecutive);
+      var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
+      console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
+      //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
+      console.log("rendering view");
+
+      res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  }
+
+
 
 });
 

@@ -78,7 +78,7 @@ class ExecutiveCoach {
 		return this.bio;
 	}
   set biography(value) {
-    this.bio = _value;
+    this.bio = value;
   }
 
 	get photograph() {
