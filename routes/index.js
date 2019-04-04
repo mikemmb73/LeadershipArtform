@@ -82,7 +82,7 @@ router.post('/coachView', async function(req, res) {
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else { //sending an email to invite a client 
+  } else { //sending an email to invite a client
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -107,9 +107,9 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      console.log("USER INFO" + user.username); 
+      console.log("USER INFO" + user.username);
       if (user == null) {   // duplicate email
-        console.log("is this a duplicate email?"); 
+        console.log("is this a duplicate email?");
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       currExecutive = user;
@@ -225,11 +225,13 @@ router.post('/viewGoal_executive', async function(req, res) {
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
-    var likertQuestionCount = req.body.likertQuestionCount; 
+    var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
+    currExecutive = user;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
-  if (req.body.progress != null){
+  else if (req.body.progress != null){
     await addGoalService.updateProgress(req.body.goalID, req.body.progress);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
