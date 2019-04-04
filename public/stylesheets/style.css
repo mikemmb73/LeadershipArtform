@@ -35,7 +35,7 @@ form .likert li input[type=radio] {
   top:0;
   left:50%;
   margin-left:-6px;
-  
+
 }
 
 #IndexHeader{
@@ -93,8 +93,8 @@ form .likert li input[type=radio] {
   width:650px;
 }
 #profileImage{
-  width:220px;
-  height:200px;
+  width:170px;
+  height:150px;
   padding: 20px;
 }
 
