@@ -82,6 +82,12 @@ router.post('/coachView', async function(req, res) {
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+  } else if (req.body.sendMessage != null) { //sending a message to a client
+      console.log("we want to send a message"); 
+      var message = req.body.clientMessage; 
+      var client = req.body.messageClient; 
+      emailServices.updateMessage(message, client)
+      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else { //sending an email to invite a client 
       var name = req.body.clientName;
       var email = req.body.emailAddress;
@@ -107,7 +113,6 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      console.log("USER INFO" + user.username); 
       if (user == null) {   // duplicate email
         console.log("is this a duplicate email?"); 
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
@@ -123,6 +128,10 @@ router.post('/executiveView', async function(req,res,next) {
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
   } else {
+      console.log("rendering exec view");
+      console.log(currExecutive.name);
+      console.log(currExecutive.username);
+      console.log(currExecutive.coach_message); 
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
