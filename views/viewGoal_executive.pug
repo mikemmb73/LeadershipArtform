@@ -84,8 +84,8 @@ block content
           - var month = date.getMonth();
           - var year = date.getFullYear();
           - return monthNames[month] + ' ' + day + ', ' + year; }
-    .jumbotron
-      each q, index in goal.goal_questions
-        div(id='q' + index)
-          h6 #{q.question_title}
-          p Answer: #{currResponse.answers_array[index].response_answer}
+      .jumbotron
+        each q, index in goal.goal_questions
+          div(id='q' + index)
+            h6 #{q.question_title}
+            p Answer: #{currResponse.answers_array[index].response_answer}

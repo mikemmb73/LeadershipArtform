@@ -145,13 +145,18 @@ router.get('/executiveProfile_coach', function(req,res,next){
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
   var notes;
-  if (req.body.noteContent == null) {
-    currExecutive = await loginservices.getExecutive(req.body.profileClick);
-  }
+  currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  console.log("currExecutive is " + currExecutive.execID);
+
+  var execGoals = await profileServices.getExecGoals(currExecutive.execID);
+  currExecutive.exec_goals = execGoals;
+  console.log("exec's current goals are: " + currExecutive.exec_goals);
+
   if (req.body.noteContent != null){
     await notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
     notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   }
+
   notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
