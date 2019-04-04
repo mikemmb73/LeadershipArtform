@@ -235,9 +235,11 @@ router.post('/viewGoal_executive', async function(req, res) {
     var mcQuestionCount = req.body.mcQuestionCount;
     var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
+    currExecutive = user;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
-  if (req.body.progress != null){
+  else if (req.body.progress != null){
     await addGoalService.updateProgress(req.body.goalID, req.body.progress);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
