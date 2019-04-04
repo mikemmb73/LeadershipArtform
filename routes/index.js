@@ -3,6 +3,7 @@ var router = express.Router();
 var emailServices = require('../services/emailServices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
+var profileServices = require('../services/profileServices');
 var responseServices = require('../services/responseServices');
 var signup = require('../services/signup');
 var qs = require('qs');
@@ -82,7 +83,7 @@ router.post('/coachView', async function(req, res) {
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else { //sending an email to invite a client 
+  } else { //sending an email to invite a client
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -107,9 +108,9 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      console.log("USER INFO" + user.username); 
+      console.log("USER INFO" + user.username);
       if (user == null) {   // duplicate email
-        console.log("is this a duplicate email?"); 
+        console.log("is this a duplicate email?");
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       currExecutive = user;
@@ -132,7 +133,10 @@ router.get('/executiveProfile', function(req,res,next){
 });
 
 router.post('/executiveProfile', async function(req,res,next) {
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editExecutiveInfo(newInfo, currExecutive);
+  res.redirect('/executiveProfile');
 });
 
 router.get('/executiveProfile_coach', function(req,res,next){
@@ -160,8 +164,12 @@ router.get('/coachProfile_coach', function(req,res,next){
 });
 
 router.post('/coachProfile_coach', async function(req,res,next) {
-
-  res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
+  var newInfo = req.body;
+  console.log(newInfo);
+  await profileServices.editCoachInfo(newInfo, currCoach);
+  console.log("after call to profileServices");
+  res.redirect('/coachProfile_coach');
+  // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
@@ -225,7 +233,7 @@ router.post('/viewGoal_executive', async function(req, res) {
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
-    var likertQuestionCount = req.body.likertQuestionCount; 
+    var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
