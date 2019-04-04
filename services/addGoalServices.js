@@ -9,8 +9,8 @@ module.exports = {
   addGoalExecutive: async function(goalData, currExecutive) {
     var today = new Date();
 
-    console.log("This is my goal data" + goalData.goalTitle); 
-    console.log("This is my goal data" + goalData.goalTitle); 
+    // console.log("This is my goal data" + goalData.goalTitle);
+    // console.log("This is my goal data" + goalData.goalTitle);
     const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     if (rowsTest.length) {
       // console.log("IT IS NOT NULL");
@@ -25,7 +25,7 @@ module.exports = {
     // var getStatement = "SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     // const [rows, fields] = await mysql.connect.execute(getStatement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
-    console.log(rows);
+    // console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
 
@@ -52,7 +52,8 @@ module.exports = {
     var getStatement = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoal.id + ", goal_id)";
     const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
     const currQuestionArray = questionRows.map(x => new Question.Question(x));
-    currExecutive.addGoal(currGoal); 
+    currGoal.goal_questions = currQuestionArray;
+    currExecutive.addGoal(currGoal);
   },
 
   viewGoalExecutive: async function(goalData, currExecutive) {
@@ -64,6 +65,7 @@ module.exports = {
       const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
       const currQuestionArray = questionRows.map(x => new Question.Question(x));
       currGoal.goal_questions = currQuestionArray;
+      console.log("inside addgoalServices: currGoal.goal_questions is: " + currGoal.goal_questions);
       return currGoal;
     }
 
@@ -73,29 +75,29 @@ module.exports = {
   },
 
   updateProgress: async function(goalID, progressValue) {
-    console.log("updateProgress" + goalID + " " + progressValue); 
-    var statement = "UPDATE goals SET progress = " + progressValue + " WHERE goal_id = " + goalID; 
-    await mysql.connect.execute(statement); 
+    console.log("updateProgress" + goalID + " " + progressValue);
+    var statement = "UPDATE goals SET progress = " + progressValue + " WHERE goal_id = " + goalID;
+    await mysql.connect.execute(statement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
     if (rows != null) {
       console.log("I am setting the progress value of the goal");
       const currGoalArray = rows.map(x => new Goal.Goal(x));
       const currGoal = currGoalArray[0];
-      console.log("CURRENT GOAL HAD THIS PROGRESS" + currGoal.goal_progress); 
-      currGoal.goal_progress = progressValue; 
-      console.log("CURRENT GOAL NOW HAS THIS PROGRESS" + currGoal.goal_progress); 
+      console.log("CURRENT GOAL HAD THIS PROGRESS" + currGoal.goal_progress);
+      currGoal.goal_progress = progressValue;
+      console.log("CURRENT GOAL NOW HAS THIS PROGRESS" + currGoal.goal_progress);
     }
-  }, 
+  },
 
   getGoalWithId: async function(goal_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * from goals WHERE goal_id = ?", [goal_id]);
     if (rows != null) {
       console.log("ROW VALUE");
-      console.log(rows); 
+      console.log(rows);
       const goalArray = rows.map(x => new Goal.Goal(x));
       const currGoal = goalArray[0];
-      console.log(currGoal); 
-      console.log("In get goal ID, and curr goal has a value of: " + currGoal.goal_progress); 
+      console.log(currGoal);
+      console.log("In get goal ID, and curr goal has a value of: " + currGoal.goal_progress);
       var [questions, qFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
       const questionsArray = questions.map(x => new Question.Question(x));
       currGoal.goal_questions = questionsArray;

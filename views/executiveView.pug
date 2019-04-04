@@ -18,8 +18,8 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.jumbotron
-		h2 Hello, #{user.name}
+	.row
+		h2(style="padding:15px") Hello, #{user.name}
 	div.jumbotron
 		h3 Current Goals
 		each goal in user.exec_goals

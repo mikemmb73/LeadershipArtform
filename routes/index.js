@@ -218,12 +218,28 @@ router.post('/', function(req, res) {
 });
 
 router.post('/editGoal_executive', async function(req, res) {
-  var data = qs.parse(req.body);
-  await addGoalService.addGoalExecutive(data, currExecutive);
-  var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
-  console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
-  //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
-  res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  if (req.body.isViewGoal == "yes"){ //if coming from viewGoal_executive
+    console.log(req.body);
+    var goal_id = req.body.goal_id;
+    var goal = await responseServices.getGoalWithID(goal_id);
+    var questions = await responseServices.getQuestions(goal_id);
+    console.log("goal questions are: " + questions);
+    goal.goal_questions = questions;
+    console.log("NOW goal questions are: " + goal.goal_questions);
+    res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  }
+  else {      //if coming from addGoal_executive
+      var data = qs.parse(req.body);
+      await addGoalService.addGoalExecutive(data, currExecutive);
+      var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
+      console.log("goal is " + goal.id + " and title is " + goal.goal_title + " and the length of questions is " + goal.goal_questions.length);
+      //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
+      console.log("rendering view");
+
+      res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
+  }
+
+
 
 });
 
@@ -231,7 +247,6 @@ router.post('/editGoal_executive', async function(req, res) {
 router.post('/viewGoal_executive', async function(req, res) {
   if (req.body.isEditGoalExec == 'yes'){
     var goal = await responseServices.getGoalWithID(req.body.goalID);
-    var numQuestions = await responseServices.getNumQuestions(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
     var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
