@@ -16,40 +16,45 @@ block content
         li
           form(method='POST' action='/')
             input(type="hidden" name="signOut" value="signOut")
-  div.jumbotron
+  div
     .row
-      div.col-md-6.goal-info
-        h2 Goal: #{goal.goal_title}
-          h3 Description: #{goal.goal_description}
-      div.col-md-6.write-response
+      .col-md-4
+      .col-md-4.goal-info
+        br
+        br
+        h3(style="text-align:center")  #{goal.goal_title}
+        p(style="text-align:center")  #{goal.goal_description}
+      .col-md-4
+    .row
+      .col-md-4
+      .col-md-2.write-response
         form(method='POST' action='/editGoal_executive')
           input(type="hidden" name="isViewGoal" value="yes")
           input(type="hidden" name="goal_id" value=goal.id)
-          button.btn.btn-secondary(type="submit", style="float: right;") Fill Out New Response
-    .row
-      div.col-md-6
-      div.col-md-6
-        button.btn.btn-secondary(type="button" style="float: right"  data-toggle="modal" data-target="#updateProgressModal") Update Progress
-        .modal(role="dialog", id="updateProgressModal")
+          button.btn.btn-outline-primary.btn-sm(type="submit" style="float:center") New Response
+      .col-md-2
+        button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal" style="float:center") Update Progress
+        .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')
           .modal-dialog-centered.custom_modal_dialog(role="document")
             .modal-content
               form(id = "progressForm" method='POST' action='/viewGoal_executive')
                 .modal-header
                   h5 Update Progress
-                  br
-                  p Please enter a number 1-100:
                   button.close(type='button' data-dismiss="modal")
                     span &times;
                 .modal-body
+                  p(style="text-align:center") Please enter a number 1-100:
+                    br
                     input(type="number" name="progress" min="1" max="100")
                     input(type="hidden" name="goalID" value=goal.id)
                 .modal-footer
                   button.btn.btn-primary(type='submit') Submit
 
     .row
-      -var progress = 'width: ' + goal.goal_progress + '%'; 
+      -var progress = 'width: ' + goal.goal_progress + '%';
       div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
   div.jumbotron
+    h3 Previous Responses
     script.
       function updateResponse(val) {
         console.log(val);
@@ -79,7 +84,8 @@ block content
           - var month = date.getMonth();
           - var year = date.getFullYear();
           - return monthNames[month] + ' ' + day + ', ' + year; }
+    .jumbotron
       each q, index in goal.goal_questions
-        div.jumbotron(id='q' + index)
-          h3 #{q.question_title}
+        div(id='q' + index)
+          h6 #{q.question_title}
           p Answer: #{currResponse.answers_array[index].response_answer}
