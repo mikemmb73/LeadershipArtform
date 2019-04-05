@@ -108,7 +108,7 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      console.log("USER INFO" + user.username);
+
       if (user == null) {   // duplicate email
         console.log("is this a duplicate email?");
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
@@ -279,6 +279,17 @@ router.post('/viewGoal_executive', async function(req, res) {
 
 
 });
+
+router.post('/viewGoal_coach', async function(req, res) {
+    var goal = await addGoalService.getGoalWithId(req.body.goal_id);
+    var currResponse = null;
+    if (goal.goal_responses.length > 0) {
+      currResponse = goal.goal_responses[0]
+    }
+    res.render('viewGoal_coach.pug', {goal: goal, currResponse: currResponse});
+
+});
+
 
 
 

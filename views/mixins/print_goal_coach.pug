@@ -1,4 +1,4 @@
-mixin print_goal(goal)
+mixin print_goal_coach(goal)
   while goal.goal_due_date < Date.now()
     - var new_date = new Date(goal.goal_due_date.getTime() + 604800000)
     - goal.goal_due_date = new_date

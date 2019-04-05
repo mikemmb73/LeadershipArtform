@@ -63,13 +63,13 @@ block content
 		h3 Current Goals
 		each goal in user.exec_goals
 			if goal.goal_progress < 100
-				+print_goal(goal)
+				+print_goal_coach(goal)
 
 
 	div.jumbotron
 		h3 Past Goals
 		if pastGoals != null
 			each pastGoal in pastGoals
-				+print_goal(pastGoal)
+				+print_goal_coach(pastGoal)
 		else
 			p There are no completed goals
