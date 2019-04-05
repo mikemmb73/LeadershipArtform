@@ -6090,7 +6090,7 @@ exports.unsign = function(val, secret){
   if ('string' != typeof secret) throw new TypeError("Secret string must be provided.");
   var str = val.slice(0, val.lastIndexOf('.'))
     , mac = exports.sign(str, secret);
-  
+
   return sha1(mac) == sha1(val) ? str : false;
 };
 
@@ -7322,7 +7322,7 @@ app.init = function init() {
  */
 
 app.defaultConfiguration = function defaultConfiguration() {
-  var env = process.env.NODE_ENV || 'development';
+  var env = process.env.NODE_ENV || 'production';
 
   // default settings
   this.enable('x-powered-by');
@@ -11413,7 +11413,7 @@ function finalhandler (req, res, options) {
   var opts = options || {}
 
   // get environment
-  var env = opts.env || process.env.NODE_ENV || 'development'
+  var env = opts.env || process.env.NODE_ENV || 'production'
 
   // get error callback
   var onerror = opts.onerror
@@ -12258,7 +12258,7 @@ function DBCSCodec(codecOptions, iconv) {
     this.decodeTables = [];
     this.decodeTables[0] = UNASSIGNED_NODE.slice(0); // Create root node.
 
-    // Sometimes a MBCS char corresponds to a sequence of unicode chars. We store them as arrays of integers here. 
+    // Sometimes a MBCS char corresponds to a sequence of unicode chars. We store them as arrays of integers here.
     this.decodeTableSeq = [];
 
     // Actual mapping tables consist of chunks. Use them to fill up decode tables.
@@ -12267,7 +12267,7 @@ function DBCSCodec(codecOptions, iconv) {
 
     this.defaultCharUnicode = iconv.defaultCharUnicode;
 
-    
+
     // Encode tables: Unicode -> DBCS.
 
     // `encodeTable` is array mapping from unicode char to encoded char. All its values are integers for performance.
@@ -12276,7 +12276,7 @@ function DBCSCodec(codecOptions, iconv) {
     //         == UNASSIGNED -> no conversion found. Output a default char.
     //         <= SEQ_START  -> it's an index in encodeTableSeq, see below. The character starts a sequence.
     this.encodeTable = [];
-    
+
     // `encodeTableSeq` is used when a sequence of unicode characters is encoded as a single code. We use a tree of
     // objects where keys correspond to characters in sequence and leafs are the encoded dbcs values. A special DEF_CHAR key
     // means end of sequence (needed when one sequence is a strict subsequence of another).
@@ -12294,7 +12294,7 @@ function DBCSCodec(codecOptions, iconv) {
                 for (var j = val.from; j <= val.to; j++)
                     skipEncodeChars[j] = true;
         }
-        
+
     // Use decode trie to recursively fill out encode tables.
     this._fillEncodeTable(0, 0, skipEncodeChars);
 
@@ -12331,7 +12331,7 @@ function DBCSCodec(codecOptions, iconv) {
             thirdByteNode[i] = NODE_START - fourthByteNodeIdx;
         for (var i = 0x30; i <= 0x39; i++)
             fourthByteNode[i] = GB18030_CODE
-    }        
+    }
 }
 
 DBCSCodec.prototype.encoder = DBCSEncoder;
@@ -12396,7 +12396,7 @@ DBCSCodec.prototype._addDecodeChunk = function(chunk) {
                 else
                     writeTable[curAddr++] = code; // Basic char
             }
-        } 
+        }
         else if (typeof part === "number") { // Integer, meaning increasing sequence starting with prev character.
             var charCode = writeTable[curAddr - 1] + 1;
             for (var l = 0; l < part; l++)
@@ -12427,7 +12427,7 @@ DBCSCodec.prototype._setEncodeChar = function(uCode, dbcsCode) {
 }
 
 DBCSCodec.prototype._setEncodeSequence = function(seq, dbcsCode) {
-    
+
     // Get the root of character tree according to first character of the sequence.
     var uCode = seq[0];
     var bucket = this._getEncodeBucket(uCode);
@@ -12488,7 +12488,7 @@ function DBCSEncoder(options, codec) {
     // Encoder state
     this.leadSurrogate = -1;
     this.seqObj = undefined;
-    
+
     // Static data
     this.encodeTable = codec.encodeTable;
     this.encodeTableSeq = codec.encodeTableSeq;
@@ -12510,7 +12510,7 @@ DBCSEncoder.prototype.write = function(str) {
         }
         else {
             var uCode = nextChar;
-            nextChar = -1;    
+            nextChar = -1;
         }
 
         // 1. Handle surrogates.
@@ -12532,7 +12532,7 @@ DBCSEncoder.prototype.write = function(str) {
                     // Incomplete surrogate pair - only trail surrogate found.
                     uCode = UNASSIGNED;
                 }
-                
+
             }
         }
         else if (leadSurrogate !== -1) {
@@ -12573,7 +12573,7 @@ DBCSEncoder.prototype.write = function(str) {
             var subtable = this.encodeTable[uCode >> 8];
             if (subtable !== undefined)
                 dbcsCode = subtable[uCode & 0xFF];
-            
+
             if (dbcsCode <= SEQ_START) { // Sequence start
                 seqObj = this.encodeTableSeq[SEQ_START-dbcsCode];
                 continue;
@@ -12596,7 +12596,7 @@ DBCSEncoder.prototype.write = function(str) {
         // 3. Write dbcsCode character.
         if (dbcsCode === UNASSIGNED)
             dbcsCode = this.defaultCharSingleByte;
-        
+
         if (dbcsCode < 0x100) {
             newBuf[j++] = dbcsCode;
         }
@@ -12643,7 +12643,7 @@ DBCSEncoder.prototype.end = function() {
         newBuf[j++] = this.defaultCharSingleByte;
         this.leadSurrogate = -1;
     }
-    
+
     return newBuf.slice(0, j);
 }
 
@@ -12667,21 +12667,21 @@ function DBCSDecoder(options, codec) {
 
 DBCSDecoder.prototype.write = function(buf) {
     var newBuf = Buffer.alloc(buf.length*2),
-        nodeIdx = this.nodeIdx, 
+        nodeIdx = this.nodeIdx,
         prevBuf = this.prevBuf, prevBufOffset = this.prevBuf.length,
         seqStart = -this.prevBuf.length, // idx of the start of current parsed sequence.
         uCode;
 
     if (prevBufOffset > 0) // Make prev buf overlap a little to make it easier to slice later.
         prevBuf = Buffer.concat([prevBuf, buf.slice(0, 10)]);
-    
+
     for (var i = 0, j = 0; i < buf.length; i++) {
         var curByte = (i >= 0) ? buf[i] : prevBuf[i + prevBufOffset];
 
         // Lookup in current trie node.
         var uCode = this.decodeTables[nodeIdx][curByte];
 
-        if (uCode >= 0) { 
+        if (uCode >= 0) {
             // Normal character, just use it.
         }
         else if (uCode === UNASSIGNED) { // Unknown char.
@@ -12713,7 +12713,7 @@ DBCSDecoder.prototype.write = function(buf) {
             throw new Error("iconv-lite internal error: invalid decoding table value " + uCode + " at " + nodeIdx + "/" + curByte);
 
         // Write the character to buffer, handling higher planes using surrogate pair.
-        if (uCode > 0xFFFF) { 
+        if (uCode > 0xFFFF) {
             uCode -= 0x10000;
             var uCodeLead = 0xD800 + Math.floor(uCode / 0x400);
             newBuf[j++] = uCodeLead & 0xFF;
@@ -12778,11 +12778,11 @@ function findIdx(table, val) {
 // require()-s are direct to support Browserify.
 
 module.exports = {
-    
+
     // == Japanese/ShiftJIS ====================================================
     // All japanese encodings are based on JIS X set of standards:
     // JIS X 0201 - Single-byte encoding of ASCII + ¥ + Kana chars at 0xA1-0xDF.
-    // JIS X 0208 - Main set of 6879 characters, placed in 94x94 plane, to be encoded by 2 bytes. 
+    // JIS X 0208 - Main set of 6879 characters, placed in 94x94 plane, to be encoded by 2 bytes.
     //              Has several variations in 1978, 1983, 1990 and 1997.
     // JIS X 0212 - Supplementary plane of 6067 chars in 94x94 plane. 1990. Effectively dead.
     // JIS X 0213 - Extension and modern replacement of 0208 and 0212. Total chars: 11233.
@@ -12800,7 +12800,7 @@ module.exports = {
     //               0x8F, (0xA1-0xFE)x2 - 0212 plane (94x94).
     //  * JIS X 208: 7-bit, direct encoding of 0208. Byte ranges: 0x21-0x7E (94 values). Uncommon.
     //               Used as-is in ISO2022 family.
-    //  * ISO2022-JP: Stateful encoding, with escape sequences to switch between ASCII, 
+    //  * ISO2022-JP: Stateful encoding, with escape sequences to switch between ASCII,
     //                0201-1976 Roman, 0208-1978, 0208-1983.
     //  * ISO2022-JP-1: Adds esc seq for 0212-1990.
     //  * ISO2022-JP-2: Adds esc seq for GB2313-1980, KSX1001-1992, ISO8859-1, ISO8859-7.
@@ -12912,7 +12912,7 @@ module.exports = {
     //  * Windows CP 951: Microsoft variant of Big5-HKSCS-2001. Seems to be never public. http://me.abelcheung.org/articles/research/what-is-cp951/
     //  * Big5-2003 (Taiwan standard) almost superset of cp950.
     //  * Unicode-at-on (UAO) / Mozilla 1.8. Falling out of use on the Web. Not supported by other browsers.
-    //  * Big5-HKSCS (-2001, -2004, -2008). Hong Kong standard. 
+    //  * Big5-HKSCS (-2001, -2004, -2008). Hong Kong standard.
     //    many unicode code points moved from PUA to Supplementary plane (U+2XXXX) over the years.
     //    Plus, it has 4 combining sequences.
     //    Seems that Mozilla refused to support it for 10 yrs. https://bugzilla.mozilla.org/show_bug.cgi?id=162431 https://bugzilla.mozilla.org/show_bug.cgi?id=310299
@@ -12923,7 +12923,7 @@ module.exports = {
     //    In the encoder, it might make sense to support encoding old PUA mappings to Big5 bytes seq-s.
     //    Official spec: http://www.ogcio.gov.hk/en/business/tech_promotion/ccli/terms/doc/2003cmp_2008.txt
     //                   http://www.ogcio.gov.hk/tc/business/tech_promotion/ccli/terms/doc/hkscs-2008-big5-iso.txt
-    // 
+    //
     // Current understanding of how to deal with Big5(-HKSCS) is in the Encoding Standard, http://encoding.spec.whatwg.org/#big5-encoder
     // Unicode mapping (http://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/OTHER/BIG5.TXT) is said to be wrong.
 
@@ -12964,7 +12964,7 @@ var modules = [
     require("./dbcs-data"),
 ];
 
-// Put all encoding/alias/codec definitions to single object and export it. 
+// Put all encoding/alias/codec definitions to single object and export it.
 for (var i = 0; i < modules.length; i++) {
     var module = modules[i];
     for (var enc in module)
@@ -13111,7 +13111,7 @@ function InternalDecoderCesu8(options, codec) {
 }
 
 InternalDecoderCesu8.prototype.write = function(buf) {
-    var acc = this.acc, contBytes = this.contBytes, accBytes = this.accBytes, 
+    var acc = this.acc, contBytes = this.contBytes, accBytes = this.accBytes,
         res = '';
     for (var i = 0; i < buf.length; i++) {
         var curByte = buf[i];
@@ -13167,17 +13167,17 @@ InternalDecoderCesu8.prototype.end = function() {
 var Buffer = require("safer-buffer").Buffer;
 
 // Single-byte codec. Needs a 'chars' string parameter that contains 256 or 128 chars that
-// correspond to encoded bytes (if 128 - then lower half is ASCII). 
+// correspond to encoded bytes (if 128 - then lower half is ASCII).
 
 exports._sbcs = SBCSCodec;
 function SBCSCodec(codecOptions, iconv) {
     if (!codecOptions)
         throw new Error("SBCS codec is called without the data.")
-    
+
     // Prepare char buffer for decoding.
     if (!codecOptions.chars || (codecOptions.chars.length !== 128 && codecOptions.chars.length !== 256))
         throw new Error("Encoding '"+codecOptions.type+"' has incorrect 'chars' (must be of len 128 or 256)");
-    
+
     if (codecOptions.chars.length === 128) {
         var asciiString = "";
         for (var i = 0; i < 128; i++)
@@ -13186,7 +13186,7 @@ function SBCSCodec(codecOptions, iconv) {
     }
 
     this.decodeBuf = new Buffer.from(codecOptions.chars, 'ucs2');
-    
+
     // Encoding buffer.
     var encodeBuf = new Buffer.alloc(65536, iconv.defaultCharSingleByte.charCodeAt(0));
 
@@ -13208,7 +13208,7 @@ SBCSEncoder.prototype.write = function(str) {
     var buf = Buffer.alloc(str.length);
     for (var i = 0; i < str.length; i++)
         buf[i] = this.encodeBuf[str.charCodeAt(i)];
-    
+
     return buf;
 }
 
@@ -15191,7 +15191,7 @@ Utf16Decoder.prototype.write = function(buf) {
         // Codec is not chosen yet. Accumulate initial bytes.
         this.initialBytes.push(buf);
         this.initialBytesLen += buf.length;
-        
+
         if (this.initialBytesLen < 16) // We need more bytes to use space heuristic (see below)
             return '';
 
@@ -15282,8 +15282,8 @@ Utf7Encoder.prototype.write = function(str) {
     // Naive implementation.
     // Non-direct chars are encoded as "+<base64>-"; single "+" char is encoded as "+-".
     return Buffer.from(str.replace(nonDirectChars, function(chunk) {
-        return "+" + (chunk === '+' ? '' : 
-            this.iconv.encode(chunk, 'utf16-be').toString('base64').replace(/=+$/, '')) 
+        return "+" + (chunk === '+' ? '' :
+            this.iconv.encode(chunk, 'utf16-be').toString('base64').replace(/=+$/, ''))
             + "-";
     }.bind(this)));
 }
@@ -15305,7 +15305,7 @@ var base64Chars = [];
 for (var i = 0; i < 256; i++)
     base64Chars[i] = base64Regex.test(String.fromCharCode(i));
 
-var plusChar = '+'.charCodeAt(0), 
+var plusChar = '+'.charCodeAt(0),
     minusChar = '-'.charCodeAt(0),
     andChar = '&'.charCodeAt(0);
 
@@ -15625,7 +15625,7 @@ iconv.encode = function encode(str, encoding, options) {
 
     var res = encoder.write(str);
     var trail = encoder.end();
-    
+
     return (trail && trail.length > 0) ? Buffer.concat([res, trail]) : res;
 }
 
@@ -15665,7 +15665,7 @@ iconv._codecDataCache = {};
 iconv.getCodec = function getCodec(encoding) {
     if (!iconv.encodings)
         iconv.encodings = require("../encodings"); // Lazy load all encoding definitions.
-    
+
     // Canonicalize encoding name: strip all non-alphanumeric chars and appended year.
     var enc = iconv._canonicalizeEncoding(encoding);
 
@@ -15689,7 +15689,7 @@ iconv.getCodec = function getCodec(encoding) {
 
                 if (!codecOptions.encodingName)
                     codecOptions.encodingName = enc;
-                
+
                 enc = codecDef.type;
                 break;
 
@@ -60847,7 +60847,7 @@ function denodeifyWithoutCount(fn) {
     'args[argLength] = cb;',
     'res = fn.apply(self, args);',
     '}',
-    
+
     'if (res &&',
     '(typeof res === "object" || typeof res === "function") &&',
     'typeof res.then === "function"',
@@ -62662,7 +62662,7 @@ IndexedSourceMapConsumer.prototype.sourceContentFor =
  * and an object is returned with the following properties:
  *
  *   - line: The line number in the generated source, or null.  The
- *     line number is 1-based. 
+ *     line number is 1-based.
  *   - column: The column number in the generated source, or null.
  *     The column number is 0-based.
  */
@@ -64206,10 +64206,10 @@ Lexer.prototype = {
 
   tok: function(type, val){
     var res = {
-      type: type, 
+      type: type,
       loc: {
         start: {
-          line: this.lineno, 
+          line: this.lineno,
           column: this.colno
         },
         filename: this.filename
@@ -64220,15 +64220,15 @@ Lexer.prototype = {
 
     return res;
   },
-  
+
   /**
    * Set the token's `loc.end` value.
-   * 
+   *
    * @param {Object} tok
    * @returns {Object}
    * @api private
    */
-  
+
   tokEnd: function(tok){
     tok.loc.end = {
       line: this.lineno,
@@ -65150,7 +65150,7 @@ Lexer.prototype = {
       return true;
     }
   },
-  
+
   /**
    * Attribute Name.
    */
@@ -65159,7 +65159,7 @@ Lexer.prototype = {
     var quoteRe = /['"]/;
     var key = '';
     var i;
-    
+
     // consume all whitespace before the key
     for(i = 0; i < str.length; i++){
       if(!this.whitespaceRe.test(str[i])) break;
@@ -65169,23 +65169,23 @@ Lexer.prototype = {
         this.incrementColumn(1);
       }
     }
-    
+
     if(i === str.length){
       return '';
     }
-    
+
     var tok = this.tok('attribute');
-    
+
     // quote?
     if(quoteRe.test(str[i])){
       quote = str[i];
       this.incrementColumn(1);
       i++;
     }
-    
+
     // start looping through the key
     for (; i < str.length; i++) {
-      
+
       if(quote){
         if (str[i] === quote) {
           this.incrementColumn(1);
@@ -65197,20 +65197,20 @@ Lexer.prototype = {
           break;
         }
       }
-      
+
       key += str[i];
-        
+
       if (str[i] === '\n') {
         this.incrementLine(1);
       } else {
         this.incrementColumn(1);
       }
     }
-    
+
     tok.name = key;
-    
+
     var valueResponse = this.attributeValue(str.substr(i));
-    
+
     if (valueResponse.val) {
       tok.val = valueResponse.val;
       tok.mustEscape = valueResponse.mustEscape;
@@ -65219,11 +65219,11 @@ Lexer.prototype = {
       tok.val = true;
       tok.mustEscape = true;
     }
-    
+
     str = valueResponse.remainingSource;
-    
+
     this.tokens.push(this.tokEnd(tok));
-    
+
     for(i = 0; i < str.length; i++){
       if(!this.whitespaceRe.test(str[i])) {
         break;
@@ -65234,15 +65234,15 @@ Lexer.prototype = {
         this.incrementColumn(1);
       }
     }
-    
+
     if(str[i] === ','){
       this.incrementColumn(1);
       i++;
     }
-    
+
     return str.substr(i);
   },
-  
+
   /**
    * Attribute Value.
    */
@@ -65254,7 +65254,7 @@ Lexer.prototype = {
     var state = characterParser.defaultState();
     var col = this.colno;
     var line = this.lineno;
-    
+
     // consume all whitespace before the equals sign
     for(i = 0; i < str.length; i++){
       if(!this.whitespaceRe.test(str[i])) break;
@@ -65265,18 +65265,18 @@ Lexer.prototype = {
         col++;
       }
     }
-    
+
     if(i === str.length){
       return { remainingSource: str };
     }
-    
+
     if(str[i] === '!'){
       escapeAttr = false;
       col++;
       i++;
       if (str[i] !== '=') this.error('INVALID_KEY_CHARACTER', 'Unexpected character ' + str[i] + ' expected `=`');
     }
-    
+
     if(str[i] !== '='){
       // check for anti-pattern `div("foo"bar)`
       if (i === 0 && str && !this.whitespaceRe.test(str[0]) && str[0] !== ','){
@@ -65285,11 +65285,11 @@ Lexer.prototype = {
         return { remainingSource: str };
       }
     }
-    
+
     this.lineno = line;
     this.colno = col + 1;
     i++;
-    
+
     // consume all whitespace before the value
     for(; i < str.length; i++){
       if(!this.whitespaceRe.test(str[i])) break;
@@ -65299,18 +65299,18 @@ Lexer.prototype = {
         this.incrementColumn(1);
       }
     }
-    
+
     line = this.lineno;
     col = this.colno;
-    
+
     // start looping through the value
     for (; i < str.length; i++) {
       // if the character is in a string or in parentheses/brackets/braces
       if (!(state.isNesting() || state.isString())){
-        
+
         if (this.whitespaceRe.test(str[i])) {
           done = false;
-          
+
           // find the first non-whitespace character
           for (x = i; x < str.length; x++) {
             if (!this.whitespaceRe.test(str[x])) {
@@ -65322,24 +65322,24 @@ Lexer.prototype = {
               break;
             }
           }
-          
+
           // if everything else is whitespace, return now so last attribute
           // does not include trailing whitespace
           if(done || x === str.length){
             break;
           }
         }
-        
+
         // if there's no whitespace and the character is not ',', the
         // attribute did not end.
         if(str[i] === ',' && this.assertExpression(val, true)){
           break;
         }
       }
-      
+
       state = characterParser.parseChar(str[i], state);
       val += str[i];
-      
+
       if (str[i] === '\n') {
         line++;
         col = 1;
@@ -65347,22 +65347,22 @@ Lexer.prototype = {
         col++;
       }
     }
-    
+
     this.assertExpression(val);
-    
+
     this.lineno = line;
     this.colno = col;
-    
+
     return { val: val, mustEscape: escapeAttr, remainingSource: str.substr(i) };
   },
 
   /**
    * Attributes.
    */
-  
+
   attrs: function() {
     var tok;
-    
+
     if ('(' == this.input.charAt(0)) {
       tok = this.tok('start-attributes');
       var index = this.bracketExpression().end;
@@ -85526,8 +85526,8 @@ router.get('/coachProfile', function(req,res,next){
 });
 
 router.post('/coachProfile', function(req, res) {
-	var user = req.param('email', null); 
-}); 
+	var user = req.param('email', null);
+});
 
 router.get('/addGoal', function(req,res,next){
 	res.render('addGoal.pug', {title: 'Add Goal'});
@@ -117112,7 +117112,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode, f
 		self.url = response.url
 		self.statusCode = response.status
 		self.statusMessage = response.statusText
-		
+
 		response.headers.forEach(function (header, key){
 			self.headers[key.toLowerCase()] = header
 			self.rawHeaders.push(key, header)
@@ -117242,7 +117242,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 				self.push(new Buffer(response))
 				break
 			}
-			// Falls through in IE8	
+			// Falls through in IE8
 		case 'text':
 			try { // This will fail when readyState = 3 in IE9. Switch mode and wait for readyState = 4
 				response = xhr.responseText
@@ -118299,13 +118299,13 @@ Script.prototype.runInContext = function (context) {
     if (!(context instanceof Context)) {
         throw new TypeError("needs a 'context' argument.");
     }
-    
+
     var iframe = document.createElement('iframe');
     if (!iframe.style) iframe.style = {};
     iframe.style.display = 'none';
-    
+
     document.body.appendChild(iframe);
-    
+
     var win = iframe.contentWindow;
     var wEval = win.eval, wExecScript = win.execScript;
 
@@ -118314,7 +118314,7 @@ Script.prototype.runInContext = function (context) {
         wExecScript.call(win, 'null');
         wEval = win.eval;
     }
-    
+
     forEach(Object_keys(context), function (key) {
         win[key] = context[key];
     });
@@ -118323,11 +118323,11 @@ Script.prototype.runInContext = function (context) {
             win[key] = context[key];
         }
     });
-    
+
     var winKeys = Object_keys(win);
 
     var res = wEval.call(win, this.code);
-    
+
     forEach(Object_keys(win), function (key) {
         // Avoid copying circular objects like `top` and `window` by only
         // updating existing context properties or new properties in the `win`
@@ -118342,9 +118342,9 @@ Script.prototype.runInContext = function (context) {
             defineProp(context, key, win[key]);
         }
     });
-    
+
     document.body.removeChild(iframe);
-    
+
     return res;
 };
 
