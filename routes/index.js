@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var emailServices = require('../services/emailServices.js');
+var emailServices = require('../services/emailservices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
 var profileServices = require('../services/profileServices');
