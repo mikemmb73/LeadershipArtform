@@ -1,4 +1,5 @@
 var mysql = require("./sqlconnect.js");
+var Goal = require("../model/goal");
 
 module.exports = {
 
@@ -101,6 +102,12 @@ module.exports = {
       var execID = exec.execID;
       await mysql.connect.execute("UPDATE executives SET photo = ? WHERE executive_id = ?", [newPhoto, execID]);
     }
+  },
+
+  getExecGoals: async function(execID){
+    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [execID]);
+    const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
+    return goalRowsArray;
   }
 
 
