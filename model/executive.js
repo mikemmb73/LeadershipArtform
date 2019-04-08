@@ -9,6 +9,7 @@ class Executive {
 		this.bio = object.bio;
 		this.photo = object.photo;
     this.executive_id = object.executive_id;
+    this.message = object.message;  
 
 		var goals = [];
 		this.goals = goals;
@@ -106,6 +107,12 @@ class Executive {
 	// 	}
 	// }
 
+  set coach_message(value) {
+    this.message = value; 
+  }
+  get coach_message() {
+    return this.message; 
+  }
 
 	addGoal(goal) {
 		this.goals.push(goal);

@@ -1,3 +1,7 @@
+var mysql = require("./sqlconnect.js");
+var ExecutiveCoach = require('../model/executiveCoach');
+var Executive = require('../model/executive');
+
 module.exports = {
 	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function");
@@ -90,5 +94,20 @@ module.exports = {
 		  }
 		});
 
+	},
+
+	updateMessage: async function(message, email) {
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+	    if (rows != null) {
+	      const currExec = rows.map(x => new Executive.Executive(x));
+	      const exec = currExec[0];
+	      var id = exec.execID; 
+		  // var statement = "UPDATE executives SET message = YOO WHERE executive_id = " + id; 
+		  await mysql.connect.execute("UPDATE executives SET message = ? WHERE executive_id = ?", [message, id]); 
+	      console.log("I am setting the coach's message");
+	      exec.coach_message = message; 
+	      console.log("CURRENT COACH NOW HAS THIS MESSAGE" + exec.coach_message); 
+	      return exec; 
+	    }
 	}
 };

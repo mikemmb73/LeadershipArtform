@@ -28,6 +28,7 @@ module.exports = {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
     const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = ?", [coach_id]);
     currentExecutive = null;
+    var message = ""; 
     if (rows != null) {
       if (rows.length != 0) {         // if email already exists
         currentExecutive = null;
@@ -36,7 +37,7 @@ module.exports = {
         currentExecutive = null;
       }
       else {
-        mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo, coach_id]);
+        mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
         const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];

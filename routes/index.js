@@ -41,7 +41,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   if (req.body.remindAll != null) {
     emailServices.sendAllReminders(clients);
-  }
+  } 
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
@@ -83,7 +83,13 @@ router.post('/coachView', async function(req, res) {
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else { //sending an email to invite a client
+  } else if (req.body.sendMessage != null) { //sending a message to a client
+      console.log("we want to send a message"); 
+      var message = req.body.clientMessage; 
+      var client = req.body.messageClient; 
+      emailServices.updateMessage(message, client)
+      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+  }  else { //sending an email to invite a client 
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -123,7 +129,6 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      console.log("USER INFO" + user.username);
       if (user == null) {   // duplicate email
         console.log("is this a duplicate email?");
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
@@ -138,6 +143,12 @@ router.post('/executiveView', async function(req,res,next) {
     res.redirect('/executiveSignup');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
+  } else if (req.body.deleteMessage != null) { //deleting a client's message
+    var message = " "; 
+    console.log("we are deleting the message!!!!!!!"); 
+    emailServices.updateMessage(message, currExecutive.username) 
+    currExecutive.coach_message = message; 
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }

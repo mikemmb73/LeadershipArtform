@@ -18,6 +18,9 @@ module.exports = {
 				if (pw == password) {
 					isCorrectPass = true;
 					currentExecutive = currExecutive[0];
+					console.log("GET AUTHENT");
+					console.log(rows);
+					console.log(currentExecutive); 
 					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
 					const [rows2, fields2] = await mysql.connect.execute(getStatement);
 					const currGoalArray = rows2.map(x => new Goal.Goal(x));
@@ -85,6 +88,7 @@ module.exports = {
   	},
 
 	getExecutiveCoach: async function(executive) {
+		console.log
 		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coachID + ", coach_id)";
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
@@ -94,6 +98,9 @@ module.exports = {
 	getExecutive: async function(email) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
 	    const currExecutive = rows.map(x => new Executive.Executive(x));
+	    console.log("WE ARE IN EXECUTIVE");
+	    console.log(rows);
+	    console.log(currExecutive[0]); 
 	    return currExecutive[0];
 	}
 };
