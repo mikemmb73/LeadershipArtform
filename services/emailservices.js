@@ -97,8 +97,6 @@ module.exports = {
 	},
 
 	updateMessage: async function(message, email) {
-		var formatEmail = email.toLowerCase(); 
-		console.log(formatEmail); 
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
 	    if (rows != null) {
 	      const currExec = rows.map(x => new Executive.Executive(x));
@@ -109,6 +107,7 @@ module.exports = {
 	      console.log("I am setting the coach's message");
 	      exec.coach_message = message; 
 	      console.log("CURRENT COACH NOW HAS THIS MESSAGE" + exec.coach_message); 
+	      return exec; 
 	    }
 	}
 };

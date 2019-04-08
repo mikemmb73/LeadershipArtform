@@ -40,7 +40,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   if (req.body.remindAll != null) {
     emailServices.sendAllReminders(clients);
-  }
+  } 
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
@@ -88,7 +88,7 @@ router.post('/coachView', async function(req, res) {
       var client = req.body.messageClient; 
       emailServices.updateMessage(message, client)
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else { //sending an email to invite a client 
+  }  else { //sending an email to invite a client 
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -127,11 +127,13 @@ router.post('/executiveView', async function(req,res,next) {
     res.redirect('/executiveSignup');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
+  } else if (req.body.deleteMessage != null) { //deleting a client's message
+    var message = " "; 
+    console.log("we are deleting the message!!!!!!!"); 
+    emailServices.updateMessage(message, currExecutive.username) 
+    currExecutive.coach_message = message; 
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
-      console.log("rendering exec view");
-      console.log(currExecutive.name);
-      console.log(currExecutive.username);
-      console.log(currExecutive.coach_message); 
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });

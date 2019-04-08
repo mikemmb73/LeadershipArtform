@@ -22,10 +22,14 @@ block content
 		h2 Hello, #{user.name}
 	div.jumbotron
 		h3 Messages from coach:
+		br
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Delete message
-			div.card-body
-				p #{user.coach_message}
+			form(method='POST' action='/executiveView')
+				div.card-header Delete message
+					button(style="float: right" classe-"btn btn-danger" type="submit") X
+				div.card-body
+					p #{user.coach_message}
+				input(type="hidden" name="deleteMessage" value="deleteMessage")
 	div.jumbotron
 		h3 Current Goals
 		each goal in user.exec_goals
