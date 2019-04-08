@@ -2,14 +2,22 @@ var jCount = 0;
 var likertIndex = 0;
 var mcIndex = 0;
 var freeResponseIndex = 0;
+var numQuestions = 0;
+var numDelete = 0;
 
 function mcDropdown(){
 
   var thisIndex = mcIndex;
   var jumbotron = document.createElement("div");
+  var jumboID = "jumbotron" + numQuestions;
+  console.log(jumboID);
+  jumbotron.setAttribute("id", jumboID);
+  numQuestions++;
   var jumbotronAtt = document.createAttribute("class");
   jumbotronAtt.value = "jumbotron";
   jumbotron.setAttributeNode(jumbotronAtt);
+
+
   var bigJumbo = document.getElementById("questionCard");
   bigJumbo.appendChild(jumbotron);
 
@@ -28,10 +36,15 @@ function mcDropdown(){
   jumbotron.appendChild(closeButton);
   closeButton.onclick = function(){
     jumbotron.style.display = "none";
-    document.getElementById('mcButton').disabled=false;
-    document.getElementById('freeResponseButton').disabled=false;
-    document.getElementById('likertButton').disabled=false;
-
+    numDelete++;
+    var allQuestions = document.getElementById("questionCard");
+    for (var i=0; i<allQuestions.childNodes.length; i++) {
+      console.log(allQuestions.childNodes[i]);
+      if (allQuestions.childNodes[i].id == jumboID) {
+        console.log("found child, deleting");
+        allQuestions.removeChild(allQuestions.childNodes[i]);
+      }
+    }
     while (jumbotron.firstChild) {
       jumbotron.removeChild(jumbotron.firstChild);
     }
@@ -51,6 +64,7 @@ function mcDropdown(){
   inputName.value="mcQuestions[" + mcIndex + "][0]";
   inputTitle.setAttributeNode(inputType);
   inputTitle.setAttributeNode(inputName);
+  inputTitle.required = true;
   jumbotron.appendChild(inputTitle);
 
 
@@ -72,6 +86,7 @@ function mcDropdown(){
   option1Name.value = "mcQuestions[" + mcIndex + "][1]";
   option1Title.setAttributeNode(option1Type);
   option1Title.setAttributeNode(option1Name);
+  option1Title.required = true;
   jumbotron.appendChild(option1Title);
   var br2 = document.createElement("br");
   jumbotron.appendChild(br2);
@@ -89,6 +104,7 @@ function mcDropdown(){
   option2Name.value="mcQuestions[" + mcIndex + "][2]";
   option2Title.setAttributeNode(option2Type);
   option2Title.setAttributeNode(option2Name);
+  option2Title.required = true;
   jumbotron.appendChild(option2Title);
 
 
@@ -115,6 +131,7 @@ function mcDropdown(){
     var numVal = "Option " + num + " Value: ";
     var option3TitleLabel = document.createTextNode(numVal);
     questionTitleLabel_.appendChild(option3TitleLabel);
+
     jumbotron.appendChild(option3TitleLabel);
 
 //Area for coach to type in Question Title
@@ -126,6 +143,7 @@ function mcDropdown(){
     option3Name.value = "mcQuestions[" + thisIndex + "][" + optionIndex + "]";
     option3Title.setAttributeNode(option3Type);
     option3Title.setAttributeNode(option3Name);
+    option3Title.required = true;
     jumbotron.appendChild(option3Title);
     var br2 = document.createElement("br");
     jumbotron.appendChild(br2);
@@ -144,6 +162,10 @@ function freeResponseDropdown(){
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
   jumbotronAtt.value = "jumbotron";
+  var jumboID = "jumbotron" + numQuestions;
+  console.log(jumboID);
+  jumbotron.setAttribute("id", jumboID);
+  numQuestions++;
   jumbotron.setAttributeNode(jumbotronAtt);
   var bigJumbo = document.getElementById("questionCard");
   bigJumbo.appendChild(jumbotron);
@@ -161,10 +183,16 @@ function freeResponseDropdown(){
   closeButton.appendChild(closeButtonText);
   jumbotron.appendChild(closeButton);
   closeButton.onclick = function(){
+    numDelete++;
     jumbotron.style.display = "none";
-    document.getElementById('mcButton').disabled=false;
-    document.getElementById('freeResponseButton').disabled=false;
-    document.getElementById('likertButton').disabled=false;
+    var allQuestions = document.getElementById("questionCard");
+    for (var i=0; i<allQuestions.childNodes.length; i++) {
+      console.log(allQuestions.childNodes[i]);
+      if (allQuestions.childNodes[i].id == jumboID) {
+        console.log("found child, deleting");
+        allQuestions.removeChild(allQuestions.childNodes[i]);
+      }
+    }
     while (jumbotron.firstChild) {
       jumbotron.removeChild(jumbotron.firstChild);
     }
@@ -188,6 +216,7 @@ function freeResponseDropdown(){
   var inputTitleID = document.createAttribute("id");
   inputTitleID.value="freeResponseQuestion";
   inputTitle.setAttributeNode(inputTitleID);
+  inputTitle.required = true;
   jumbotron.appendChild(inputTitle);
 
   var br2 = document.createElement("br");
@@ -200,6 +229,10 @@ function freeResponseDropdown(){
 
 function likertDropdown(){
   var jumbotron = document.createElement("div");
+  var jumboID = "jumbotron" + numQuestions;
+  console.log(jumboID);
+  jumbotron.setAttribute("id", jumboID);
+  numQuestions++;
   var jumbotronAtt = document.createAttribute("class");
   jumbotronAtt.value = "jumbotron";
 
@@ -227,10 +260,16 @@ function likertDropdown(){
   closeButton.appendChild(closeButtonText);
   jumbotron.appendChild(closeButton);
   closeButton.onclick = function(){
+    numDelete++;
     jumbotron.style.display = "none";
-    document.getElementById('mcButton').disabled=false;
-    document.getElementById('freeResponseButton').disabled=false;
-    document.getElementById('likertButton').disabled=false;
+    var allQuestions = document.getElementById("questionCard");
+    for (var i=0; i<allQuestions.childNodes.length; i++) {
+      console.log(allQuestions.childNodes[i]);
+      if (allQuestions.childNodes[i].id == jumboID) {
+        console.log("found child, deleting");
+        allQuestions.removeChild(allQuestions.childNodes[i]);
+      }
+    }
     while (jumbotron.firstChild) {
       jumbotron.removeChild(jumbotron.firstChild);
     }
@@ -250,6 +289,7 @@ function likertDropdown(){
   inputQuestion.setAttributeNode(inputQuestionType);
   inputQuestion.setAttributeNode(inputQuestionID);
   inputQuestion.setAttributeNode(inputQuestionName);
+  inputQuestion.required = true;
   jumbotron.appendChild(inputQuestion);
 
   var br = document.createElement("br");
@@ -269,6 +309,7 @@ function likertDropdown(){
   leftSideInput.setAttributeNode(leftSideInputType);
   leftSideInput.setAttributeNode(lSideID);
   leftSideInput.setAttributeNode(leftSideName);
+  leftSideInput.required = true;
   jumbotron.appendChild(leftSideInput);
 
   var br2 = document.createElement("br");
@@ -288,6 +329,7 @@ function likertDropdown(){
   rightSideInput.setAttributeNode(rightSideInputType);
   rightSideInput.setAttributeNode(rSideID);
   rightSideInput.setAttributeNode(rightSideName);
+  rightSideInput.required = true;
   jumbotron.appendChild(rightSideInput);
 
   var br3 = document.createElement("br");
@@ -408,4 +450,27 @@ function displaySave(result){
   jumbotron.appendChild(savedRight);
 
 
+}
+
+function checkGoal() {
+  if (numQuestions - numDelete == 0) {
+    alert("Please enter at least one question.")
+  } else {
+    if (document.getElementById("goalForm").checkValidity()) {
+      var title = document.forms["goalForm"]["goalTitle"].value;
+      var description = document.forms["goalForm"]["goalDescription"].value;
+      if (title == "" || description == "") {
+        alert("Please Fill in All Required Fields");
+      } else {
+        document.getElementById("goalForm").submit();
+      }
+    } else {
+
+      alert("Please Fill in All Required Fields.")
+    }
+  }
+}
+
+function previousGoal() {
+  document.getElementById("goalForm").submit();
 }
