@@ -20,14 +20,14 @@ block content
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 
-	form(method='POST', action='/editGoal_executive')
+	form(method='POST', action='/editGoal_executive', id="goalForm")
 			input(type="hidden" name="addingGoal" value="addingGoal")
 			div.jumbotron
 				h3 Goal Title
-				input(type='text', name='goalTitle')
+				input(type='text', name='goalTitle' required)
 			div.jumbotron
 				h3 Goal Description
-				input(type='text', name='goalDescription' size='150')
+				input(type='text', name='goalDescription' size='150' required)
 				input(type='hidden', name='goalProgress' value=0)
 			div.jumbotron
 				h3 Frequency Reminder
@@ -55,5 +55,4 @@ block content
 							input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
 							input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
 							input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
-				input.btn.btn-outline-primary.btn-lg(type="submit", value="Add Goal" id="addGoalButton")
-
+				input.btn.btn-outline-primary.btn-lg(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")
