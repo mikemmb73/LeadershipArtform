@@ -41,7 +41,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 router.get('/coachView', function(req, res, next) {
   if (req.body.remindAll != null) {
     emailServices.sendAllReminders(clients);
-  } 
+  }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
@@ -80,16 +80,18 @@ router.post('/coachView', async function(req, res) {
     if (data2.goalTitle != "") {
       addGoalService.addGoalCoach(data2, currCoach, clients);
     } else {
+      console.log(data2.GoalButton);
+      console.log(req.body.GoalButton);
       addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
     }
     res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else if (req.body.sendMessage != null) { //sending a message to a client
-      console.log("we want to send a message"); 
-      var message = req.body.clientMessage; 
-      var client = req.body.messageClient; 
+      console.log("we want to send a message");
+      var message = req.body.clientMessage;
+      var client = req.body.messageClient;
       emailServices.updateMessage(message, client)
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  }  else { //sending an email to invite a client 
+  }  else { //sending an email to invite a client
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -144,10 +146,10 @@ router.post('/executiveView', async function(req,res,next) {
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
   } else if (req.body.deleteMessage != null) { //deleting a client's message
-    var message = " "; 
-    console.log("we are deleting the message!!!!!!!"); 
-    emailServices.updateMessage(message, currExecutive.username) 
-    currExecutive.coach_message = message; 
+    var message = " ";
+    console.log("we are deleting the message!!!!!!!");
+    emailServices.updateMessage(message, currExecutive.username)
+    currExecutive.coach_message = message;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});

@@ -457,9 +457,20 @@ function checkGoal() {
     alert("Please enter at least one question.")
   } else {
     if (document.getElementById("goalForm").checkValidity()) {
-      document.getElementById("goalForm").submit();
+      var title = document.forms["goalForm"]["goalTitle"].value;
+      var description = document.forms["goalForm"]["goalDescription"].value;
+      if (title == "" || description == "") {
+        alert("Please Fill in All Required Fields");
+      } else {
+        document.getElementById("goalForm").submit();
+      }
     } else {
+
       alert("Please Fill in All Required Fields.")
     }
   }
+}
+
+function previousGoal() {
+  document.getElementById("goalForm").submit();
 }

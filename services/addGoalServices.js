@@ -147,18 +147,18 @@ module.exports = {
                 for (var j=1; j<goalData.mcQuestions[0].length; j++) {
                   choices += goalData.mcQuestions[0][j] + ",";
                 }
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
               }
             }
             if (goalData.frQuestions != null) {
               for (var i=0; i<goalData.frQuestions.length; i++) {
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, "", ""]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, ""]);
               }
             }
             if (goalData.likertQuestions != null) {
               for (var i=0; i<goalData.likertQuestions.length; i++) {
                 var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
               }
             }
           }
@@ -182,18 +182,18 @@ module.exports = {
                 for (var j=1; j<goalData.mcQuestions[0].length; j++) {
                   choices += goalData.mcQuestions[0][j] + ",";
                 }
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
               }
             }
             if (goalData.frQuestions != null) {
               for (var i=0; i<goalData.frQuestions.length; i++) {
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, "", ""]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, ""]);
               }
             }
             if (goalData.likertQuestions != null) {
               for (var i=0; i<goalData.likertQuestions.length; i++) {
                 var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
               }
             }
           }
@@ -224,56 +224,66 @@ module.exports = {
                 for (var j=1; j<goalData.mcQuestions[0].length; j++) {
                   choices += goalData.mcQuestions[0][j] + ",";
                 }
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
               }
             }
             if (goalData.frQuestions != null) {
               for (var i=0; i<goalData.frQuestions.length; i++) {
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, "", ""]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1,""]);
               }
             }
             if (goalData.likertQuestions != null) {
               for (var i=0; i<goalData.likertQuestions.length; i++) {
                 var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
               }
             }
           }
         }
       }
     } else {
+        console.log(goalData);
+        console.log(currGoalMatch);
         var fullName = goalData.clientForm.split(" ");
         var today = new Date();
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
-
+            console.log("here1");
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today]);
-            const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch, clients[j].executive_id]);
+            console.log("here2");
+            console.log(currGoalMatch);
+            console.log(clients[j].executive_id);
+            const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.goal_title, clients[j].executive_id]);
+            console.log("here3");
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
+            console.log("HEREEE");
+            console.log(currGoal);
+            console.log(goalData);
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
                 for (var j=1; j<goalData.mcQuestions[0].length; j++) {
                   choices += goalData.mcQuestions[0][j] + ",";
                 }
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
               }
             }
             if (goalData.frQuestions != null) {
               for (var i=0; i<goalData.frQuestions.length; i++) {
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, "", ""]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, ""]);
               }
             }
             if (goalData.likertQuestions != null) {
               for (var i=0; i<goalData.likertQuestions.length; i++) {
                 var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, answer, qs) VALUES(?, ?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, "", choices]);
+                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2,choices]);
               }
             }
           }
       }
     }
+                console.log("here");
   }
 
 };
