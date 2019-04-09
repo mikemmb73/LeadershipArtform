@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var emailServices = require('../services/emailServices');
+var emailServices = require('../services/emailservices');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
 var profileServices = require('../services/profileServices');
@@ -73,8 +73,8 @@ router.post('/coachView', async function(req, res) {
         clients = await loginservices.getClientGoals(user);
         console.log("OG CLIENTS" + clients)
         for (var i = 0; i < clients.length; i++) {
-          console.log("CLIENT GOALS" + clients[i].goals_list); 
-          console.log("CLIENT GOALS 2" + clients[i].goals); 
+          console.log("CLIENT GOALS" + clients[i].goals_list);
+          console.log("CLIENT GOALS 2" + clients[i].goals);
         }
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
@@ -97,10 +97,10 @@ router.post('/coachView', async function(req, res) {
       emailServices.updateMessage(message, client)
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else if (req.body.acceptRequest != null) { //approving a client's progress update
-      console.log("this is the client's goal ID" + req.body.acceptRequest); 
+      console.log("this is the client's goal ID" + req.body.acceptRequest);
       await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else { //sending an email to invite a client 
+  } else { //sending an email to invite a client
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
@@ -291,17 +291,17 @@ router.post('/editGoal_executive', async function(req, res) {
 
 
 router.post('/viewGoal_executive', async function(req, res) {
-    console.log("WE ARE POSTING IN VIEW_GOAL EXEC" + req.body.goal_id); 
+    console.log("WE ARE POSTING IN VIEW_GOAL EXEC" + req.body.goal_id);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     var currResponse;
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
     console.log("We are here");
-    console.log(goal.progress_update + "!!"); 
+    console.log(goal.progress_update + "!!");
     if (req.body.update_progress != null) {
       //the executive is requesting their progress be updated
-      //it should not directly change the database until the coach has access to it 
+      //it should not directly change the database until the coach has access to it
       await addGoalService.updateProgress(req.body.goal_id, req.body.progress);
     }
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
@@ -309,7 +309,7 @@ router.post('/viewGoal_executive', async function(req, res) {
 });
 
 router.post('/viewGoal_coach', async function(req, res) {
-    console.log("dis my id" + req.body.goal_id); 
+    console.log("dis my id" + req.body.goal_id);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     var currResponse;
     if (goal.goal_responses.length > 0) {
@@ -317,7 +317,7 @@ router.post('/viewGoal_coach', async function(req, res) {
     }
 
     if (req.body.acceptRequest != null) { //approving a client's progress update
-      console.log("this is the client's goal ID" + req.body.acceptRequest); 
+      console.log("this is the client's goal ID" + req.body.acceptRequest);
       await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
     } else if (req.body.coachChange != null) { //the coach is updating the client's progress manually
       await addGoalService.updateProgressCoach(req.body.goal_id, req.body.progress)

@@ -1,4 +1,4 @@
-var emailServices = require('../services/emailServices');
+var emailServices = require('../services/emailservices');
 
 function formatClients(clients){
   console.log("in format clients");
@@ -16,10 +16,10 @@ function formatClients(clients){
 }
 
 function emailClients(clients) {
-  console.log("EMAIL CLIENTS"); 
-  console.log(clients); 
+  console.log("EMAIL CLIENTS");
+  console.log(clients);
   clients.forEach(function(entry) {
-    console.log("in here"); 
+    console.log("in here");
     console.log(entry.email);
   });
 }
