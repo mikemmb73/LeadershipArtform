@@ -142,10 +142,15 @@ router.post('/executiveView', async function(req,res,next) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
-      if (user == null) {   // duplicate email
-        console.log("is this a duplicate email?");
+      // if (user == null) {   // duplicate email or ID not found
+      if (user == -1) {
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
+      if (user == -2) {
+        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
+      }
+        // res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+      // }
       currExecutive = user;
     } else {
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
