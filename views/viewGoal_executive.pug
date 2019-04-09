@@ -33,13 +33,13 @@ block content
           input(type="hidden" name="goal_id" value=goal.id)
           button.btn.btn-outline-primary.btn-sm(type="submit" style="float:center") New Response
       .col-md-2
-        button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal" style="float:center") Update Progress
+        button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal" style="float:center") Submit Progress Update Request
         .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')
           .modal-dialog-centered.custom_modal_dialog(role="document")
             .modal-content
               form(id = "progressForm" method='POST' action='/viewGoal_executive')
                 .modal-header
-                  h5 Update Progress
+                  h5 Update Progress (Pending Coach Approval)
                   button.close(type='button' data-dismiss="modal")
                     span &times;
                 .modal-body

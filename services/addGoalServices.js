@@ -99,6 +99,22 @@ module.exports = {
     }
   },
 
+  updateProgressCoach: async function(goalID, progressValue) {
+    console.log("updateProgress" + goalID + " " + progressValue);
+    var statement = "UPDATE goals SET progress = " + progressValue + " WHERE goal_id = " + goalID;
+    await mysql.connect.execute(statement);
+    var statement2 = "UPDATE goals SET progress_acceptance = " + progressValue + " WHERE goal_id = " + goalID;
+    await mysql.connect.execute(statement2);
+    const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
+    if (rows != null) {
+      const currGoalArray = rows.map(x => new Goal.Goal(x));
+      const currGoal = currGoalArray[0];
+      currGoal.goal_progress = progressValue;
+      currGoal.progress_update = progressValue; 
+    }
+
+  },  
+
   updateProgress: async function(goalID, progressValue) {
     console.log("updateProgress" + goalID + " " + progressValue);
     var statement = "UPDATE goals SET progress_acceptance = " + progressValue + " WHERE goal_id = " + goalID;

@@ -309,11 +309,20 @@ router.post('/viewGoal_executive', async function(req, res) {
 });
 
 router.post('/viewGoal_coach', async function(req, res) {
+    console.log("dis my id" + req.body.goal_id); 
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
-    var currResponse = null;
+    var currResponse;
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
+
+    if (req.body.acceptRequest != null) { //approving a client's progress update
+      console.log("this is the client's goal ID" + req.body.acceptRequest); 
+      await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
+    } else if (req.body.coachChange != null) { //the coach is updating the client's progress manually
+      await addGoalService.updateProgressCoach(req.body.goal_id, req.body.progress)
+    }
+
     res.render('viewGoal_coach.pug', {goal: goal, currResponse: currResponse});
 
 });

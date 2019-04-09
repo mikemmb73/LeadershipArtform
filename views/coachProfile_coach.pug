@@ -100,5 +100,22 @@ block content
 						-var emailAddress = obj.email
 						input(type="hidden" name="profileClick" value=emailAddress)
 						button(class="btn btn-sm",type="submit") View Profile
+					button(class="btn btn-sm",type="button",data-toggle="modal", data-target="#sendMessageModal") Send Message
+				.modal(role="dialog", id="sendMessageModal")
+					.modal-dialog-centered.custom_modal_dialog(role="document", id="sendMessageModal")
+						.modal-content
+							form(id = "form" method='POST' action='/coachView')
+								.modal-header
+									h5 Send Message to #{obj.fname} #{obj.lname}
+									button(class="close",data-dismiss="modal")
+										span &times;
+								.modal-body
+									p Message:
+										input(type="text" name="clientMessage")
+								.modal-footer
+									-var emailAddress = obj.email
+									input(type="hidden" name="messageClient" value=emailAddress)
+									input(type="hidden" name="sendMessage" value="sendMessage")
+									button.btn.btn-primary(type='submit') Send Message
 				.col-md-2
 	.row
