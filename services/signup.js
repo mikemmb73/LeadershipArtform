@@ -14,7 +14,7 @@ module.exports = {
       }
       else {
         console.log("Rows empty, adding to coaches.");
-        mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
+        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("Current coach: " + currCoach[0]);
