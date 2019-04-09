@@ -19,7 +19,7 @@ module.exports = {
       return;
     }
 
-    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today]);
+    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
 
     // const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [currExecutive.executive_id]);
     // var getStatement = "SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
@@ -28,6 +28,7 @@ module.exports = {
     // console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
+    console.log("ROWS" + rows); 
 
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
@@ -53,6 +54,7 @@ module.exports = {
     const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
     const currQuestionArray = questionRows.map(x => new Question.Question(x));
     currGoal.goal_questions = currQuestionArray;
+    console.log("CURR GOAL" + currGoal); 
     currExecutive.addGoal(currGoal);
   },
 
@@ -74,9 +76,17 @@ module.exports = {
     }
   },
 
-  updateProgress: async function(goalID, progressValue) {
-    console.log("updateProgress" + goalID + " " + progressValue);
-    var statement = "UPDATE goals SET progress = " + progressValue + " WHERE goal_id = " + goalID;
+  acceptProgressUpdate: async function(goalID) {
+    var progressValue; 
+    const [rows1, fields1] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
+    if (rows1 != null) {
+      const currGoalArray = rows1.map(x => new Goal.Goal(x));
+      const currGoal = currGoalArray[0];
+      progressValue = currGoal.progress_update; 
+    }
+    console.log("THIS IS MY PROGRESS VALUE" + progressValue); 
+
+    var statement = "UPDATE goals SET progress= " + progressValue + " WHERE goal_id = " + goalID;
     await mysql.connect.execute(statement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
     if (rows != null) {
@@ -85,6 +95,21 @@ module.exports = {
       const currGoal = currGoalArray[0];
       console.log("CURRENT GOAL HAD THIS PROGRESS" + currGoal.goal_progress);
       currGoal.goal_progress = progressValue;
+      console.log("CURRENT GOAL NOW HAS THIS PROGRESS" + currGoal.goal_progress);
+    }
+  },
+
+  updateProgress: async function(goalID, progressValue) {
+    console.log("updateProgress" + goalID + " " + progressValue);
+    var statement = "UPDATE goals SET progress_acceptance = " + progressValue + " WHERE goal_id = " + goalID;
+    await mysql.connect.execute(statement);
+    const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
+    if (rows != null) {
+      console.log("I am setting the progress value of the goal");
+      const currGoalArray = rows.map(x => new Goal.Goal(x));
+      const currGoal = currGoalArray[0];
+      console.log("CURRENT GOAL HAD THIS PROGRESS" + currGoal.goal_progress);
+      currGoal.progress_update = progressValue;
       console.log("CURRENT GOAL NOW HAS THIS PROGRESS" + currGoal.goal_progress);
     }
   },
@@ -136,7 +161,7 @@ module.exports = {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
             console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
@@ -171,7 +196,7 @@ module.exports = {
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
             console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
@@ -214,7 +239,7 @@ module.exports = {
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
@@ -247,7 +272,7 @@ module.exports = {
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned) VALUES(?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];

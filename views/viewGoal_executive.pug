@@ -46,7 +46,8 @@ block content
                   p(style="text-align:center") Please enter a number 1-100:
                     br
                     input(type="number" name="progress" min="1" max="100")
-                    input(type="hidden" name="goalID" value=goal.id)
+                    input(type="hidden" name="goal_id" value=goal.id)
+                    input(type="hidden" name="update_progress" value=goal.id)
                 .modal-footer
                   button.btn.btn-primary(type='submit') Submit
 
