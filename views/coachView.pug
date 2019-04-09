@@ -55,11 +55,13 @@ block content
 				each obj in clients
 					each goal in obj.goals_list
 						if goal.progress_acceptance != goal.progress
+							br
+							br
 							h5 #{obj.fname} #{obj.lname}
 							p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
 							form(method='POST' action='/viewGoal_coach')
 								input(type="hidden" name="goal_id" value=goal.id)
 								button.btn.btn-primary.btn-sm.view_goal_button(style="float:right" type="submit") View Goal
 							form(method='POST' action='/coachView')
-								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes?
+								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes
 								input(type="hidden" name="acceptRequest" value=goal.goal_id)

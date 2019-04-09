@@ -31,7 +31,7 @@ block content
         .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')
           .modal-dialog-centered.custom_modal_dialog(role="document")
             .modal-content
-              form(id = "progressForm" method='POST' action='/viewGoal_executive')
+              form(id = "progressForm" method='POST' action='/viewGoal_coach')
                 .modal-header
                   h5 Update Progress
                   button.close(type='button' data-dismiss="modal")
@@ -40,7 +40,8 @@ block content
                   p(style="text-align:center") Please enter a number 1-100:
                     br
                     input(type="number" name="progress" min="1" max="100")
-                    input(type="hidden" name="goalID" value=goal.id)
+                    input(type="hidden" name="coachChange" value="yes")
+                    input(type="hidden" name="goal_id" value=goal.id)
                 .modal-footer
                   button.btn.btn-primary(type='submit') Submit
 
