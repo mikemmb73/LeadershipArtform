@@ -211,7 +211,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
   });
 });
 
-router.get('/coachProfile_coach', function(req,res,next){
+router.get('/coachProfile_coach', async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
