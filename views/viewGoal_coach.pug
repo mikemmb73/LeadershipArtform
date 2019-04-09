@@ -14,6 +14,7 @@ block content
         li
           form(method='POST' action='/')
             input(type="hidden" name="signOut" value="signOut")
+            button(style="color:red" class="btn btn-sm" type="submit").signOut_button Sign Out
   div
     .row
       .col-md-4
@@ -30,7 +31,7 @@ block content
         .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')
           .modal-dialog-centered.custom_modal_dialog(role="document")
             .modal-content
-              form(id = "progressForm" method='POST' action='/viewGoal_coach')
+              form(id = "progressForm" method='POST' action='/viewGoal_executive')
                 .modal-header
                   h5 Update Progress
                   button.close(type='button' data-dismiss="modal")
@@ -39,16 +40,10 @@ block content
                   p(style="text-align:center") Please enter a number 1-100:
                     br
                     input(type="number" name="progress" min="1" max="100")
-                    input(type="hidden" name="goal_id" value=goal.id)
-                    input(type="hidden" name="coachChange" value=progress)
+                    input(type="hidden" name="goalID" value=goal.id)
                 .modal-footer
                   button.btn.btn-primary(type='submit') Submit
-      .col-md-2
-        if goal.progress_acceptance != goal.progress
-          form(method='POST' action='/viewGoal_coach')
-            button.btn.btn-outline-primary.btn-sm(type="submit" style="float:center") Accept Progress Request from #{goal.progress} to #{goal.progress_acceptance}
-            input(type="hidden" name="acceptRequest" value=goal.id)
-            input(type="hidden" name="goal_id" value=goal.id)
+
     .row
       -var progress = 'width: ' + goal.goal_progress + '%';
       if goal.goal_progress == 100

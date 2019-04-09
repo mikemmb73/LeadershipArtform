@@ -28,13 +28,14 @@ module.exports = {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
     const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = ?", [coach_id]);
     currentExecutive = null;
-    var message = ""; 
+    var message = "";
     if (rows != null) {
       if (rows.length != 0) {         // if email already exists
-        currentExecutive = null;
+        currentExecutive = -1;
       }
       else if (rowsID.length == 0) {  // if coach ID isn't found
-        currentExecutive = null;
+
+        currentExecutive = -2;
       }
       else {
         mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);
