@@ -63,45 +63,4 @@ block content
 									input(type="textarea" name = "message")
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
-	div.jumbotron
-		.row
-			each obj in clients
-				.col-md-1
-				.col-md-2
-					img#clientImage(src='obj.photo')
-				.col-md-2
-					h3 #{obj.fname} #{obj.lname}
-					p #{obj.email}
-					p #{obj.bio}
-					br
-					br
-					br
-				.col-md-1
-					form(method='POST' action='/coachView')
-						-var emailAddress = obj.email
-						input(type="hidden" name="emailReminder" value=emailAddress)
-						button(class="btn btn-sm",type="submit") Send Reminder
-					form(method='POST' action='/executiveProfile_coach')
-						-var emailAddress = obj.email
-						input(type="hidden" name="profileClick" value=emailAddress)
-						button(class="btn btn-sm",type="submit") View Profile
-					button(class="btn btn-sm",type="button",data-toggle="modal", data-target="#sendMessageModal") Send Message
-				.modal(role="dialog", id="sendMessageModal")
-					.modal-dialog-centered.custom_modal_dialog(role="document", id="sendMessageModal")
-						.modal-content
-							form(id = "form" method='POST' action='/coachView')
-								.modal-header
-									h5 Send Message to #{obj.fname} #{obj.lname}
-									button(class="close",data-dismiss="modal")
-										span &times;
-								.modal-body
-									p Message:
-										input(type="text" name="clientMessage")
-								.modal-footer
-									-var emailAddress = obj.email
-									input(type="hidden" name="messageClient" value=emailAddress)
-									input(type="hidden" name="sendMessage" value="sendMessage")
-									button.btn.btn-primary(type='submit') Send Message
-
-		.row
-			
+	
