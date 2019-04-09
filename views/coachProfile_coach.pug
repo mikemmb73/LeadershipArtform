@@ -91,7 +91,7 @@ block content
 					br
 					br
 					br
-				.col-md-1
+				.col-md-2
 					form(method='POST' action='/coachView')
 						-var emailAddress = obj.email
 						input(type="hidden" name="emailReminder" value=emailAddress)
@@ -117,5 +117,4 @@ block content
 									input(type="hidden" name="messageClient" value=emailAddress)
 									input(type="hidden" name="sendMessage" value="sendMessage")
 									button.btn.btn-primary(type='submit') Send Message
-				.col-md-2
 	.row

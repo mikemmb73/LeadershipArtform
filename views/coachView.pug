@@ -20,7 +20,30 @@ block content
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	br
 	.row
+		.col-md-1
 		h1 Welcome, #{user.first_name}
+		.col-md-4
+		form(method='GET' action='/coachView')
+			button.btn.btn-outline-primary(type="button",data-toggle="modal", data-target="#addClientModal" style="float:center").client_button Add Client
+		.modal(role="dialog", id="addClientModal")
+			.modal-dialog-centered.custom_modal_dialog(role="document")
+				.modal-content
+					form(id = "form" method='POST' action='/coachView')
+						.modal-header
+							h5 Invite a Client
+							button(class="close",data-dismiss="modal")
+								span &times;
+						.modal-body
+							p Client Name:
+								input(type="text" name="clientName")
+							p Email Address:
+								input(type="text" name="emailAddress")
+							p Welcome Message:
+								br
+								input(type="textarea" name = "message")
+						.modal-footer
+							button.btn.btn-primary(type='submit') Submit
+
 	div.row.client_title
 		script.
 			var clients = !{JSON.stringify(clients)};
@@ -28,80 +51,15 @@ block content
 		h3 Progress Approval Requests:
 		br
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			each obj in clients
-				each goal in obj.goals_list
-					if goal.progress_acceptance != goal.progress
-						h5 #{obj.fname} #{obj.lname}
-						p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
-						form(method='POST' action='/viewGoal_coach')
-							input(type="hidden" name="goal_id" value=goal.id)
-							button.btn-btn-block.btn-info(style="float: right" type="submit") View Goal
-						form(method='POST' action='/coachView')
-							button.btn-btn-block.btn-info(style="float: right" type="submit") Accept these changes?
-							input(type="hidden" name="acceptRequest" value=goal.goal_id)
-	div.jumbotron
-		.row
-			form(method='GET' action='/coachView')
-				input(type="hidden" name="remindAll" value="remindAll")
-				button.btn.btn-outline-primary(type="submit").client_button Remind All
-				button.btn.btn-outline-primary(type="button",data-toggle="modal", data-target="#addClientModal").client_button Add Client
-			.modal(role="dialog", id="addClientModal")
-				.modal-dialog-centered.custom_modal_dialog(role="document")
-					.modal-content
-						form(id = "form" method='POST' action='/coachView')
-							.modal-header
-								h5 Invite a Client
-								button(class="close",data-dismiss="modal")
-									span &times;
-							.modal-body
-								p Client Name:
-									input(type="text" name="clientName")
-								p Email Address:
-									input(type="text" name="emailAddress")
-								p Welcome Message:
-									br
-									input(type="textarea" name = "message")
-							.modal-footer
-								button.btn.btn-primary(type='submit') Submit
-	div.jumbotron
-		.row
-			each obj in clients
-				.col-md-1
-				.col-md-2
-					img#clientImage(src='obj.photo')
-				.col-md-2
-					h3 #{obj.fname} #{obj.lname}
-					p #{obj.email}
-					p #{obj.bio}
-					br
-					br
-					br
-				.col-md-1
-					form(method='POST' action='/coachView')
-						-var emailAddress = obj.email
-						input(type="hidden" name="emailReminder" value=emailAddress)
-						button(class="btn btn-sm",type="submit") Send Reminder
-					form(method='POST' action='/executiveProfile_coach')
-						-var emailAddress = obj.email
-						input(type="hidden" name="profileClick" value=emailAddress)
-						button(class="btn btn-sm",type="submit") View Profile
-					button(class="btn btn-sm",type="button",data-toggle="modal", data-target="#sendMessageModal") Send Message
-				.modal(role="dialog", id="sendMessageModal")
-					.modal-dialog-centered.custom_modal_dialog(role="document", id="sendMessageModal")
-						.modal-content
-							form(id = "form" method='POST' action='/coachView')
-								.modal-header
-									h5 Send Message to #{obj.fname} #{obj.lname}
-									button(class="close",data-dismiss="modal")
-										span &times;
-								.modal-body
-									p Message:
-										input(type="text" name="clientMessage")
-								.modal-footer
-									-var emailAddress = obj.email
-									input(type="hidden" name="messageClient" value=emailAddress)
-									input(type="hidden" name="sendMessage" value="sendMessage")
-									button.btn.btn-primary(type='submit') Send Message
-
-		.row
-			
+			.card-body
+				each obj in clients
+					each goal in obj.goals_list
+						if goal.progress_acceptance != goal.progress
+							h5 #{obj.fname} #{obj.lname}
+							p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
+							form(method='POST' action='/viewGoal_coach')
+								input(type="hidden" name="goal_id" value=goal.id)
+								button.btn.btn-primary.btn-sm.view_goal_button(style="float:right" type="submit") View Goal
+							form(method='POST' action='/coachView')
+								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes?
+								input(type="hidden" name="acceptRequest" value=goal.goal_id)

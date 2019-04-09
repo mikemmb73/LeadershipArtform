@@ -13,7 +13,7 @@ block content
 						a.nav-link.nav-item.active(href='/coachProfile_executive') Coach's Profile
 					li
 						a.nav-item.nav-link(href='/addGoal_executive') Add Goal
-					li 
+					li
 						form(method='POST' action='/')
 							input(type="hidden" name="signOut" value="signOut")
 							button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
@@ -26,6 +26,6 @@ block content
 				br
 				h1 #{user.full_name}
 				h3 #{user.user_email}
-				h5 #{user.biography}
+				p #{user.biography}
 			div.col-md-1
 			br
