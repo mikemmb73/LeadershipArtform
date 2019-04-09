@@ -56,10 +56,11 @@ router.post('/coachView', async function(req, res) {
       else {
         var promise = Promise.resolve(user);
         promise.then(function(value) {
+          currCoach = user;
+          var clientList = [];
+          res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
         });
-        currCoach = user;
-        var clientList = [];
-        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
+
       }
     }
   } else if (req.body.username != null) { //signin a user
