@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	include mixins/print_goal.pug
+	include mixins/print_goal_coach.pug
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 		a.navbar-brand(href='/') Leadership as an Artform
 		div.collapse.navbar-collapse#navbarColor02
@@ -62,21 +62,14 @@ block content
 	div.jumbotron
 		h3 Current Goals
 		each goal in user.exec_goals
-			+print_goal(goal)
+			if goal.goal_progress < 100
+				+print_goal_coach(goal)
+
 
 	div.jumbotron
 		h3 Past Goals
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Date Completed
-			div.card-body
-				h4 Goal Name
-				p Description of goal
-			div.progress
-				div.progress-bar.bg-success(role='progressbar' style='width:100%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			div.card-header Date Completed
-			div.card-body
-				h4 Goal Name
-				p Description of goal
-			div.progress
-				div.progress-bar.bg-success(role='progressbar' style='width:100%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+		if pastGoals != null
+			each pastGoal in pastGoals
+				+print_goal_coach(pastGoal)
+		else
+			p There are no completed goals

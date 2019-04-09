@@ -6,13 +6,11 @@ block content
     div.collapse.navbar-collapse#navbarColor02
       ul.navbar-nav.ml-auto
         li
-          a.nav-item.nav-link(href='/executiveView') Home
+          a.nav-item.nav-link(href='/coachView') Home
         li
-          a.nav-link.nav-item(href='/executiveProfile') Profile
+          a.nav-link.nav-item(href='/coachProfile_coach') Profile
         li
-          a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
-        li
-          a.nav-item.nav-link(href='/addGoal_executive') Add Goal
+          a.nav-item.nav-link(href='/addGoal_coach') Add Goal
         li
           form(method='POST' action='/')
             input(type="hidden" name="signOut" value="signOut")
@@ -26,12 +24,7 @@ block content
         p(style="text-align:center")  #{goal.goal_description}
       .col-md-4
     .row
-      .col-md-4
-      .col-md-2.write-response
-        form(method='POST' action='/editGoal_executive')
-          input(type="hidden" name="isViewGoal" value="yes")
-          input(type="hidden" name="goal_id" value=goal.id)
-          button.btn.btn-outline-primary.btn-sm(type="submit" style="float:center") New Response
+      .col-md-5
       .col-md-2
         button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal" style="float:center") Update Progress
         .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')

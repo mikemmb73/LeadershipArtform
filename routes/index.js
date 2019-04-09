@@ -156,24 +156,29 @@ router.post('/executiveView', async function(req,res,next) {
   }
 });
 
-router.get('/executiveProfile', function(req,res,next){
-	res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive});
+router.get('/executiveProfile', async function(req,res,next){
+  var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
+	res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
 });
 
 router.post('/executiveProfile', async function(req,res,next) {
   var newInfo = req.body;
   console.log(newInfo);
   await profileServices.editExecutiveInfo(newInfo, currExecutive);
+
   res.redirect('/executiveProfile');
 });
 
-router.get('/executiveProfile_coach', function(req,res,next){
-  res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive});
+router.get('/executiveProfile_coach', async function(req,res,next){
+  var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
+  console.log("past goals in execProfile_coach GET: " + pastGoals);
+  res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
   var notes;
   currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
   console.log("currExecutive is " + currExecutive.execID);
 
   var execGoals = await profileServices.getExecGoals(currExecutive.execID);
@@ -188,7 +193,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
   notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
-    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes});
+    res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes, pastGoals:pastGoals});
   });
 });
 
@@ -286,6 +291,17 @@ router.post('/viewGoal_executive', async function(req, res) {
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
 
 });
+
+router.post('/viewGoal_coach', async function(req, res) {
+    var goal = await addGoalService.getGoalWithId(req.body.goal_id);
+    var currResponse = null;
+    if (goal.goal_responses.length > 0) {
+      currResponse = goal.goal_responses[0]
+    }
+    res.render('viewGoal_coach.pug', {goal: goal, currResponse: currResponse});
+
+});
+
 
 
 

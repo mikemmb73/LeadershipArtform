@@ -108,6 +108,13 @@ module.exports = {
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [execID]);
     const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
     return goalRowsArray;
+  },
+
+  getExecCompletedGoals: async function(execID){
+    var progress = 100;
+    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ? AND progress = ? ", [execID, progress]);
+    const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
+    return goalRowsArray;
   }
 
 

@@ -1,4 +1,4 @@
-mixin print_goal(goal)
+mixin print_goal_coach(goal)
   while goal.goal_due_date < Date.now()
     - var new_date = new Date(goal.goal_due_date.getTime() + 604800000)
     - goal.goal_due_date = new_date
@@ -10,7 +10,7 @@ mixin print_goal(goal)
           h4 #{goal.goal_title}
           p #{goal.goal_description}
         div.form_view_goal.col-md-6
-          form(method="POST", action="/viewGoal_executive")
+          form(method="POST", action="/viewGoal_coach")
             input(type="hidden" name="goal_id" value=goal.id)
             button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:75px") View Goal
       div.progress.row

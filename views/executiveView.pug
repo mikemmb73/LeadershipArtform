@@ -33,4 +33,5 @@ block content
 	div.jumbotron
 		h3 Current Goals
 		each goal in user.exec_goals
-			+print_goal(goal)
+			if goal.goal_progress < 100
+				+print_goal(goal)
