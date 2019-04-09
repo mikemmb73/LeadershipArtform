@@ -1,6 +1,6 @@
 var mysql2 = require('mysql2/promise');
 
-var connection = mysql.createPool({
+const connection = mysql2.createPool({
   connectionLimit : 10,
   host     : process.env.RDS_HOSTNAME,
   user     : process.env.RDS_USERNAME,
