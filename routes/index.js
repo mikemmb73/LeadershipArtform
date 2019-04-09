@@ -71,11 +71,11 @@ router.post('/coachView', async function(req, res) {
       }
       else {
         clients = await loginservices.getClientGoals(user);
-        console.log("OG CLIENTS" + clients)
-        for (var i = 0; i < clients.length; i++) {
-          console.log("CLIENT GOALS" + clients[i].goals_list);
-          console.log("CLIENT GOALS 2" + clients[i].goals);
-        }
+        //console.log("OG CLIENTS" + clients)
+        // for (var i = 0; i < clients.length; i++) {
+        //   console.log("CLIENT GOALS" + clients[i].goals_list);
+        //   console.log("CLIENT GOALS 2" + clients[i].goals);
+        // }
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else if (req.body.emailReminder != null) {
@@ -98,8 +98,11 @@ router.post('/coachView', async function(req, res) {
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else if (req.body.acceptRequest != null) { //approving a client's progress update
       console.log("this is the client's goal ID" + req.body.acceptRequest);
+      console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
       await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
+      clients = await loginservices.getClientGoals(user);
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+      //res.redirect('coachView');
   } else { //sending an email to invite a client
       var name = req.body.clientName;
       var email = req.body.emailAddress;
@@ -322,10 +325,12 @@ router.post('/viewGoal_coach', async function(req, res) {
     }
 
     if (req.body.acceptRequest != null) { //approving a client's progress update
-      console.log("this is the client's goal ID" + req.body.acceptRequest);
-      await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
+      // console.log("this is the client's goal ID" + req.body.acceptRequest);
+      // console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN VIEWGOAL_COACH");
+      // await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
     } else if (req.body.coachChange != null) { //the coach is updating the client's progress manually
-      await addGoalService.updateProgressCoach(req.body.goal_id, req.body.progress)
+      console.log("inside coachChange!!!!");
+      await addGoalService.updateProgressCoach(req.body.goal_id, req.body.progress);
     }
 
     res.render('viewGoal_coach.pug', {goal: goal, currResponse: currResponse});
