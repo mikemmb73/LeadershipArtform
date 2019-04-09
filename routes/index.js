@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var emailServices = require('../services/emailservices');
+var emailservices = require('../services/emailservices.js');
 var loginservices= require('../services/loginservices')
 var notesServices = require('../services/notesServices');
 var profileServices = require('../services/profileServices');
@@ -40,7 +40,7 @@ router.get('../model/executiveCoach.js', function(req, res) {
 /* GET homepage for coach. */
 router.get('/coachView', function(req, res, next) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients);
+    emailservices.sendAllReminders(clients);
   }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
@@ -79,7 +79,7 @@ router.post('/coachView', async function(req, res) {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
       }
   } else if (req.body.emailReminder != null) {
-      emailServices.sendOneReminder(req.body.emailReminder);
+      emailservices.sendOneReminder(req.body.emailReminder);
   } else if (req.body.addCoachGoal != null) {
     var data2 = qs.parse(req.body);
     if (data2.goalTitle != "") {
@@ -94,7 +94,7 @@ router.post('/coachView', async function(req, res) {
       console.log("we want to send a message");
       var message = req.body.clientMessage;
       var client = req.body.messageClient;
-      emailServices.updateMessage(message, client)
+      emailservices.updateMessage(message, client)
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
   } else if (req.body.acceptRequest != null) { //approving a client's progress update
       console.log("this is the client's goal ID" + req.body.acceptRequest);
@@ -104,7 +104,7 @@ router.post('/coachView', async function(req, res) {
       var name = req.body.clientName;
       var email = req.body.emailAddress;
       var message = req.body.message;
-	    emailServices.sendEmail(currCoach, name, email, message);
+	    emailservices.sendEmail(currCoach, name, email, message);
       res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
     }
 
@@ -156,7 +156,7 @@ router.post('/executiveView', async function(req,res,next) {
   } else if (req.body.deleteMessage != null) { //deleting a client's message
     var message = " ";
     console.log("we are deleting the message!!!!!!!");
-    emailServices.updateMessage(message, currExecutive.username)
+    emailservices.updateMessage(message, currExecutive.username)
     currExecutive.coach_message = message;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
@@ -228,12 +228,12 @@ router.get('/coachProfile_executive', function(req,res,next){
 
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) {
-    emailServices.sendAllReminders(clients);
+    emailservices.sendAllReminders(clients);
   } else {
     var name = req.body.clientName;
     var email = req.body.emailAddress;
     var message = req.body.message;
-    emailServices.sendEmail(name, email, message);
+    emailservices.sendEmail(name, email, message);
   }
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
 });
