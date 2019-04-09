@@ -48,7 +48,7 @@ module.exports = {
   },
 
 
-  getClients: function(user) {
+  getClients: async function(user) {
     var id = user.coach_id_val;
     var clientList = [];
     console.log(id);
