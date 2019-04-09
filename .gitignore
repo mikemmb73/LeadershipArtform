@@ -20,6 +20,9 @@ package-lock.json
 *.gz
 .env
 
+services/sqlconnect.js
+migration.js
+
 # Coveralls
 coverage
 
