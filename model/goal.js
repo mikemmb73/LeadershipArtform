@@ -9,6 +9,7 @@ class Goal {
     this.frequency = obj.frequency;
     this.date_assigned = obj.date_assigned;
     this.currDueDate = obj.date_assigned;
+    this.progress_acceptance = obj.progress_acceptance; 
     var questions = [];
     this.questions = questions;
     var responses = [];
@@ -81,6 +82,13 @@ class Goal {
   }
   set goal_progress(val) {
     this.progress = val;
+  }
+
+  get progress_update() {
+    return this.progress_acceptance;
+  }
+  set progress_update(val) {
+    this.progress_acceptance = val;
   }
 
   set goal_frequency(val) {
