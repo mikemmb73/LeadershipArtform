@@ -9,7 +9,13 @@ var connection = mysql2.createPool({
   database : process.env.RDS_DB_NAME
 });
 
-
+// var connection = mysql2.createPool({
+//   connectionLimit : 10,
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'Pickoftheweek1!',
+//   database : 'Leadership_Artform'
+// });
 
 
 module.exports = {

@@ -20,6 +20,20 @@ block content
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	.row
 		h2(style="padding:15px") Hello, #{user.name}
+	.col-lg-4
+	- var today = new Date()
+	- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+	- var todayDateFormat = today.toLocaleDateString("en-US", options)
+	- var alreadyMessaged = "false"
+	if user.exec_goals.length != 0
+		each goal in user.exec_goals
+			- var goalDateFormat = goal.goal_date.toLocaleDateString("en-US", options)
+			if goalDateFormat == todayDateFormat && alreadyMessaged == "false"
+				- alreadyMessaged = true
+				br
+				.alert.alert-dismissible.alert-success
+					h5.text-success(style="text-align:center") You have a new goal
+
 	div.jumbotron
 		h3 Messages from coach:
 		br
