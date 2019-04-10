@@ -8,6 +8,8 @@ var Response = require("../model/response");
 module.exports = {
   addGoalExecutive: async function(goalData, currExecutive) {
     var today = new Date();
+    var nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
 
     // console.log("This is my goal data" + goalData.goalTitle);
     // console.log("This is my goal data" + goalData.goalTitle);
@@ -16,12 +18,13 @@ module.exports = {
       return;
     }
 
-    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
+    await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
 
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     // console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
+    currGoal.goal_due_date = nextWeek; 
     console.log("ROWS" + rows);
 
     if (goalData.mcQuestions != null) {
@@ -168,15 +171,18 @@ module.exports = {
         console.log("goal data is array" + goalData.clientForm[x]);
         var fullName = goalData.clientForm[x].split(" ");
         var today = new Date();
+        var nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
             console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
+            currGoal.goal_due_date = nextWeek; 
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -204,14 +210,17 @@ module.exports = {
         console.log("goal data is not array" + goalData.clientForm[i]);
         var fullName = goalData.clientForm.split(" ");
         var today = new Date();
+        var nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, 0]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
             console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
+            currGoal.goal_due_date = nextWeek; 
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -239,6 +248,8 @@ module.exports = {
 
   addPrevGoal: async function(goalData, goalTitle, currCoach, clients) {
     var today = new Date();
+    var nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
     const [rowsMatch, fieldsMatch] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ?", [goalTitle]);
     const currGoalArrayMatch = rowsMatch.map(x => new Goal.Goal(x));
     const currGoalMatch = currGoalArrayMatch[0];
@@ -247,13 +258,16 @@ module.exports = {
       for (var x = 0; x < goalData.clientForm.length; x++) {
         var fullName = goalData.clientForm[x].split(" ");
         var today = new Date();
+        var nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
 
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, 0]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
+            currGoal.goal_due_date = nextWeek; 
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -282,15 +296,16 @@ module.exports = {
         console.log(currGoalMatch);
         var fullName = goalData.clientForm.split(" ");
         var today = new Date();
+        var nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, 0]);
+            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.goal_title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
-            console.log("HEREEE");
-            console.log(currGoal);
-            console.log(goalData);
+            currGoal.goal_due_date = nextWeek; 
+
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
