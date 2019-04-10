@@ -10,7 +10,7 @@ block content
     .row
       .col-md-6.col-md-offset-3
         // register form
-        form(method='POST' action='/executiveView')
+        form(method='POST' action='/executiveView', enctype="multipart/form-data")
           div.form-group
             label(for='fname') First Name:
             input#fname.form-control(type='text', fname='fname', name='fname')
@@ -37,5 +37,5 @@ block content
             input#bio.form-control(type='text' name='bio')
           div.form-group
             label(for='image') Photo:
-            input#image.form-control(type='file' name='photo' accept='image/*')
+            input#image.form-control(type='file' name='image' accept='image/*')
           button.btn.btn-primary(type='submit') Sign up

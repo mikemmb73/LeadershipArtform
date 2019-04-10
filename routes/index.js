@@ -15,7 +15,9 @@ var currCoach;
 var clients;
 var currGoal;
 var user;
-
+const util = require('util');
+const upload = require('../services/image-upload');
+//const singleUpload = upload.single('image');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -45,72 +47,89 @@ router.get('/coachView', function(req, res, next) {
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
-router.post('/coachView', async function(req, res) {
-  if (req.body.fname != null) {
-    if (currCoach == null) {
-      user = await signup.signUpCoach(req.body.fname, req.body.lname,
-        req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.body.photo);
-      if (user == null) {
-        res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
-      }
-      else {
-        var promise = Promise.resolve(user);
-        promise.then(function(value) {
-          currCoach = user;
-          var clientList = [];
-          res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
-        });
+router.post('/coachView', upload.single('image'), async function(req, res) {
+  console.log(req.body);
+
+    if (req.body.fname != null) {
+      if (currCoach == null) {
+          console.log("here!")
+          console.log("LOCATION" + req.file.location);
+          console.log("here!!")
+          user = await signup.signUpCoach(req.body.fname, req.body.lname,
+            req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.file.location);
+          if (user == null) {
+            res.render('coachSignup.pug', {
+              title: 'Coach Signup',
+              signupMessage1: 'Duplicate email! Try again or Login.'
+            });
+          } else {
+            var promise = Promise.resolve(user);
+            promise.then(function(value) {
+              currCoach = user;
+              var clientList = [];
+              res.render('coachView.pug', {
+                title: 'Coach View',
+                user: currCoach,
+                clients: clientList
+              });
+            });
+
+          }
+
+
+
 
       }
-    }
-  } else if (req.body.username != null) { //signin a user
-      user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
-      currCoach = user;
-      if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
-        console.log("Password doesn't match (inside index.js)");
-        res.render("index", { title: 'Leadership as an Artform', message: 'Incorrect email or password! Try again.' });
+    } else if (req.body.username != null) { //signin a user
+        user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
+        currCoach = user;
+        if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
+          console.log("Password doesn't match (inside index.js)");
+          res.render("index", { title: 'Leadership as an Artform', message: 'Incorrect email or password! Try again.' });
+        }
+        else {
+          clients = await loginservices.getClientGoals(user);
+          //console.log("OG CLIENTS" + clients)
+          // for (var i = 0; i < clients.length; i++) {
+          //   console.log("CLIENT GOALS" + clients[i].goals_list);
+          //   console.log("CLIENT GOALS 2" + clients[i].goals);
+          // }
+          res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+        }
+    } else if (req.body.emailReminder != null) {
+        emailservices.sendOneReminder(req.body.emailReminder);
+    } else if (req.body.addCoachGoal != null) {
+      var data2 = qs.parse(req.body);
+      if (data2.goalTitle != "") {
+        addGoalService.addGoalCoach(data2, currCoach, clients);
+      } else {
+        console.log(data2.GoalButton);
+        console.log(req.body.GoalButton);
+        addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
       }
-      else {
-        clients = await loginservices.getClientGoals(user);
-        //console.log("OG CLIENTS" + clients)
-        // for (var i = 0; i < clients.length; i++) {
-        //   console.log("CLIENT GOALS" + clients[i].goals_list);
-        //   console.log("CLIENT GOALS 2" + clients[i].goals);
-        // }
+      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+    } else if (req.body.sendMessage != null) { //sending a message to a client
+        console.log("we want to send a message");
+        var message = req.body.clientMessage;
+        var client = req.body.messageClient;
+        emailservices.updateMessage(message, client)
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+    } else if (req.body.acceptRequest != null) { //approving a client's progress update
+        console.log("this is the client's goal ID" + req.body.acceptRequest);
+        console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
+        await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
+        clients = await loginservices.getClientGoals(user);
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+        //res.redirect('coachView');
+    } else { //sending an email to invite a client
+        var name = req.body.clientName;
+        var email = req.body.emailAddress;
+        var message = req.body.message;
+  	    emailservices.sendEmail(currCoach, name, email, message);
+        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
       }
-  } else if (req.body.emailReminder != null) {
-      emailservices.sendOneReminder(req.body.emailReminder);
-  } else if (req.body.addCoachGoal != null) {
-    var data2 = qs.parse(req.body);
-    if (data2.goalTitle != "") {
-      addGoalService.addGoalCoach(data2, currCoach, clients);
-    } else {
-      console.log(data2.GoalButton);
-      console.log(req.body.GoalButton);
-      addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
-    }
-    res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else if (req.body.sendMessage != null) { //sending a message to a client
-      console.log("we want to send a message");
-      var message = req.body.clientMessage;
-      var client = req.body.messageClient;
-      emailservices.updateMessage(message, client)
-      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-  } else if (req.body.acceptRequest != null) { //approving a client's progress update
-      console.log("this is the client's goal ID" + req.body.acceptRequest);
-      console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
-      await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
-      clients = await loginservices.getClientGoals(user);
-      res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-      //res.redirect('coachView');
-  } else { //sending an email to invite a client
-      var name = req.body.clientName;
-      var email = req.body.emailAddress;
-      var message = req.body.message;
-	    emailservices.sendEmail(currCoach, name, email, message);
-      res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
-    }
+
+
 
 });
 
@@ -124,7 +143,7 @@ router.get('/executiveView', async function(req,res,next){
    }
 });
 
-router.post('/executiveView', async function(req,res,next) {
+router.post('/executiveView', upload.single('image'), async function(req,res,next) {
   if (req.body.isEditGoalExec == 'yes'){
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
@@ -142,7 +161,7 @@ router.post('/executiveView', async function(req,res,next) {
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
-      req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.body.photo, req.body.coach_id);
+      req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.file.location, req.body.coach_id);
       // if (user == null) {   // duplicate email or ID not found
       if (user == -1) {
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
@@ -178,10 +197,10 @@ router.get('/executiveProfile', async function(req,res,next){
 	res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
 });
 
-router.post('/executiveProfile', async function(req,res,next) {
+router.post('/executiveProfile', upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   console.log(newInfo);
-  await profileServices.editExecutiveInfo(newInfo, currExecutive);
+  await profileServices.editExecutiveInfo(newInfo, currExecutive, req.file.location);
 
   res.redirect('/executiveProfile');
 });
@@ -219,10 +238,10 @@ router.get('/coachProfile_coach', async function(req,res,next){
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
 
-router.post('/coachProfile_coach', async function(req,res,next) {
+router.post('/coachProfile_coach', upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   console.log(newInfo);
-  await profileServices.editCoachInfo(newInfo, currCoach);
+  await profileServices.editCoachInfo(newInfo, currCoach, req.file.location);
   console.log("after call to profileServices");
   res.redirect('/coachProfile_coach');
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});

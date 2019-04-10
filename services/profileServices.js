@@ -3,12 +3,12 @@ var Goal = require("../model/goal");
 
 module.exports = {
 
-  editCoachInfo: async function(newInfo, currCoach){
+  editCoachInfo: async function(newInfo, currCoach, newImage){
     var newFName = newInfo.newFName;
     var newLName = newInfo.newLName;
     var newEmail = newInfo.newEmail;
     var newBio = newInfo.newBio;
-    var newPhoto = newInfo.newPhoto;
+    var newPhoto = newImage;
     var newFullName;
 
     if (newFName != currCoach.first_name && newFName != ''){
@@ -54,12 +54,12 @@ module.exports = {
 
   },
 
-  editExecutiveInfo: async function(newInfo, currExec){
+  editExecutiveInfo: async function(newInfo, currExec, imageLocation){
     var newFName = newInfo.newFName;
     var newLName = newInfo.newLName;
     var newEmail = newInfo.newEmail;
     var newBio = newInfo.newBio;
-    var newPhoto = newInfo.newPhoto;
+    var newPhoto = imageLocation;
     var newFullName;
 
     if (newFName != currExec.first_name && newFName != ''){

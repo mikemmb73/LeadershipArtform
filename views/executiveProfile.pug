@@ -21,7 +21,7 @@ block content
 	div.row
 		div.col-md-1
 		div.col-md-2
-			img#profileImage(src='#{user.photograph}')
+			img#profileImage(src=user.photograph)
 			br
 			br
 			br
@@ -36,7 +36,7 @@ block content
 		.modal(role="dialog", id="editProfileModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
-					form(id = "form" method='POST' action='/executiveProfile')
+					form(id = "form" method='POST' action='/executiveProfile', enctype="multipart/form-data")
 						.modal-header
 							h5 Edit Profile
 							button(class="close",data-dismiss="modal")
@@ -56,7 +56,7 @@ block content
 								input(type="textarea" name="newBio" style="height:150px" size="60" placeholder=user.bio_info)
 							p Photo
 								br
-								input#image.form-control(type='file' name='newPhoto' accept='image/*')
+								input#image.form-control(type='file' name='image' accept='image/*')
 						.modal-footer
 							button.btn.badge.badge-pill.badge-info(type='submit') Update
 

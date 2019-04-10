@@ -4,6 +4,9 @@ var Executive = require('../model/executive');
 var currentExecutive;
 var currentCoach;
 
+
+
+
 module.exports = {
   signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
@@ -14,6 +17,8 @@ module.exports = {
       }
       else {
         console.log("Rows empty, adding to coaches.");
+        console.log('OUTPUTTING TYPE OF PHOTO: ')
+        console.log(typeof(photo));
         await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
