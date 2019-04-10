@@ -35,12 +35,14 @@ block content
 								span &times;
 						.modal-body
 							p Client Name:
+								br
 								input(type="text" name="clientName")
 							p Email Address:
+								br
 								input(type="text" name="emailAddress")
 							p Welcome Message:
 								br
-								input(type="textarea" name = "message")
+								input(type="textarea" name = "message" style="height:200px" size="85")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
 
@@ -51,10 +53,12 @@ block content
 		h3 Progress Approval Requests:
 		br
 		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+			- var noApprovals = "true";
 			.card-body
 				each obj in clients
 					each goal in obj.goals_list
 						if goal.progress_acceptance != goal.progress
+							- noApprovals = "false";
 							br
 							br
 							h5 #{obj.fname} #{obj.lname}
@@ -65,3 +69,7 @@ block content
 							form(method='POST' action='/coachView')
 								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes
 								input(type="hidden" name="acceptRequest" value=goal.goal_id)
+			if noApprovals == "true"
+				h4.text-danger(style="text-align:center") No pending approvals
+				br
+				br

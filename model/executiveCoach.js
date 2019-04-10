@@ -56,6 +56,10 @@ class ExecutiveCoach {
     return this.fname
   }
 
+  get last_name(){
+    return this.lname;
+  }
+
 	get user_email() {
 		return this.email;
 	}

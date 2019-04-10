@@ -44,16 +44,16 @@ block content
 						.modal-body
 							p First Name:
 								br
-								input(type="text" name="newFName")
+								input(type="text" name="newFName" placeholder=user.first_name)
 							p Last Name:
 								br
-								input(type="text" name="newLName")
+								input(type="text" name="newLName" placeholder=user.last_name)
 							p Email Address:
 								br
-								input(type="text" name="newEmail")
+								input(type="text" name="newEmail" placeholder=user.username)
 							p Short Biography
 								br
-								input(type="textarea" name ="newBio" size="90px")
+								input(type="textarea" name="newBio" style="height:150px" size="60" placeholder=user.bio_info)
 							p Photo
 								br
 								input#image.form-control(type='file' name='image' accept='image/*')
@@ -62,9 +62,9 @@ block content
 
 		.row
 	div.jumbotron
-		h3 Past Goals
-		if pastGoals != null
+		h3 Completed Goals
+		if pastGoals.length != 0
 			each pastGoal in pastGoals
 				+print_goal(pastGoal)
 		else
-			p There are no completed goals
+			h4.text-danger(style="text-align:center") There are no completed goals

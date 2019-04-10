@@ -39,12 +39,14 @@ block content
 									span &times;
 							.modal-body
 								p Client Name:
+									br
 									input(type="text" name="clientName")
 								p Email Address:
+									br
 									input(type="text" name="emailAddress")
 								p Welcome Message:
 									br
-									input(type="textarea" name = "message")
+									input(type="textarea" name = "message" style="height:200px" size="85")
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
 		div.col-md-1
@@ -52,7 +54,7 @@ block content
 		.modal(role="dialog", id="editProfileModal")
 			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
-					form(id = "form" method='POST' action='/coachProfile_coach', enctype="multipart/form-data")
+					form(id = "form" method='POST' , name="editProfileForm",action='/coachProfile_coach', enctype="multipart/form-data")
 						.modal-header
 							h5 Edit Profile
 							button(class="close",data-dismiss="modal")
@@ -60,16 +62,16 @@ block content
 						.modal-body
 							p First Name:
 								br
-								input(type="text" name="newFName")
+								input(type="text" name="newFName" placeholder=user.first_name)
 							p Last Name:
 								br
-								input(type="text" name="newLName")
+								input(type="text" name="newLName" placeholder=user.last_name)
 							p Email Address:
 								br
-								input(type="text" name="newEmail")
+								input(type="text" name="newEmail" size="30" placeholder=user.user_email)
 							p Short Biography
 								br
-								input(type="textarea" name ="newBio" size="90px")
+								input(type="textarea" name="newBio" style="height:150px" size="60" placeholder=user.biography)
 							p Photo
 								br
 								input#image.form-control(type='file' name='image' accept='image/*')
@@ -81,6 +83,9 @@ block content
 	br
 	h3 Clients
 	div.row.jumbotron
+			if clients.length == 0
+				.col-md-4
+				h5.text-danger(style="text-align:center") You have no clients yet
 			each obj in clients
 				.col-md-2
 					img#clientImage(src='obj.photo')
@@ -111,7 +116,7 @@ block content
 										span &times;
 								.modal-body
 									p Message:
-										input(type="text" name="clientMessage")
+										input(type="text" name="clientMessage" style="height=200px" size="80")
 								.modal-footer
 									-var emailAddress = obj.email
 									input(type="hidden" name="messageClient" value=emailAddress)
