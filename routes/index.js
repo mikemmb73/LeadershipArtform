@@ -130,6 +130,8 @@ router.post('/executiveView', async function(req,res,next) {
     var mcQuestionCount = req.body.mcQuestionCount;
     var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+    console.log("++++++++++++++++++++"); 
+    await responseServices.updateDeadline(goal); 
     var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
     currExecutive = user;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
