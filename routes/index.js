@@ -56,10 +56,11 @@ router.post('/coachView', async function(req, res) {
       else {
         var promise = Promise.resolve(user);
         promise.then(function(value) {
+          currCoach = user;
+          var clientList = [];
+          res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
         });
-        currCoach = user;
-        var clientList = [];
-        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clientList});
+
       }
     }
   } else if (req.body.username != null) { //signin a user
@@ -213,7 +214,8 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
   });
 });
 
-router.get('/coachProfile_coach', function(req,res,next){
+router.get('/coachProfile_coach', async function(req,res,next){
+  clients = await loginservices.getClientGoals(user);
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
 

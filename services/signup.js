@@ -14,7 +14,7 @@ module.exports = {
       }
       else {
         console.log("Rows empty, adding to coaches.");
-        mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
+        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("Current coach: " + currCoach[0]);
@@ -38,7 +38,7 @@ module.exports = {
         currentExecutive = -2;
       }
       else {
-        mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);
+        await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
         const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];
@@ -48,11 +48,11 @@ module.exports = {
   },
 
 
-  getClients: function(user) {
+  getClients: async function(user) {
     var id = user.coach_id_val;
     var clientList = [];
     console.log(id);
-    mysql.connect.execute("SELECT * FROM executives WHERE coach_id = "+id, function(err, rows) {
+    await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = "+id, function(err, rows) {
       var i;
       console.log('in select statement');
       console.log(rows.length);
