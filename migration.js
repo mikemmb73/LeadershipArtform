@@ -11,4 +11,5 @@ var connection = mysql.createPool({
 });
 
 
+
 migration.init(connection, __dirname + '/migrations');
