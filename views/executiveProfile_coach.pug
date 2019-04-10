@@ -61,15 +61,18 @@ block content
 	br
 	div.jumbotron
 		h3 Current Goals
-		each goal in user.exec_goals
-			if goal.goal_progress < 100
-				+print_goal_coach(goal)
+		if user.exec_goals.length == 0
+			h4.text-danger(style="text-align:center") There are no current goals
+		else
+			each goal in user.exec_goals
+				if goal.goal_progress < 100
+					+print_goal_coach(goal)
 
 
 	div.jumbotron
-		h3 Past Goals
-		if pastGoals != null
+		h3 Completed Goals
+		if pastGoals.length != 0
 			each pastGoal in pastGoals
 				+print_goal_coach(pastGoal)
 		else
-			p There are no completed goals
+			h4.text-danger(style="text-align:center") There are no completed goals
