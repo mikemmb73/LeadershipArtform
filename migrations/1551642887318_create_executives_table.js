@@ -4,6 +4,6 @@ module.exports = {
     "email VARCHAR(255), password VARCHAR(255)," +
     "fname VARCHAR(255), lname VARCHAR(255), phone_number VARCHAR(255)," +
     "message TEXT," +
-    "bio VARCHAR(8000), photo VARBINARY(8000), coach_id INT)",
+    "bio VARCHAR(8000), photo VARCHAR(255), coach_id INT)",
     "down": "DROP TABLE executives"
 }
