@@ -22,6 +22,25 @@ module.exports = {
     return questionRowsArray;
   },
 
+  updateDeadline: async function(goal){
+    console.log("??????"); 
+    var goal_id = goal.id;
+    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goal_id]);
+    const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
+    var goal =  goalRowsArray[0];
+    var oldDate = goal.goal_due_date; 
+    var newDate = new Date();
+    newDate.setDate(oldDate.getDate() + 7); 
+    await mysql.connect.execute("UPDATE goals SET currDueDate = ? WHERE goal_id = ? ",[newDate, goal_id]);
+    const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goal_id]);
+    if (rows != null) {
+      const currGoalArray = rows.map(x => new Goal.Goal(x));
+      const currGoal = currGoalArray[0];
+      currGoal.goal_due_date = newDate; 
+    }
+
+  },
+
 
   addResponses: async function(goal, responses, mcQuestionCount, likertQuestionCount) {
 
