@@ -8,7 +8,7 @@ class Goal {
     this.progress = obj.progress;
     this.frequency = obj.frequency;
     this.date_assigned = obj.date_assigned;
-    this.currDueDate = obj.date_assigned;
+    this.currDueDate = obj.currDueDate;
     this.progress_acceptance = obj.progress_acceptance; 
     var questions = [];
     this.questions = questions;
