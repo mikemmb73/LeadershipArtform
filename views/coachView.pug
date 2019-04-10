@@ -35,12 +35,14 @@ block content
 								span &times;
 						.modal-body
 							p Client Name:
+								br
 								input(type="text" name="clientName")
 							p Email Address:
+								br
 								input(type="text" name="emailAddress")
 							p Welcome Message:
 								br
-								input(type="textarea" name = "message")
+								input(type="textarea" name = "message" style="height:200px" size="85")
 						.modal-footer
 							button.btn.btn-primary(type='submit') Submit
 
@@ -68,6 +70,6 @@ block content
 								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes
 								input(type="hidden" name="acceptRequest" value=goal.goal_id)
 			if noApprovals == "true"
-				h4(style="text-align:center") No pending approvals
+				h4.text-danger(style="text-align:center") No pending approvals
 				br
 				br

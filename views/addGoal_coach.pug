@@ -24,12 +24,15 @@ block content
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 				div.card-header Available Executives
 				div.card-body
-					.form-group
-						label(for="selRecip") To select multiple, hold command or shift (or drag with mouse)
-						select.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
-							each obj in clients
-								var recipName = obj.fname + obj.lname;
-								option(value=recipName) #{obj.fname} #{obj.lname}
+					if clients.length == 0
+						h6.text-danger(style="text-align:center") You must first invite a client to add and assign a goal
+					else
+						.form-group
+							label(for="selRecip") To select multiple, hold command or shift (or drag with mouse)
+							select.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
+								each obj in clients
+									var recipName = obj.fname + obj.lname;
+									option(value=recipName) #{obj.fname} #{obj.lname}
 		div.jumbotron
 			h3 Frequency Reminder
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')

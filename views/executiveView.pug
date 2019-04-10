@@ -28,10 +28,16 @@ block content
 				div.card-header Delete message
 					button(style="float: right" classe-"btn btn-danger" type="submit") X
 				div.card-body
-					p #{user.coach_message}
+					if user.coach_message.length == 0
+						h4.text-danger(style="text-align:center") No current messages
+					else
+						p #{user.coach_message}
 				input(type="hidden" name="deleteMessage" value="deleteMessage")
 	div.jumbotron
 		h3 Current Goals
-		each goal in user.exec_goals
-			if goal.goal_progress < 100
-				+print_goal(goal)
+		if user.exec_goals.length == 0
+			h4.text-danger(style="text-align:center") There are no current goals
+		else
+			each goal in user.exec_goals
+				if goal.goal_progress < 100
+					+print_goal(goal)
