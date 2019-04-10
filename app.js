@@ -9,8 +9,8 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-console.log(process.env.SECRET_ACCESS_KEY);
-console.log(process.env.ACCESS_ID);
+console.log(process.env.AWS_SECRET_ACCESS_KEY);
+console.log(process.env.AWS_ACCESS_KEY_ID);
 
 //pug compile
 //const pug = require('pug');
