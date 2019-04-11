@@ -25,6 +25,8 @@ block content
 			br
 			h1 #{user.name}
 			h6 #{user.username}
+			-var username = user.username
+			input(type="hidden" name="profileClick" value=username)
 			p #{user.bio_info}
 		div.col-md-2
 
@@ -45,6 +47,27 @@ block content
 							.modal-body
 									input(type="text" name="noteContent" size="75px")
 									input(type="hidden" name="currExecID" value=user.execID)
+									input(type="hidden" name="profileClick" value=username)
+							.modal-footer
+								button.btn.btn-primary(type='submit') Submit
+			br
+			br
+			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#sendMessageModal") Send Message
+			.modal(role="dialog", id="sendMessageModal")
+				.modal-dialog-centered.custom_modal_dialog(role="document")
+					.modal-content
+						form(id = "form" method='POST' action='/executiveProfile_coach')
+							.modal-header
+								h5 Send Message to #{user.name} 
+								button.close(type='button' data-dismiss="modal")
+									span &times;
+							.modal-body
+								p Message: 
+									-var emailAddress = user.username
+									input(type="text" name="clientMessage" style="height=200px" size="80")
+									input(type="hidden" name="messageClient" value=emailAddress)
+									input(type="hidden" name="profileClick" value=username)
+									input(type="hidden" name="sendMessage" value="sendMessage")
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
 
