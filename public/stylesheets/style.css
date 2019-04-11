@@ -93,14 +93,14 @@ form .likert li input[type=radio] {
   width:650px;
 }
 #profileImage{
-  width:170px;
-  height:150px;
+  width:250px;
+  height:270px;
   padding: 20px;
 }
 
 #clientImage{
-  height:100px;
-  width:120px;
+  height:150px;
+  width:170px;
 }
 
 #freeResponseQuestion{

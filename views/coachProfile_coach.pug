@@ -88,7 +88,7 @@ block content
 				h5.text-danger(style="text-align:center") You have no clients yet
 			each obj in clients
 				.col-md-2
-					img#clientImage(src=obj.photo)
+					img#clientImage(src=obj.photo style="height:500px width:500px")
 				.col-md-2
 					h3 #{obj.fname} #{obj.lname}
 					p #{obj.email}
