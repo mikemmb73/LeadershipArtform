@@ -108,12 +108,6 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
       }
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-    } else if (req.body.sendMessage != null) { //sending a message to a client
-        console.log("we want to send a message");
-        var message = req.body.clientMessage;
-        var client = req.body.messageClient;
-        emailservices.updateMessage(message, client)
-        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.acceptRequest != null) { //approving a client's progress update
         console.log("this is the client's goal ID" + req.body.acceptRequest);
         console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
@@ -214,8 +208,12 @@ router.get('/executiveProfile_coach', async function(req,res,next){
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
+  console.log("HERE1"); 
   var notes;
+  console.log(req.body.profileClick); 
   currExecutive = await loginservices.getExecutive(req.body.profileClick);
+  console.log("HERE1"); 
+
   var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
   console.log("currExecutive is " + currExecutive.execID);
 
@@ -226,6 +224,13 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
   if (req.body.noteContent != null){
     await notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
     notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+  } else if (req.body.sendMessage != null) { //sending a message to a client
+    console.log("we want to send a message");
+    var message = req.body.clientMessage;
+    var client = req.body.messageClient;
+    console.log(client + "!!!!!"); 
+    console.log(message + "******")
+    emailservices.updateMessage(message, client)
   }
 
   notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);

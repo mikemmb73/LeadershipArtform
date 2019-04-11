@@ -2,10 +2,10 @@ var mysql2 = require('mysql2/promise');
 
 var connection = mysql2.createPool({
   connectionLimit : 10,
-  host     : "localhost",
-  user     : "root",
-  password : "Chalked1512!",
-  database : "Leadership_Artform"
+  host     : 'localhost',
+  user     : 'root',
+  password : 'rootroot',
+  database : 'Leadership_Artform'
 });
 
 
