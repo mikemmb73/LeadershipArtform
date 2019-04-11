@@ -8,17 +8,17 @@ var currentCoach;
 
 
 module.exports = {
-  signUpCoach: async function(fname, lname, email, phone, password, bio, photo) {
+  signUpCoach: async function(fname, lname, email, phone, password, confirmPassword, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
     currentCoach = null;
     if (rows != null) {
-      if (rows.length != 0) {
-        currentCoach = null;
+      if (rows.length != 0) {                          // duplicate email
+          currentCoach = -2;
+      }
+      else if (password != confirmPassword) {  // passwords provided don't match
+        currentCoach = -1;
       }
       else {
-        console.log("Rows empty, adding to coaches.");
-        console.log('OUTPUTTING TYPE OF PHOTO: ')
-        console.log(typeof(photo));
         await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
@@ -29,7 +29,7 @@ module.exports = {
     return currentCoach;
   },
 
-  signUpExecutive: async function(fname, lname, email, phone, password, bio, photo, coach_id) {
+  signUpExecutive: async function(fname, lname, email, phone, password, confirmPassword, bio, photo, coach_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
     const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = ?", [coach_id]);
     currentExecutive = null;
@@ -39,8 +39,10 @@ module.exports = {
         currentExecutive = -1;
       }
       else if (rowsID.length == 0) {  // if coach ID isn't found
-
         currentExecutive = -2;
+      }
+      else if (password != confirmPassword) {  // passwords provided don't match
+        currentExecutive = -3;
       }
       else {
         await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);

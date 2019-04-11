@@ -52,17 +52,20 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
 
     if (req.body.fname != null) {
       if (currCoach == null) {
-          console.log("here!")
-          console.log("LOCATION" + req.file.location);
-          console.log("here!!")
+          // console.log("here!")
+          // console.log("LOCATION" + req.file.location);
+          // console.log("here!!")
           user = await signup.signUpCoach(req.body.fname, req.body.lname,
-            req.body.email, req.body.phone_number, req.body.password, req.body.bio, req.file.location);
-          if (user == null) {
-            res.render('coachSignup.pug', {
-              title: 'Coach Signup',
-              signupMessage1: 'Duplicate email! Try again or Login.'
-            });
-          } else {
+            req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, req.file.location);
+          // if (user == null) {
+          if (user == -1) {
+            res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
+          }
+          if (user == -2) {
+            res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
+          }
+          // }
+          else {
             var promise = Promise.resolve(user);
             promise.then(function(value) {
               currCoach = user;
@@ -143,8 +146,8 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     var mcQuestionCount = req.body.mcQuestionCount;
     var likertQuestionCount = req.body.likertQuestionCount;
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
-    console.log("++++++++++++++++++++"); 
-    await responseServices.updateDeadline(goal); 
+    console.log("++++++++++++++++++++");
+    await responseServices.updateDeadline(goal);
     var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
     currExecutive = user;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
@@ -157,16 +160,16 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
   if (currExecutive == null) {
     if (req.body.fname != null) {
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
-      req.body.email,req.body.phone_number, req.body.password, req.body.bio, req.file.location, req.body.coach_id);
-      // if (user == null) {   // duplicate email or ID not found
+      req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, req.file.location, req.body.coach_id);
       if (user == -1) {
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       if (user == -2) {
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
       }
-        // res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
-      // }
+      if (user == -3) {
+        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
+      }
       currExecutive = user;
     } else {
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
