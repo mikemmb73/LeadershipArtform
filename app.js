@@ -6,16 +6,14 @@ var logger = require('morgan');
 const bodyParser = require("body-parser");
 const dotenv = require('dotenv');
 dotenv.config();
-console.log(process.env.SECRET_ACCESS_KEY);
-console.log(process.env.ACCESS_ID);
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-console.log(process.env.SECRET_ACCESS_KEY);
-console.log(process.env.ACCESS_ID);
+
 
 
 
