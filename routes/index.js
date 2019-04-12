@@ -257,7 +257,7 @@ router.post('/coachProfile_coach', upload.single('image'), async function(req,re
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
-router.get('/coachProfile_executive', function(req,res,next){
+router.get('/coachProfile_executive', async function(req,res,next){
   currCoach  = await loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
@@ -277,7 +277,7 @@ router.post('/coachProfile_coach', function(req, res) {
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile'});
 });
 
-router.get('/addGoal_coach', function(req,res,next){
+router.get('/addGoal_coach', async function(req,res,next){
   var clients2 = await loginservices.getClientGoals(currCoach);
   var promise = Promise.resolve(clients2);
   promise.then(function(value) {
