@@ -14,7 +14,7 @@ var connection = mysql.createPool({
 //   connectionLimit : 10,
 //   host     : 'localhost',
 //   user     : 'root',
-//   password : 'root',
+//   password : 'Pickoftheweek1!',
 //   database : 'Leadership_Artform'
 // });
 
