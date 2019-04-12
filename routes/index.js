@@ -100,15 +100,15 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
           res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
         }
     } else if (req.body.emailReminder != null) {
-        emailservices.sendOneReminder(req.body.emailReminder);
+        await emailservices.sendOneReminder(req.body.emailReminder);
     } else if (req.body.addCoachGoal != null) {
       var data2 = qs.parse(req.body);
       if (data2.goalTitle != "") {
-        addGoalService.addGoalCoach(data2, currCoach, clients);
+        await addGoalService.addGoalCoach(data2, currCoach, clients);
       } else {
         console.log(data2.GoalButton);
         console.log(req.body.GoalButton);
-        addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
+        await addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
       }
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.acceptRequest != null) { //approving a client's progress update
@@ -122,7 +122,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         var name = req.body.clientName;
         var email = req.body.emailAddress;
         var message = req.body.message;
-  	    emailservices.sendEmail(currCoach, name, email, message);
+  	    await emailservices.sendEmail(currCoach, name, email, message);
         res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
       }
 
@@ -183,7 +183,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
   } else if (req.body.deleteMessage != null) { //deleting a client's message
     var message = " ";
     console.log("we are deleting the message!!!!!!!");
-    emailservices.updateMessage(message, currExecutive.username)
+    await emailservices.updateMessage(message, currExecutive.username)
     currExecutive.coach_message = message;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
@@ -211,11 +211,11 @@ router.get('/executiveProfile_coach', async function(req,res,next){
 });
 
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  console.log("HERE1"); 
+  console.log("HERE1");
   var notes;
-  console.log(req.body.profileClick); 
+  console.log(req.body.profileClick);
   currExecutive = await loginservices.getExecutive(req.body.profileClick);
-  console.log("HERE1"); 
+  console.log("HERE1");
 
   var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
   console.log("currExecutive is " + currExecutive.execID);
@@ -231,7 +231,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
     console.log("we want to send a message");
     var message = req.body.clientMessage;
     var client = req.body.messageClient;
-    console.log(client + "!!!!!"); 
+    console.log(client + "!!!!!");
     console.log(message + "******")
     emailservices.updateMessage(message, client)
   }
@@ -258,7 +258,7 @@ router.post('/coachProfile_coach', upload.single('image'), async function(req,re
 });
 
 router.get('/coachProfile_executive', function(req,res,next){
-  currCoach  = loginservices.getExecutiveCoach(currExecutive);
+  currCoach  = await loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
     res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
@@ -278,7 +278,7 @@ router.post('/coachProfile_coach', function(req, res) {
 });
 
 router.get('/addGoal_coach', function(req,res,next){
-  var clients2 = loginservices.getClientGoals(currCoach);
+  var clients2 = await loginservices.getClientGoals(currCoach);
   var promise = Promise.resolve(clients2);
   promise.then(function(value) {
     res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
