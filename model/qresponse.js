@@ -1,3 +1,11 @@
+/*****
+Language: javascript
+
+This file describes the QResponse class. The constructor includes all fields that
+are also used in the response table. All fields have a getter/setter function. 
+
+****/
+
 class QResponse {
   constructor(obj) {
     this.response_id = obj.response_id;

@@ -1,3 +1,14 @@
+/*****
+Language: javascript
+
+This file describes the coach class. The constructor includes all fields that
+are also used in the coaches table. Goals and executives are arrays that are populated
+when an executive signs up with this coach's id and when coach creates a goal for 
+the executive. All fields have a getter/setter function. The arrays have add functions that push the
+value to their array. 
+
+****/
+
 class ExecutiveCoach {
 
   constructor(obj) {
@@ -16,28 +27,6 @@ class ExecutiveCoach {
     var executives = [];
     this.executives = executives;
   }
-
-//  	constructor(first_name, last_name, user_email, phone, pass, description, picture, id_coach) {
-//     this.fname = first_name;
-// 		this.lname = last_name;
-// 		this.email = user_email;
-// 		this.phone_number = phone;
-// 		this.password = pass;
-// 		this.bio = description;
-// 		this.photo = picture;
-//     this.coach_id = id_coach;
-//
-// 		var _goals = [];
-// 		this.goals = _goals;
-//
-// 		var _executives = [];
-// 		this.executives = _executives;
-// }
-		//assign an ID to the executive coach
-		//idea: have a global counter that increments by 1 every time a coach signs up
-
-		// var id = controller.getNextAvailableID();
-		// this.id = id;
 
   set phone_num(_phone_number) {
     this.phone_number = _phone_number;

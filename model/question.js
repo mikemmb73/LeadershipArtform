@@ -1,3 +1,14 @@
+/*****
+Language: javascript
+
+This file describes the questions class. The constructor includes all fields that
+are also used in the questions table. Answers is an array that is populated
+when an executive adds a response to the specific goal. All
+fields have a getter/setter function. The array has an add functions that pushes the
+value to their array. 
+
+****/
+
 class Question {
   constructor(obj) {
     this.title = obj.title;

@@ -1,3 +1,11 @@
+/*****
+Language: javascript
+
+This file describes the notes class. The constructor includes all fields that
+are also used in the notes table. All fields have getter and setter functions. 
+
+****/
+
 class Note {
  	constructor(object) {
 		this.coach_id = object.coach_id;

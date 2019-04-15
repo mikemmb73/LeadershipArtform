@@ -1,3 +1,13 @@
+/*****
+Language: javascript
+
+This file describes the goal class. The constructor includes all fields that
+are also used in the goals table. Questions and responses are arrays that are populated
+when a coach/executive adds a question or response to this goal. All fields have
+a getter/setter function. 
+
+****/
+
 class Goal {
  	constructor(obj) {
 		this.title = obj.title;

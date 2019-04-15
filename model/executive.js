@@ -1,3 +1,14 @@
+/*****
+Language: javascript
+
+This file describes the executive class. The constructor includes all fields that
+are also used in the executives table. Goals and notes are arrays that are populated
+when a coach/executive adds a goal and/or note to this particular executive. All
+fields have a getter/setter function. The arrays have add functions that push the
+value to their array. 
+
+****/
+
 class Executive {
  	constructor(object) {
 		this.fname = object.fname;
