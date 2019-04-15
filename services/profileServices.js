@@ -1,8 +1,20 @@
+/*****
+
+notesServices.js allows express and node.js to interact with the database when the 
+user is on the profile page
+
+****/ 
+
 var mysql = require("./sqlconnect.js");
 var Goal = require("../model/goal");
 
 module.exports = {
 
+  /**
+  editCoachInfo:
+  paramters- newInfo, currCoach, newImage
+  purpose- Changes the coach's information if they request to edit it. 
+  **/
   editCoachInfo: async function(newInfo, currCoach, newImage){
     var newFName = newInfo.newFName;
     var newLName = newInfo.newLName;
@@ -54,6 +66,11 @@ module.exports = {
 
   },
 
+  /**
+  editExecutiveInfo:
+  paramters- newInfo, currExec, imageLocation
+  purpose- Changes the executive's information if they request to edit it. 
+  **/
   editExecutiveInfo: async function(newInfo, currExec, imageLocation){
     var newFName = newInfo.newFName;
     var newLName = newInfo.newLName;
@@ -104,12 +121,23 @@ module.exports = {
     }
   },
 
+  /**
+  getExecGoals:
+  paramters- execID
+  purpose- Returns the goals associated with the executive. 
+  **/
   getExecGoals: async function(execID){
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [execID]);
     const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
     return goalRowsArray;
   },
 
+
+  /**
+  getExecCompletedGoals:
+  paramters- execID
+  purpose- Returns the goals associated with the executive that are completed (progress is 100%)
+  **/
   getExecCompletedGoals: async function(execID){
     var progress = 100;
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ? AND progress = ? ", [execID, progress]);

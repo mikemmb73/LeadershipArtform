@@ -1,13 +1,25 @@
+/*****
+
+notesServices.js allows express and node.js to interact with the database when the
+user wishes to sign up
+
+****/ 
+
 var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 var currentExecutive;
 var currentCoach;
 
-
-
-
 module.exports = {
+  /**
+  signUpCoach
+  paramters- fname, lname, email, phone, password, confirmPassword, bio, photo
+  purpose- Adds to the coach database if all aspects of the form are complted. Returns the 
+  currentCoach that was created, otherwise null if unsuccessful
+  notes- Does not add to the database if the email is already in use or if the 
+  passwords provided do not match. 
+  **/
   signUpCoach: async function(fname, lname, email, phone, password, confirmPassword, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
     currentCoach = null;
@@ -29,6 +41,14 @@ module.exports = {
     return currentCoach;
   },
 
+  /**
+  signUpExecutive
+  paramters- fname, lname, email, phone, password, confirmPassword, bio, photo, coach_id
+  purpose- Adds to the executive database if all aspects of the form are complted. Returns the 
+  currentExecutive that was created, otherwise null if unsuccessful
+  notes- Does not add to the database if the email is already in use or if the 
+  passwords provided do not match or if the coach id does not exist. 
+  **/
   signUpExecutive: async function(fname, lname, email, phone, password, confirmPassword, bio, photo, coach_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
     const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = ?", [coach_id]);
@@ -54,7 +74,11 @@ module.exports = {
     return currentExecutive;
   },
 
-
+  /**
+  getClients
+  paramters- user
+  purpose- Returns the clients (executives) associated with the coach. 
+  **/
   getClients: async function(user) {
     var id = user.coach_id_val;
     var clientList = [];
@@ -71,10 +95,19 @@ module.exports = {
     return clientList;
   },
 
+  /**
+  getCurrentExecutive
+  purpose- Returns logged in executive. 
+  **/
   getCurrentExecutive: function() {
     return currentExecutive;
   },
 
+
+  /**
+  getCurrentCoach
+  purpose- Returns logged in coach. 
+  **/
   getCurrentCoach: function() {
     return currentCoach;
   }

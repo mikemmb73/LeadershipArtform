@@ -1,3 +1,7 @@
+/*
+Creates the goals table 
+*/
+
 module.exports = {
     "up": "CREATE TABLE goals(" +
     "goal_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, coach_id INT, executive_id INT," +

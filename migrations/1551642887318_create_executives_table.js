@@ -1,3 +1,7 @@
+/*
+Creates the executive table 
+*/
+
 module.exports = {
     "up": "CREATE TABLE executives(" +
     "executive_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +

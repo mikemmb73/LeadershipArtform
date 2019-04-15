@@ -1,3 +1,10 @@
+/*****
+
+addGoalServices.js allows express and node.js to interact with AWS in regards
+to image storage. 
+
+****/ 
+
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');

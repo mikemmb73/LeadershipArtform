@@ -1,3 +1,10 @@
+/*****
+
+loginservices.js allows express and node.js to interact with the database when the 
+executive or coach decides to log in. 
+
+****/ 
+
 var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
@@ -9,6 +16,12 @@ var isCorrectPass = false;
 
 module.exports = {
 
+	/**
+	getExecutiveAuthent:
+	paramters- email, password
+	purpose- Checks from the database for the correct email/password combination. If it does not match,
+	the user will not be logged in. Otherwise, they will be redirected to their executiveView
+	**/
 	getExecutiveAuthent: async function(email, password) {
 		const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
 		const currExecutive = rows.map(x => new Executive.Executive(x));
@@ -18,9 +31,6 @@ module.exports = {
 				if (pw == password) {
 					isCorrectPass = true;
 					currentExecutive = currExecutive[0];
-					console.log("GET AUTHENT");
-					console.log(rows);
-					console.log(currentExecutive); 
 					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
 					const [rows2, fields2] = await mysql.connect.execute(getStatement);
 					const currGoalArray = rows2.map(x => new Goal.Goal(x));
@@ -37,6 +47,12 @@ module.exports = {
 		return currentExecutive;
 	},
 
+	/**
+	getClientGoals:
+	paramters- coach
+	purpose- Called when a coach is logged in. This returns all of their clients goals and helps to populate
+	their view 
+	**/
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
 		var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + coach.coach_id_val + ", coach_id)";
@@ -60,6 +76,12 @@ module.exports = {
 		return currExecutives;
 	},
 
+	/**
+	getCoachAuthent:
+	paramters- email, password
+	purpose- Checks from the database for the correct email/password combination. If it does not match,
+	the user will not be logged in. Otherwise, they will be redirected to their coachView
+	**/
 	getCoachAuthent: async function(email, password) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
 			const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
@@ -78,6 +100,11 @@ module.exports = {
 	    return currentCoach;
 	},
 
+	/**
+	getClients:
+	paramters- user
+	purpose- Returns the clients of the signed in coach. 
+	**/
 	getClients: async function(user) {
 	    var id = user.coach_id_val;
 	    console.log("ID HERE: " + id);
@@ -87,6 +114,11 @@ module.exports = {
 	    return currCoach;
   	},
 
+	/**
+	getExecutiveCoach:
+	paramters- executive
+	purpose- Returns the coach that is mapped to the executive. 
+	**/
 	getExecutiveCoach: async function(executive) {
 		console.log
 		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coachID + ", coach_id)";
@@ -95,12 +127,14 @@ module.exports = {
 	    return currCoach[0];
 	},
 
+	/**
+	getExecutive:
+	paramters- email
+	purpose- Returns the executive that is mapped to the email provided. 
+	**/
 	getExecutive: async function(email) {
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
-	    const currExecutive = rows.map(x => new Executive.Executive(x));
-	    console.log("WE ARE IN EXECUTIVE");
-	    console.log(rows);
-	    console.log(currExecutive[0]); 
+	    const currExecutive = rows.map(x => new Executive.Executive(x)); 
 	    return currExecutive[0];
 	}
 };

@@ -1,3 +1,10 @@
+/*****
+
+responseServices.js allows express and node.js to interact with the database when the 
+executive adds a response to their question 
+
+****/ 
+
 var Executive = require("../model/executive");
 var QResponse = require("../model/qresponse");
 var Question = require("../model/question");
@@ -6,6 +13,11 @@ var mysql = require("./sqlconnect.js");
 
 module.exports = {
 
+  /**
+  getGoalWithID:
+  paramters- goalID
+  purpose- Returns the goal given the goalID. 
+  **/
   getGoalWithID: async function(goalID){
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
     const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
@@ -13,6 +25,11 @@ module.exports = {
     return goalRowsArray[0];
   },
 
+  /**
+  getQuestions:
+  paramters- goalID
+  purpose- Returns the questions associated with the goal's id. 
+  **/
   getQuestions: async function(goal_id){
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goal_id]);
     const goalRowsArray = goalRows.map(x => new Goal.Goal(x));
@@ -22,6 +39,11 @@ module.exports = {
     return questionRowsArray;
   },
 
+  /**
+  updateDeadline:
+  paramters- goal
+  purpose- When a response is recorded, we update the currDueDate to be one week later.  
+  **/
   updateDeadline: async function(goal){
     console.log("??????"); 
     var goal_id = goal.id;
@@ -41,6 +63,16 @@ module.exports = {
 
   },
 
+
+  /**
+  addResponses:
+  paramters- goal, responses, mcQuestionCount, likertQuestionCount
+  purpose- Adds a response to the database associated with teh goal's id.
+  notes- Multiple choice questions and likert questions are handled more complexly than
+  the free response question, as they have to loop through the response number associated
+  with their choice's option. If they choose the first option, for example, that will be logged
+  alongside the answer associated with that option. 
+  **/
 
   addResponses: async function(goal, responses, mcQuestionCount, likertQuestionCount) {
 
@@ -74,20 +106,6 @@ module.exports = {
       console.log("printing " + responses[likertQuestion])
       responseArray.push(responses[likertQuestion]);
     }
-
-    console.log("response array value: " + responseArray);
-
-    // if (likertResponse instanceof Array){
-    //   console.log("instance of array");
-    //   for (var i = 0; i < likertResponse.length; i++){
-    //     var targetLikert = 'likert' + i;
-
-    //     likertArray.push(likertResponse[i]);
-    //   }
-    // }
-    // else if (likertResponse != null){
-    //   responseArray.push(likertResponse);
-    // }
 
     var today = new Date();
 
@@ -130,14 +148,6 @@ module.exports = {
         // }
       }
     }
-    //
-    // for (var i = 0; i < questionRowsArray.length; i++){
-    //   var question_id = questionRowsArray[i].question_id;
-    //   if (mcResponse)
-    // }
-    //
-    //
-    // await mysql.connect.execute("INSERT INTO responses(question_id, response_date, answer) VALUES(?, ?, ?);", [questionID, today, answer]);
 
   }
 };

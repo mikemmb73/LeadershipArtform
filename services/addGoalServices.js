@@ -1,3 +1,10 @@
+/*****
+
+addGoalServices.js allows express and node.js to interact with the database when the 
+executive or coach decides to add a goal. 
+
+****/ 
+
 var mysql = require("./sqlconnect.js");
 var Goal = require("../model/goal");
 var Question = require("../model/question");
@@ -6,6 +13,13 @@ var Response = require("../model/response");
 
 // MC =0, FR = 1, L = 2
 module.exports = {
+
+  /**
+  addGoalExecutive:
+  paramters- the goal information and the current executive logged on
+  purpose- insert the goal information into the database. 
+  notes- coach_id will entered as -1, since the executive entered this goal
+  **/
   addGoalExecutive: async function(goalData, currExecutive) {
     var today = new Date();
     var nextWeek = new Date();
@@ -25,7 +39,6 @@ module.exports = {
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
     currGoal.goal_due_date = nextWeek; 
-    console.log("ROWS" + rows);
 
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
@@ -51,10 +64,15 @@ module.exports = {
     const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
     const currQuestionArray = questionRows.map(x => new Question.Question(x));
     currGoal.goal_questions = currQuestionArray;
-    console.log("CURR GOAL" + currGoal);
     currExecutive.addGoal(currGoal);
   },
 
+
+  /**
+  viewGoalExecutive:
+  paramters- the goal information and the current executive logged on
+  purpose- view the goal information and the questions within the goal 
+  **/
   viewGoalExecutive: async function(goalData, currExecutive) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     if (rows != null){
@@ -73,6 +91,11 @@ module.exports = {
     }
   },
 
+  /**
+  acceptProgressUpdate:
+  paramters- goalID
+  purpose- Called when a coach has accepts the executive's request to update their pgoress. 
+  **/
   acceptProgressUpdate: async function(goalID) {
     var progressValue;
     const [rows1, fields1] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
@@ -81,21 +104,24 @@ module.exports = {
       const currGoal = currGoalArray[0];
       progressValue = currGoal.progress_update;
     }
-    // console.log("THIS IS MY PROGRESS VALUE" + progressValue);
 
     var statement = "UPDATE goals SET progress= " + progressValue + " WHERE goal_id = " + goalID;
     await mysql.connect.execute(statement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
     if (rows != null) {
-      // console.log("I am setting the progress value of the goal");
       const currGoalArray = rows.map(x => new Goal.Goal(x));
       const currGoal = currGoalArray[0];
-      // console.log("CURRENT GOAL HAD THIS PROGRESS " + currGoal.goal_progress);
       currGoal.goal_progress = progressValue;
-      // console.log("CURRENT GOAL NOW HAS THIS PROGRESS " + currGoal.goal_progress);
     }
   },
 
+  /**
+  updateProgressCoach:
+  paramters- goalID, progressValue
+  purpose- Called when an executive wishes to update the progress of their goal.
+  notes- this only updates the progress_acceptance field. The progress is not reflected
+  until the coach explicitly approves the request. 
+  **/
   updateProgressCoach: async function(goalID, progressValue) {
     // console.log("updateProgress" + goalID + " " + progressValue);
     var statement = "UPDATE goals SET progress = " + progressValue + " WHERE goal_id = " + goalID;
@@ -112,31 +138,35 @@ module.exports = {
 
   },
 
+  /**
+  updateProgress:
+  paramters- goalID, progressValue
+  purpose- Called when a coach wishes to update the progress of the executive's goal.
+  notes- this updates the executive's progrss field immediately and should be reflected
+  in the progress bar
+  **/
   updateProgress: async function(goalID, progressValue) {     //when exec requests to change progress
     console.log("updateProgress" + goalID + " " + progressValue);
     var statement = "UPDATE goals SET progress_acceptance = " + progressValue + " WHERE goal_id = " + goalID;
     await mysql.connect.execute(statement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
     if (rows != null) {
-      // console.log("I am setting the progress value of the goal");
       const currGoalArray = rows.map(x => new Goal.Goal(x));
       const currGoal = currGoalArray[0];
-      // console.log("CURRENT GOAL HAD THIS PROGRESS when exec requests " + currGoal.goal_progress);
       currGoal.progress_update = progressValue;
-      // console.log("CURRENT GOAL NOW HAS THIS PROGRESS after exec requests " + currGoal.goal_progress);
-      // console.log("Hoping to update to  " + currGoal.progress_update);
     }
   },
 
+  /**
+  getGoalWithId:
+  paramters- goal_id
+  purpose- returns the goal given it's id. Includes the questions in the goal and any responses that have been logged 
+  **/
   getGoalWithId: async function(goal_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * from goals WHERE goal_id = ?", [goal_id]);
     if (rows != null) {
-      console.log("ROW VALUE");
-      console.log(rows);
       const goalArray = rows.map(x => new Goal.Goal(x));
       const currGoal = goalArray[0];
-      console.log(currGoal);
-      console.log("In get goal ID, and curr goal has a value of: " + currGoal.goal_progress);
       var [questions, qFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = ?", [goal_id]);
       const questionsArray = questions.map(x => new Question.Question(x));
       currGoal.goal_questions = questionsArray;
@@ -163,6 +193,13 @@ module.exports = {
     return null;
   },
 
+  /**
+  addGoalCoach:
+  paramters- goalData, currCoach, clients
+  purpose- Called when a coach wishes to add a goal to a client or client(s). If clients, the
+  client form will be of an array type, and will enter the first if statement. If only one client,
+  the client form will be a string and will not need to loop through the entire clientForm
+  **/
   addGoalCoach: async function(goalData, currCoach, clients) {
     console.log("CLIENT FORM" + goalData.clientForm.length);
     typeof clientForm;
@@ -246,6 +283,14 @@ module.exports = {
     }
   },
 
+  /**
+  addPrevGoal:
+  paramters- goalData, goalTitle, currCoach, clients
+  purpose- Called when a coach wishes to reuse a goal they have previously assigned. They are able
+  to select one or multiple clients to assign the goal to. 
+  notes- If goalData.clientForm is an array, the coach has selected mutliple clients and will loop through
+  each in order to add to the database. If it is a string, the coach will only add to that one specific executive. 
+  **/
   addPrevGoal: async function(goalData, goalTitle, currCoach, clients) {
     var today = new Date();
     var nextWeek = new Date();
@@ -329,7 +374,6 @@ module.exports = {
           }
       }
     }
-                console.log("here");
   }
 
 };
