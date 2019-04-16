@@ -1,9 +1,9 @@
 /*****
 
-loginservices.js allows express and node.js to interact with the database when the 
-executive or coach decides to log in. 
+loginservices.js allows express and node.js to interact with the database when the
+executive or coach decides to log in.
 
-****/ 
+****/
 
 var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
@@ -23,7 +23,7 @@ module.exports = {
 	the user will not be logged in. Otherwise, they will be redirected to their executiveView
 	**/
 	getExecutiveAuthent: async function(email, password) {
-		const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+		const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
 		const currExecutive = rows.map(x => new Executive.Executive(x));
 		if (rows != null) {
 			if (rows.length != 0) {
@@ -51,7 +51,7 @@ module.exports = {
 	getClientGoals:
 	paramters- coach
 	purpose- Called when a coach is logged in. This returns all of their clients goals and helps to populate
-	their view 
+	their view
 	**/
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
@@ -83,7 +83,7 @@ module.exports = {
 	the user will not be logged in. Otherwise, they will be redirected to their coachView
 	**/
 	getCoachAuthent: async function(email, password) {
-	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase().trim()]);
 			const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 			if (rows != null) {
 	      if (rows.length != 0) {
@@ -103,7 +103,7 @@ module.exports = {
 	/**
 	getClients:
 	paramters- user
-	purpose- Returns the clients of the signed in coach. 
+	purpose- Returns the clients of the signed in coach.
 	**/
 	getClients: async function(user) {
 	    var id = user.coach_id_val;
@@ -117,7 +117,7 @@ module.exports = {
 	/**
 	getExecutiveCoach:
 	paramters- executive
-	purpose- Returns the coach that is mapped to the executive. 
+	purpose- Returns the coach that is mapped to the executive.
 	**/
 	getExecutiveCoach: async function(executive) {
 		console.log
@@ -130,11 +130,11 @@ module.exports = {
 	/**
 	getExecutive:
 	paramters- email
-	purpose- Returns the executive that is mapped to the email provided. 
+	purpose- Returns the executive that is mapped to the email provided.
 	**/
 	getExecutive: async function(email) {
-	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
-	    const currExecutive = rows.map(x => new Executive.Executive(x)); 
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
+	    const currExecutive = rows.map(x => new Executive.Executive(x));
 	    return currExecutive[0];
 	}
 };

@@ -211,7 +211,7 @@ module.exports = {
         var nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
-          if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
+          if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
 
 
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
@@ -256,7 +256,7 @@ module.exports = {
           console.log("+" + fullName[0].valueOf() + "+");
           console.log("+" + clients[j].lname.valueOf() + "+");
           console.log("+" + fullName[1].valueOf() + "+");
-          if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
+          if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
             console.log("IN THE LOOP TO ADD QUESTION");
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
             console.log("added goal");
@@ -312,7 +312,7 @@ module.exports = {
         var nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
-          if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
+          if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
 
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.title, clients[j].executive_id]);
@@ -350,7 +350,7 @@ module.exports = {
         var nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
-          if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
+          if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.goal_title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));

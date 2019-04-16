@@ -3,7 +3,7 @@
 notesServices.js allows express and node.js to interact with the database when the
 user wishes to sign up
 
-****/ 
+****/
 
 var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
@@ -15,10 +15,10 @@ module.exports = {
   /**
   signUpCoach
   paramters- fname, lname, email, phone, password, confirmPassword, bio, photo
-  purpose- Adds to the coach database if all aspects of the form are complted. Returns the 
+  purpose- Adds to the coach database if all aspects of the form are complted. Returns the
   currentCoach that was created, otherwise null if unsuccessful
-  notes- Does not add to the database if the email is already in use or if the 
-  passwords provided do not match. 
+  notes- Does not add to the database if the email is already in use or if the
+  passwords provided do not match.
   **/
   signUpCoach: async function(fname, lname, email, phone, password, confirmPassword, bio, photo) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
@@ -31,8 +31,8 @@ module.exports = {
         currentCoach = -1;
       }
       else {
-        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, bio, photo]);
-        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase()]);
+        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), password, fname.trim(), lname.trim(), phone, bio, photo]);
+        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase().trim()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("Current coach: " + currCoach[0]);
         currentCoach = currCoach[0];
@@ -44,13 +44,13 @@ module.exports = {
   /**
   signUpExecutive
   paramters- fname, lname, email, phone, password, confirmPassword, bio, photo, coach_id
-  purpose- Adds to the executive database if all aspects of the form are complted. Returns the 
+  purpose- Adds to the executive database if all aspects of the form are complted. Returns the
   currentExecutive that was created, otherwise null if unsuccessful
-  notes- Does not add to the database if the email is already in use or if the 
-  passwords provided do not match or if the coach id does not exist. 
+  notes- Does not add to the database if the email is already in use or if the
+  passwords provided do not match or if the coach id does not exist.
   **/
   signUpExecutive: async function(fname, lname, email, phone, password, confirmPassword, bio, photo, coach_id) {
-    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
     const [rowsID, fieldsID] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = ?", [coach_id]);
     currentExecutive = null;
     var message = "";
@@ -65,8 +65,8 @@ module.exports = {
         currentExecutive = -3;
       }
       else {
-        await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase(), password, fname, lname, phone, message, bio, photo, coach_id]);
-        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+        await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), password, fname.trim(), lname.trim(), phone, message, bio, photo, coach_id]);
+        const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
         const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];
       }
@@ -77,7 +77,7 @@ module.exports = {
   /**
   getClients
   paramters- user
-  purpose- Returns the clients (executives) associated with the coach. 
+  purpose- Returns the clients (executives) associated with the coach.
   **/
   getClients: async function(user) {
     var id = user.coach_id_val;
@@ -97,7 +97,7 @@ module.exports = {
 
   /**
   getCurrentExecutive
-  purpose- Returns logged in executive. 
+  purpose- Returns logged in executive.
   **/
   getCurrentExecutive: function() {
     return currentExecutive;
@@ -106,7 +106,7 @@ module.exports = {
 
   /**
   getCurrentCoach
-  purpose- Returns logged in coach. 
+  purpose- Returns logged in coach.
   **/
   getCurrentCoach: function() {
     return currentCoach;
