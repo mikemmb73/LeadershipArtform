@@ -2,7 +2,7 @@ var mysql2 = require('mysql2/promise');
 
 /*
 If choosing to host on the actual website, use these environmental variables
-(specified in the .env file) to access AWS. 
+(specified in the .env file) to access AWS.
 */
 var connection = mysql2.createPool({
   connectionLimit : 10,
@@ -13,7 +13,7 @@ var connection = mysql2.createPool({
   database : process.env.RDS_DB_NAME
 });
 
-/* 
+/*
 If choosing to host locally, use your mySQL credentials
 */
 
@@ -21,7 +21,7 @@ If choosing to host locally, use your mySQL credentials
 //   connectionLimit : 10,
 //   host     : 'localhost',
 //   user     : 'root',
-//   password : 'Pickoftheweek1!',
+//   password : 'Chalked1512!',
 //   database : 'Leadership_Artform'
 // });
 

@@ -1,9 +1,9 @@
 /*****
 
-addGoalServices.js allows express and node.js to interact with the database when the 
-executive or coach decides to add a goal. 
+addGoalServices.js allows express and node.js to interact with the database when the
+executive or coach decides to add a goal.
 
-****/ 
+****/
 
 var mysql = require("./sqlconnect.js");
 var Goal = require("../model/goal");
@@ -17,7 +17,7 @@ module.exports = {
   /**
   addGoalExecutive:
   paramters- the goal information and the current executive logged on
-  purpose- insert the goal information into the database. 
+  purpose- insert the goal information into the database.
   notes- coach_id will entered as -1, since the executive entered this goal
   **/
   addGoalExecutive: async function(goalData, currExecutive) {
@@ -38,7 +38,7 @@ module.exports = {
     // console.log(rows);
     const currGoalArray = rows.map(x => new Goal.Goal(x));
     const currGoal = currGoalArray[0];
-    currGoal.goal_due_date = nextWeek; 
+    currGoal.goal_due_date = nextWeek;
 
     if (goalData.mcQuestions != null) {
       for (var i=0; i<goalData.mcQuestions.length; i++) {
@@ -71,7 +71,7 @@ module.exports = {
   /**
   viewGoalExecutive:
   paramters- the goal information and the current executive logged on
-  purpose- view the goal information and the questions within the goal 
+  purpose- view the goal information and the questions within the goal
   **/
   viewGoalExecutive: async function(goalData, currExecutive) {
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
@@ -94,7 +94,7 @@ module.exports = {
   /**
   acceptProgressUpdate:
   paramters- goalID
-  purpose- Called when a coach has accepts the executive's request to update their pgoress. 
+  purpose- Called when a coach has accepts the executive's request to update their pgoress.
   **/
   acceptProgressUpdate: async function(goalID) {
     var progressValue;
@@ -120,7 +120,7 @@ module.exports = {
   paramters- goalID, progressValue
   purpose- Called when an executive wishes to update the progress of their goal.
   notes- this only updates the progress_acceptance field. The progress is not reflected
-  until the coach explicitly approves the request. 
+  until the coach explicitly approves the request.
   **/
   updateProgressCoach: async function(goalID, progressValue) {
     // console.log("updateProgress" + goalID + " " + progressValue);
@@ -160,7 +160,7 @@ module.exports = {
   /**
   getGoalWithId:
   paramters- goal_id
-  purpose- returns the goal given it's id. Includes the questions in the goal and any responses that have been logged 
+  purpose- returns the goal given it's id. Includes the questions in the goal and any responses that have been logged
   **/
   getGoalWithId: async function(goal_id) {
     const [rows, fields] = await mysql.connect.execute("SELECT * from goals WHERE goal_id = ?", [goal_id]);
@@ -219,7 +219,7 @@ module.exports = {
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
-            currGoal.goal_due_date = nextWeek; 
+            currGoal.goal_due_date = nextWeek;
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -244,6 +244,8 @@ module.exports = {
         }
       }
     } else {
+        console.log("printing goal data");
+        console.log(goalData);
         console.log("goal data is not array" + goalData.clientForm[i]);
         var fullName = goalData.clientForm.split(" ");
         var today = new Date();
@@ -251,13 +253,13 @@ module.exports = {
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
-
+            console.log("IN THE LOOP TO ADD QUESTION");
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
             console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
-            currGoal.goal_due_date = nextWeek; 
+            currGoal.goal_due_date = nextWeek;
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -287,9 +289,9 @@ module.exports = {
   addPrevGoal:
   paramters- goalData, goalTitle, currCoach, clients
   purpose- Called when a coach wishes to reuse a goal they have previously assigned. They are able
-  to select one or multiple clients to assign the goal to. 
+  to select one or multiple clients to assign the goal to.
   notes- If goalData.clientForm is an array, the coach has selected mutliple clients and will loop through
-  each in order to add to the database. If it is a string, the coach will only add to that one specific executive. 
+  each in order to add to the database. If it is a string, the coach will only add to that one specific executive.
   **/
   addPrevGoal: async function(goalData, goalTitle, currCoach, clients) {
     var today = new Date();
@@ -312,7 +314,7 @@ module.exports = {
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
-            currGoal.goal_due_date = nextWeek; 
+            currGoal.goal_due_date = nextWeek;
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
                 var choices = "";
@@ -349,7 +351,7 @@ module.exports = {
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.goal_title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
-            currGoal.goal_due_date = nextWeek; 
+            currGoal.goal_due_date = nextWeek;
 
             if (goalData.mcQuestions != null) {
               for (var i=0; i<goalData.mcQuestions.length; i++) {
