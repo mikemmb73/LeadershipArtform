@@ -12,43 +12,49 @@ block content
       div.row
         div.col-md-2
         h4.loginLabel(style="margin-left:10px") LOG IN OR &nbsp
-        a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px") Sign Up
+        a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
         div.col-md-3
         br
       div.row
+        div.col-md-2
         div.col-md-8
-          form(method='POST' action='/coachView')
-            div.form-group(style="float: none, margin: 0 auto")
+        div.col
+          form(method='POST' action='/coachView' id="loginForm")
+            div.form-group
               input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: left" required)
             div.form-group
               input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: left" required)
-              h6(style="color: red; text-align: left") #{message}
-            button.btn.btn-primary.btn-sm(type='submit', style="margin-left:130px") Sign In
-            p#loginPrompt.pull-right.login-prompt
+            h6(style="color: red; text-align: left") #{message}
+            div.row
+              div.col-md-5
+              button.btn.btn-primary.btn-sm(type='submit') Sign In
+              p#loginPrompt.pull-right.login-prompt
             br
-        div.col-md-1
         br
-      h3#IndexHeader(style="margin-left:5px") AS COACH
+      h3#IndexHeader AS COACH
 
     div.col
     div.col-md-4.jumbotron
       div.row
         div.col-md-2
         h4.loginLabel(style="margin-left:10px") LOG IN OR &nbsp
-        a(class='button btn btn-primary btn-sm' href='executiveSignup' style="margin-left:60px, margin-top:1px") Sign Up
+        a(class='button btn btn-primary btn-sm' href='executiveSignup' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
         div.col-md-3
         br
       div.row
+        div.col-md-2
         div.col-md-8
+        div.col
           form(method='POST' action='/executiveView' id="loginForm")
             div.form-group
               input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: left" required)
             div.form-group
               input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: left" required)
             h6(style="color: red; text-align: left") #{message2}
-            button.btn.btn-primary.btn-sm(type='submit', style="margin-left:110px") Sign In
-            p#loginPrompt.pull-right.login-prompt
+            div.row
+              div.col-md-5
+              button.btn.btn-primary.btn-sm(type='submit') Sign In
+              p#loginPrompt.pull-right.login-prompt
             br
-        div.col-md-1
-      h3#IndexHeader(style="margin-left:5px") AS EXECUTIVE
+      h3#IndexHeader AS EXECUTIVE
     div.col

@@ -1,5 +1,6 @@
 body {
   padding: 50px;
+  padding-bottom: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -39,7 +40,6 @@ form .likert li input[type=radio] {
 }
 
 #IndexHeader{
-  margin-left: 15px;
   text-align: center;
 }
 
@@ -64,14 +64,6 @@ form .likert li input[type=radio] {
   margin-top:50px;
   align: center;
 
-}
-
-#loginForm{
-  margin-left:23px;
-}
-
-.loginLabel{
-  margin-left:18px;
 }
 
 #submitButton{
@@ -122,6 +114,10 @@ form .likert li input[type=radio] {
 
 .signOut_button {
   color: red;
+}
+
+.signUp_button {
+  background-color: gray !important;
 }
 
 .custom_modal_dialog {
