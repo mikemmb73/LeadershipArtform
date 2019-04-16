@@ -252,10 +252,10 @@ module.exports = {
         var nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
-          console.log(clients[j].fname.valueOf());
-          console.log(fullName[0].valueOf());
-          console.log(clients[j].lname.valueOf());
-          console.log(fullName[1].valueOf());
+          console.log("+" + clients[j].fname.valueOf() + "+");
+          console.log("+" + fullName[0].valueOf() + "+");
+          console.log("+" + clients[j].lname.valueOf() + "+");
+          console.log("+" + fullName[1].valueOf() + "+");
           if (clients[j].fname.valueOf() == fullName[0].valueOf() && clients[j].lname.valueOf() == fullName[1].valueOf()){
             console.log("IN THE LOOP TO ADD QUESTION");
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
