@@ -3,64 +3,58 @@ extends layout
 block content
   script
     include ../routes/index.js
-  h1= title
+  h2= title
   p Leadership as an Art Form is a platform for Coaches and Executives to achieve their leadership goals. Through an interactive site, coaches and executives can track progress on individual goals and access all completed milestones. What are your aspirations for your leadership development? Let Leadership as an Art Form guide you.
-  br
   br
   div.row
     div.col
-    div.col-md-5.jumbotron
+    div.col-md-4.jumbotron
       div.row
-        div.col-md-5
-        a(class='button btn btn-primary' href='coachSignup' role='button') Sign Up
-      div.row
-        div.col-md-5
-        h4.orLabel OR
-        div.col-md-5
-      div.row
-        div.col-md-4
-        h4.loginLabel(style="margin-left:37px") LOG IN
-        div.col-md-5
+        div.col-md-2
+        h4.loginLabel(style="margin-left:10px") LOG IN OR &nbsp
+        a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
+        div.col-md-3
+        br
       div.row
         div.col-md-2
         div.col-md-8
-          form(method='POST' action='/coachView')
+        div.col
+          form(method='POST' action='/coachView' id="loginForm")
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: center" required)
+              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: left" required)
             div.form-group
-              input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: center" required)
-              h6(style="color: red; text-align: center") #{message}
-            button.btn.btn-primary.btn-small(type='submit', style="margin-left:90px") Sign In
-            p#loginPrompt.pull-right.login-prompt
-        div.col-md-2
-      br
-      h2#IndexHeader AS COACH
+              input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: left" required)
+            h6(style="color: red; text-align: left") #{message}
+            div.row
+              div.col-md-5
+              button.btn.btn-primary.btn-sm(type='submit') Sign In
+              p#loginPrompt.pull-right.login-prompt
+            br
+        br
+      h3#IndexHeader AS COACH
 
     div.col
-    div.col-md-5.jumbotron
+    div.col-md-4.jumbotron
       div.row
-        div.col-md-4
-        a(class='button btn btn-primary' href='executiveSignup' style="margin-left:60px") Sign Up
-      div.row
-        div.col-md-4
-        h4.orLabel(style="margin-left:60px") OR
-        div.col-md-5
-      div.row
-        div.col-md-4
-        h4.loginLabel(style="margin-left:37px") LOG IN
-          div.col-md-5
+        div.col-md-2
+        h4.loginLabel(style="margin-left:10px") LOG IN OR &nbsp
+        a(class='button btn btn-primary btn-sm' href='executiveSignup' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
+        div.col-md-3
+        br
       div.row
         div.col-md-2
         div.col-md-8
+        div.col
           form(method='POST' action='/executiveView' id="loginForm")
             div.form-group
-              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: center" required)
+              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: left" required)
             div.form-group
-              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: center" required)
-            h6(style="color: red; text-align: center") #{message2}
-            button.btn.btn-primary.btn-small(type='submit', style="margin-left:75px") Sign In
-            p#loginPrompt.pull-right.login-prompt
-        div.col-md-2
-      br
-      h2#IndexHeader AS EXECUTIVE
+              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: left" required)
+            h6(style="color: red; text-align: left") #{message2}
+            div.row
+              div.col-md-5
+              button.btn.btn-primary.btn-sm(type='submit') Sign In
+              p#loginPrompt.pull-right.login-prompt
+            br
+      h3#IndexHeader AS EXECUTIVE
     div.col
