@@ -9,6 +9,16 @@ var mysql = require("./sqlconnect.js");
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 
+const aws = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+
+aws.config.update({
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: process.env.ACCESS_ID,
+  region: 'us-west-2'
+});
+
 module.exports = {
 	/**
 	sendEmail:
@@ -16,38 +26,55 @@ module.exports = {
 	purpose- The currCoach will send an email from leadershipartform@gmail.com to the designated client. 
 	The email field indicates the desired executive's email address that the email will be sent to. They are
 	able to customize a welcome message as well.
-
-	TODO:   
-	notes- Currently, this is implemented using nodemailer, which is not supported by AWS. We are currently
-	awaiting approval to use the AWS email service 
 	**/
 	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function");
-		var nodemailer = require('nodemailer');
-		var newMessage = "Dear " + name + ", " + "\n" + message + "\n" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up";
+		var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
+		newMessage += "Please go to http://productionv1.j5zacpxzt4.us-west-2.elasticbeanstalk.com/executiveSignup to sign up as an executive."; 
 
-		var transporter = nodemailer.createTransport({
-		  service: 'gmail',
-		  auth: {
-		    user: 'leadershipartform@gmail.com',
-		    pass: 'leadership401'
-		  }
-		});
-
-		var mailOptions = {
-		  from: 'leadershipartform@gmail.com',
-		  to: email,
-		  subject: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform! Please go to this website and sign up as an executive.',
-		  text: newMessage
+		// Create sendEmail params 
+		var params = {
+		  Destination: { /* required */
+		    // CcAddresses: [
+		    //   'EMAIL_ADDRESS',
+		    //   /* more items */
+		    // ],
+		    ToAddresses: [
+		      email,
+		      /* more items */
+		    ]
+		  },
+		  Message: { /* required */
+		    Body: { /* required */
+		      Html: {
+		       Charset: "UTF-8",
+		       Data: newMessage
+		      },
+		      Text: {
+		       Charset: "UTF-8",
+		       Data: "TEXT_FORMAT_BODY"
+		      }
+		     },
+		     Subject: {
+		      Charset: 'UTF-8',
+		      Data: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Leadership as an Artform!'
+		     }
+		    },
+		  Source: 'leadershipartform@gmail.com', /* required */
+		  ReplyToAddresses: [
+		     'leadershipartform@gmail.com',
+		    /* more items */
+		  ],
 		};
+		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+		sendPromise.then(
+		  function(data) {
+		    console.log(data.MessageId);
+		  }).catch(
+		    function(err) {
+		    console.error(err, err.stack);
+		  });
 
-		transporter.sendMail(mailOptions, function(error, info){
-		  if (error) {
-		    console.log(error);
-		  } else {
-		    console.log('Email sent: ' + info.response);
-		  }
-		});
 	},
 
 	/**
@@ -55,42 +82,57 @@ module.exports = {
 	paramters- clients
 	purpose- The currCoach will send an email notification to all of their clients to remind them to complete
 	their goals for the week 
-
-	TODO:   
-	notes- Currently, this is implemented using nodemailer, which is not supported by AWS. We are currently
-	awaiting approval to use the AWS email service 
 	**/
 	sendAllReminders: function(clients) {
 		console.log("EMAIL CLIENTS");
 		console.log(clients);
 		clients.forEach(function(entry) {
-			var nodemailer = require('nodemailer');
-			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks."
-			var newMessage = "Hello, " + "\n" + message;
+			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks. http://productionv1.j5zacpxzt4.us-west-2.elasticbeanstalk.com/"
+			var newMessage = "Hello, " + "<br>" + message;
 
-			var transporter = nodemailer.createTransport({
-			  service: 'gmail',
-			  auth: {
-			    user: 'leadershipartform@gmail.com',
-			    pass: 'leadership401'
-			  }
-			});
-
-			var mailOptions = {
-			  from: 'leadershipartform@gmail.com',
-			  to: entry.email,
-			  subject: 'Leadership as an Artform: Goal Reminder',
-			  text: newMessage
+			// Create sendEmail params 
+			var params = {
+			  Destination: { /* required */
+			    // CcAddresses: [
+			    //   'EMAIL_ADDRESS',
+			    //   /* more items */
+			    // ],
+			    ToAddresses: [
+			      entry.email,
+			      /* more items */
+			    ]
+			  },
+			  Message: { /* required */
+			    Body: { /* required */
+			      Html: {
+			       Charset: "UTF-8",
+			       Data: newMessage
+			      },
+			      Text: {
+			       Charset: "UTF-8",
+			       Data: "TEXT_FORMAT_BODY"
+			      }
+			     },
+			     Subject: {
+			      Charset: 'UTF-8',
+			      Data: 'Leadership as an Artform Reminder'
+			     }
+			    },
+			  Source: 'leadershipartform@gmail.com', /* required */
+			  ReplyToAddresses: [
+			     'leadershipartform@gmail.com',
+			    /* more items */
+			  ],
 			};
-
-			transporter.sendMail(mailOptions, function(error, info){
-			  if (error) {
-			    console.log(error);
-			  } else {
-			    console.log('Email sent: ' + info.response);
-			  }
-			});
-		 });
+			var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+			sendPromise.then(
+			  function(data) {
+			    console.log(data.MessageId);
+			  }).catch(
+			    function(err) {
+			    console.error(err, err.stack);
+			  });
+		}); 
 
 	},
 
@@ -105,32 +147,51 @@ module.exports = {
 	awaiting approval to use the AWS email service 
 	**/
 	sendOneReminder: function(email) {
-		var nodemailer = require('nodemailer');
-		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks."
-		var newMessage = "Hello, " + "\n" + message;
+		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Leadership as an Artform to complete any tasks. http://productionv1.j5zacpxzt4.us-west-2.elasticbeanstalk.com/"
+		var newMessage = "Hello, " + "<br>" + message;
 
-		var transporter = nodemailer.createTransport({
-		  service: 'gmail',
-		  auth: {
-		    user: 'leadershipartform@gmail.com',
-		    pass: 'leadership401'
-		  }
-		});
-
-		var mailOptions = {
-		  from: 'leadershipartform@gmail.com',
-		  to: email,
-		  subject: 'Leadership as an Artform: Goal Reminder',
-		  text: newMessage
+		// Create sendEmail params 
+		var params = {
+		  Destination: { /* required */
+		    // CcAddresses: [
+		    //   'EMAIL_ADDRESS',
+		    //   /* more items */
+		    // ],
+		    ToAddresses: [
+		      email,
+		      /* more items */
+		    ]
+		  },
+		  Message: { /* required */
+		    Body: { /* required */
+		      Html: {
+		       Charset: "UTF-8",
+		       Data: newMessage
+		      },
+		      Text: {
+		       Charset: "UTF-8",
+		       Data: "TEXT_FORMAT_BODY"
+		      }
+		     },
+		     Subject: {
+		      Charset: 'UTF-8',
+		      Data: 'Leadership as an Artform Reminder'
+		     }
+		    },
+		  Source: 'leadershipartform@gmail.com', /* required */
+		  ReplyToAddresses: [
+		     'leadershipartform@gmail.com',
+		    /* more items */
+		  ],
 		};
-
-		transporter.sendMail(mailOptions, function(error, info){
-		  if (error) {
-		    console.log(error);
-		  } else {
-		    console.log('Email sent: ' + info.response);
-		  }
-		});
+		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+		sendPromise.then(
+		  function(data) {
+		    console.log(data.MessageId);
+		  }).catch(
+		    function(err) {
+		    console.error(err, err.stack);
+		  });
 
 	},
 
