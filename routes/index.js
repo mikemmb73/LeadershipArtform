@@ -1,7 +1,7 @@
 /*
 
 index.js uses express to create routes and redirects in between the pages for
-this web application. It includes all service files that are used in the 
+this web application. It includes all service files that are used in the
 application
 
 */
@@ -30,7 +30,7 @@ const upload = require('../services/image-upload');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  res.render('index', { title: 'Leadership as an Artform' });
+  res.render('index', { title: 'Art of Leadership' });
 });
 
 /* GET signup page for executive. */
@@ -69,7 +69,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
           if (user == -1) { //the two password fields do not match
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
           }
-          if (user == -2) { //the email has already been logged into the database and can not be reused 
+          if (user == -2) { //the email has already been logged into the database and can not be reused
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
           }
           // }
@@ -90,16 +90,16 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
     } else if (req.body.username != null) { //signin a user
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
-        //the currCoach is mapped to the coach with the provided information. 
+        //the currCoach is mapped to the coach with the provided information.
         if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
-          res.render("index", { title: 'Leadership as an Artform', message: 'Incorrect email or password! Try again.' });
+          res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
         }
         else {
           //Once logged in, the clients field will be populated with the coach's clients
           clients = await loginservices.getClientGoals(user);
           res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
         }
-    } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive 
+    } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
@@ -151,15 +151,15 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     //the response is added to the database
     await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
 
-    //the deadline is moved up one week 
+    //the deadline is moved up one week
     await responseServices.updateDeadline(goal);
 
-    //the user is remapped to include all of its new responses and update currExecutive 
+    //the user is remapped to include all of its new responses and update currExecutive
     var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
     currExecutive = user;
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
-  else if (req.body.progress != null){ //called when an executive tries to update the progress 
+  else if (req.body.progress != null){ //called when an executive tries to update the progress
     await addGoalService.updateProgress(req.body.goalID, req.body.progress);
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
@@ -172,14 +172,14 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       if (user == -1) { //enter if a duplicate email has been detected in the database
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
-      if (user == -2) { //enter if the coach id provided is not valid 
+      if (user == -2) { //enter if the coach id provided is not valid
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
       }
-      if (user == -3) { //enter if the passwords provided do not match 
+      if (user == -3) { //enter if the passwords provided do not match
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
-    } else { //enter when the executive attempts to sign in 
+    } else { //enter when the executive attempts to sign in
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
@@ -187,7 +187,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignup');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
-      res.render("index", { title:'Leadership as an Artform', message2: 'Incorrect email or password! Try again.' });
+      res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });
   } else if (req.body.deleteMessage != null) { //deleting a client's message
     var message = " ";
     await emailservices.updateMessage(message, currExecutive.username)
@@ -208,7 +208,7 @@ router.get('/executiveProfile', async function(req,res,next){
 /* POST profile page for executive. */
 router.post('/executiveProfile', upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
-  //allows the executive to edit their information 
+  //allows the executive to edit their information
   await profileServices.editExecutiveInfo(newInfo, currExecutive, req.file.location);
 
   res.redirect('/executiveProfile');
@@ -216,14 +216,14 @@ router.post('/executiveProfile', upload.single('image'), async function(req,res,
 
 /* GET profile page for executive when logged in as coach. */
 router.get('/executiveProfile_coach', async function(req,res,next){
-  //populates the executive's profile with past goals on the coach's view 
+  //populates the executive's profile with past goals on the coach's view
   var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
   res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
 });
 
 /* POST profile page for executive when logged in as coach. */
 router.post('/executiveProfile_coach', async function(req,res,next) {
-  //retrieve the current executive's notes, past goals, and goals when logged in as the coach 
+  //retrieve the current executive's notes, past goals, and goals when logged in as the coach
   var notes;
   currExecutive = await loginservices.getExecutive(req.body.profileClick);
 
@@ -234,7 +234,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
 
 
 
-  if (req.body.noteContent != null){ //enter when the coach tries to add note on executive 
+  if (req.body.noteContent != null){ //enter when the coach tries to add note on executive
     await notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
     notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
   } else if (req.body.sendMessage != null) { //sending a message to a client
@@ -279,7 +279,7 @@ router.get('/coachProfile_executive', async function(req,res,next){
 router.post('/coachProfile_coach', function(req, res) {
   if (req.body.remindAll != null) { //if the remind all button is clicked, this will send a reminder to all clients
     emailservices.sendAllReminders(clients);
-  } else { //this will invite a client to the web platform. 
+  } else { //this will invite a client to the web platform.
     var name = req.body.clientName;
     var email = req.body.emailAddress;
     var message = req.body.message;
@@ -310,8 +310,8 @@ router.post('/', function(req, res) {
     currExecutive = null;
     currCoach = null;
     clients = null;
-    res.render('index', { title: 'Leadership as an Artform' });
-  } else { 
+    res.render('index', { title: 'Art of Leadership' });
+  } else {
     var email = req.body.User;
     var password = req.body.Password;
     res.render('executiveView.pug', {title: 'Executive Profile', user: currExecutive});

@@ -2,7 +2,7 @@ extends layout
 
 block content
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/') Leadership as an Artform
+		a.navbar-brand(href='/') Art of Leadership
 		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
 			span(class="navbar-toggler-icon")
 		div.collapse.navbar-collapse(id="navbarSupportedContent")
@@ -86,20 +86,20 @@ block content
 	h3 Clients
 	div.row.jumbotron
 			if clients.length == 0
-				.col-md-4
+				.col-md-4.col-sm-4
 				h5.text-danger(style="text-align:center") You have no clients yet
 			each obj in clients
 				-var emailAddress = obj.email
-				.col-md-2
+				.col-md-2.col-sm-2
 					img#clientImage(src=obj.photo)
-				.col-md-2
+				.col-md-2.col-sm-2
 					h3 #{obj.fname} #{obj.lname}
 					p #{obj.email}
 					p #{obj.bio}
 					br
 					br
 					br
-				.col-md-2
+				.col-md-2.col-sm-2
 					form(method='POST' action='/coachView')
 						input(type="hidden" name="emailReminder" value=emailAddress)
 						button(class="btn btn-sm",type="submit") Send Reminder
