@@ -21,7 +21,7 @@ If choosing to host locally, use your mySQL credentials
 //   connectionLimit : 10,
 //   host     : 'localhost',
 //   user     : 'root',
-//   password : 'Chalked1512!',
+//   password : 'rootroot',
 //   database : 'Leadership_Artform'
 // });
 
