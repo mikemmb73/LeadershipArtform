@@ -3,7 +3,7 @@ var migration = require('mysql-migrations');
 
 /*
 If choosing to host on the actual website, use these environmental variables
-(specified in the .env file) to access AWS. 
+(specified in the .env file) to access AWS.
 */
 
 var connection = mysql.createPool({
@@ -16,7 +16,7 @@ var connection = mysql.createPool({
 });
 
 
-/* 
+/*
 If choosing to host locally, use your mySQL credentials
 */
 
