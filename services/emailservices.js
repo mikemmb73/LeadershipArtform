@@ -220,7 +220,7 @@ module.exports = {
     const [rows, field] = await mysql.connect.execute("SELECT * FROM goals");
     if (rows != null) {
       const allGoals = rows.map(x => new Goal.Goal(x));
-      allGoals.forEach(function(entry) {
+      allGoals.forEach(async function(entry) {
         if (entry.goal_progress == 100) { // do not send email because goal is completed
           return;
         }
@@ -300,5 +300,4 @@ module.exports = {
 
       }
     }
-  }
 };
