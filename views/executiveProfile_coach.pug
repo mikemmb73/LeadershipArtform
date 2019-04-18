@@ -18,7 +18,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.row
+	div.row.client-info
 		div.col-md-1
 		div.col-md-2
 			img#profileImage(src=user.photograph)
@@ -34,7 +34,7 @@ block content
 
 
 		br
-	div.row
+	div.row.client-info
 		div.col-md-4
 		div.col-md-4
 			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal") Add Note
@@ -74,7 +74,7 @@ block content
 								button.btn.btn-primary(type='submit') Submit
 
 	br
-	div.card.border-dark
+	div.card.border-dark.client-info
 		.card-header
 			h3 Notes
 		.card-body
@@ -84,7 +84,7 @@ block content
 				h6 #{dateFormat}
 				p #{note.note_content}
 	br
-	div.jumbotron
+	div.jumbotron.client-info
 		h3 Current Goals
 		if user.exec_goals.length == 0
 			h4.text-danger(style="text-align:center") There are no current goals
@@ -94,7 +94,7 @@ block content
 					+print_goal_coach(goal)
 
 
-	div.jumbotron
+	div.jumbotron.client-info
 		h3 Completed Goals
 		if pastGoals.length != 0
 			each pastGoal in pastGoals

@@ -66,6 +66,10 @@ form .likert li input[type=radio] {
 
 }
 
+.client-info {
+  padding: 20px;
+}
+
 #submitButton{
   float:center;
   margin-left:54px;

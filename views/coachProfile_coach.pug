@@ -17,7 +17,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.row
+	div.row.client-info
 		div.col-md-1
 		div.col-md-2
 			img#profileImage(src=user.photograph)
@@ -83,27 +83,28 @@ block content
 
 	br
 	br
-	h3 Clients
-	div.row.jumbotron
-			if clients.length == 0
-				.col-md-4.col-sm-4
-				h5.text-danger(style="text-align:center") You have no clients yet
-			each obj in clients
-				-var emailAddress = obj.email
-				.col-md-2.col-sm-2
-					img#clientImage(src=obj.photo)
-				.col-md-2.col-sm-2
-					h3 #{obj.fname} #{obj.lname}
-					p #{obj.email}
-					p #{obj.bio}
-					br
-					br
-					br
-				.col-md-2.col-sm-2
-					form(method='POST' action='/coachView')
-						input(type="hidden" name="emailReminder" value=emailAddress)
-						button(class="btn btn-sm",type="submit") Send Reminder
-					form(method='POST' action='/executiveProfile_coach')
-						input(type="hidden" name="profileClick" value=emailAddress)
-						button(class="btn btn-sm",type="submit") View Profile
-	.row
+	div.client-info
+		h3 Clients
+		div.row.jumbotron
+				if clients.length == 0
+					.col-md-4.col-sm-4
+					h5.text-danger(style="text-align:center") You have no clients yet
+				each obj in clients
+					-var emailAddress = obj.email
+					.col-md-2.col-sm-2
+						img#clientImage(src=obj.photo)
+					.col-md-2.col-sm-2
+						h3 #{obj.fname} #{obj.lname}
+						p #{obj.email}
+						p #{obj.bio}
+						br
+						br
+						br
+					.col-md-2.col-sm-2
+						form(method='POST' action='/coachView')
+							input(type="hidden" name="emailReminder" value=emailAddress)
+							button(class="btn btn-sm",type="submit") Send Reminder
+						form(method='POST' action='/executiveProfile_coach')
+							input(type="hidden" name="profileClick" value=emailAddress)
+							button(class="btn btn-sm",type="submit") View Profile
+		.row

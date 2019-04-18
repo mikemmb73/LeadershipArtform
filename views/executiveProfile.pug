@@ -20,7 +20,7 @@ block content
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
 						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.row
+	div.row.client-info
 		div.col-md-1
 		div.col-md-2
 			img#profileImage(src=user.photograph)
@@ -63,10 +63,11 @@ block content
 							button.btn.badge.badge-pill.badge-info(type='submit') Update
 
 		.row
-	div.jumbotron
-		h3 Completed Goals
-		if pastGoals.length != 0
-			each pastGoal in pastGoals
-				+print_goal(pastGoal)
-		else
-			h4.text-danger(style="text-align:center") There are no completed goals
+	div.client-info
+		div.jumbotron
+			h3 Completed Goals
+			if pastGoals.length != 0
+				each pastGoal in pastGoals
+					+print_goal(pastGoal)
+			else
+				h4.text-danger(style="text-align:center") There are no completed goals
