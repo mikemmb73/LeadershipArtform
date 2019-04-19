@@ -63,8 +63,14 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
     if (req.body.fname != null) { //if it is not null, we know we will be signing up a coach
       if (currCoach == null) {
           //the user (coach) is created in signUpCoach with the information in the form
+          var image;
+          if (req.file == null) {
+            image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
+          } else {
+            image = req.file.location;
+          }
           user = await signup.signUpCoach(req.body.fname, req.body.lname,
-            req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, req.file.location);
+            req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
           // if (user == null) {
           if (user == -1) { //the two password fields do not match
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
@@ -167,8 +173,14 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
   if (currExecutive == null) {
     if (req.body.fname != null) { //called when the executive is trying to sign up
       //an executive is created with all of the form information
+      var image;
+      if (req.file == null) {
+        image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
+      } else {
+        image = req.file.location;
+      }
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
-      req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, req.file.location, req.body.coach_id);
+      req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
       if (user == -1) { //enter if a duplicate email has been detected in the database
         res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
@@ -209,7 +221,13 @@ router.get('/executiveProfile', async function(req,res,next){
 router.post('/executiveProfile', upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   //allows the executive to edit their information
-  await profileServices.editExecutiveInfo(newInfo, currExecutive, req.file.location);
+  var image;
+  if (req.file == null) {
+    image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
+  } else {
+    image = req.file.location;
+  }
+  await profileServices.editExecutiveInfo(newInfo, currExecutive, image);
 
   res.redirect('/executiveProfile');
 });
@@ -260,7 +278,13 @@ router.get('/coachProfile_coach', async function(req,res,next){
 /* POST profile page for coach when logged in as coach and uploads image correctly. */
 router.post('/coachProfile_coach', upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
-  await profileServices.editCoachInfo(newInfo, currCoach, req.file.location);
+  var image;
+  if (req.file == null) {
+    image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
+  } else {
+    image = req.file.location;
+  }
+  await profileServices.editCoachInfo(newInfo, currCoach, image);
   res.redirect('/coachProfile_coach');
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
