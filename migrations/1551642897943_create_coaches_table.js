@@ -2,6 +2,8 @@
 Creates the coaches table 
 */
 
+console.log('Setting up coaches.');
+
 module.exports = {
     "up": "CREATE TABLE coaches(" +
     "coach_id int NOT NULL AUTO_INCREMENT PRIMARY KEY," +
