@@ -12,13 +12,12 @@ block content
     div.col-md-4.jumbotron
       div.row
         div.col-md-2
-        h4.loginLabel(style="margin-left:10px") LOG IN OR &nbsp
-        a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
+        h4.loginLabel(style="margin-left:0px") LOG IN OR &nbsp
+        //a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
         div.col-md-3
         br
       div.row
         div.col-md-2
-        div.col-md-8
         div.col
           form(method='POST' action='/coachView' id="loginForm")
             div.form-group
@@ -28,8 +27,9 @@ block content
             h6(style="color: red; text-align: left") #{message}
             div.row
               div.col-md-5
-              button.btn.btn-primary.btn-sm(type='submit') Sign In
+              button.btn.btn-primary.btn-sm(type='submit' style="position: absolute; left: 20px") Sign In
               p#loginPrompt.pull-right.login-prompt
+              a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="position: absolute; left: 150px").signUp_button Sign Up
             br
         br
       h3#IndexHeader AS COACH
@@ -44,7 +44,6 @@ block content
         br
       div.row
         div.col-md-2
-        div.col-md-8
         div.col
           form(method='POST' action='/executiveView' id="loginForm")
             div.form-group

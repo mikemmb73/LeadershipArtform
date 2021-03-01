@@ -117,7 +117,8 @@ form .likert li input[type=radio] {
 }
 
 .signUp_button {
-  background-color: gray !important;
+  
+  background-color: grey !important;
 }
 
 .custom_modal_dialog {
