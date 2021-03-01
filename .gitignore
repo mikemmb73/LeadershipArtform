@@ -36,3 +36,7 @@ benchmarks/graphs
 .settings/.jsdtscope
 .settings/org.eclipse.wst.jsdt.ui.superType.container
 .settings/org.eclipse.wst.jsdt.ui.superType.name
+archive.zip
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/Project/v15/.suo
