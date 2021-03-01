@@ -25,6 +25,7 @@ block content
 		div.col-md-5
 			br
 			h1 #{user.full_name}
+			h5 Coach ID: #{user.coach_id}
 			h5 #{user.user_email}
 			p #{user.biography}
 			form(method='GET' action='/coachProfile_coach')
