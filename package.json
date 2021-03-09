@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha"
   },
   "dependencies": {
     "aws-sdk": "^2.437.0",
@@ -44,5 +45,8 @@
     "url": "https://github.com/emalysz/LeadershipArtform/issues"
   },
   "homepage": "https://github.com/emalysz/LeadershipArtform#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.3.3",
+    "mocha": "^8.3.1"
+  }
 }
