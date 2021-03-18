@@ -3,39 +3,52 @@ extends layout
 block content
 	script
 		include js/addGoal.js
-	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/') Art of Leadership
-		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-			span(class="navbar-toggler-icon")
-		div.collapse.navbar-collapse(id="navbarSupportedContent")
-			ul.navbar-nav.ml-auto
+	script.
+	head
+		title Art of Leadership
+		meta(charset='utf-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+		link(rel='stylesheet' href='assets/css/addGoal.css')
+	body.subpage
+		script(src='assets/js/jquery.min.js')
+		script(src='assets/js/jquery.scrollex.min.js')
+		script(src='assets/js/skel.min.js')
+		script(src='assets/js/util.js')
+		script(src='assets/js/main.js')
+		header#header
+			.logo
+					a(href='/') Art of Leadership
+			span 
+			a(href='#menu') Menu
+		nav#menu
+			ul.links
 				li
-					a.nav-item.nav-link(href='/coachView') Home
+					a(href='/coachView') Home
 				li
-					a.nav-link.nav-item(href='/coachProfile_coach') Profile
+					a(href='/coachProfile_coach') Profile
 				li
-					a.nav-item.nav-link.active(href='/addGoal_coach') Add Goal
-				li
-					form(method='POST' action='/')
-						input(type="hidden" name="signOut" value="signOut")
-						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
+					a(href='/addGoal_coach') Goal
+		section#One.wrapper.style3
+			.inner
+				header.align-center
+					p Art of Leadership
+					h2 Goal
+
 	form(method='POST', action='/coachView', id="goalForm")
 		input(type="hidden" name="addCoachGoal" value="addCoachGoal")
 		div.jumbotron
-			h3 Add Recipient(s)
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-				div.card-header Available Executives
+				div.card-header Pick Recipients
 				div.card-body
 					if clients.length == 0
 						h6.text-danger(style="text-align:center") You must first invite a client to add and assign a goal
 					else
 						.form-group
-							label(for="selRecip") To select multiple, hold command or shift (or drag with mouse)
 							select.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
 								each obj in clients
 									var recipName = obj.fname + obj.lname;
 									option(value=recipName) #{obj.fname} #{obj.lname}
-		div.jumbotron
+							label(for="selRecip") To select multiple, hold shift or drag with mouse
 			h3 Frequency Reminder
 			div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 				div.card-body
@@ -54,8 +67,8 @@ block content
 						br
 						input(type='radio', name='frequency', value='3')
 						|  Monthly
-			div.jumbotron
-				h3 Previous Goals
+			div.fullDiv#ChoosePreviousGoal
+				h3 Choose a Previous Goal
 				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 					div.card-body
 						- var allGoals = [];
@@ -74,9 +87,8 @@ block content
 										br
 									-goalCheck = true;
 									-allGoals.push(goal.goal_title);
-			div.jumbotron#questionJumbotron
-				h6 OR
-				h3 Create New Goal
+			div.fullDiv#CreatNewGoal
+				h3 Create a New Goal
 				div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 					div.card-body
 						| Goal Title
