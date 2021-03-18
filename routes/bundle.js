@@ -85495,7 +85495,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/coachSignInSignUp', function(req, res, next){
-  res.render('coachSignInSignUp.pug', {title: 'index'});
+  res.render('coachSignInSignUp.pug', {title: 'coach'});
+});
+
+router.get('/executiveSignInSignUp', function(req, res, next){
+  res.render('executiveSignInSignUp.pug', {title: 'executive'});
 });
 
 /* GET signup page for executive. */

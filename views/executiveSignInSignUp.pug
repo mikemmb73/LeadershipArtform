@@ -33,7 +33,7 @@ block content
       .inner
         header.align-center
           p Art of Leadership
-          h2 Coach Sign in / Sign Up
+          h2 Executive Sign in / Sign Up
     br
     br
     div.row
@@ -47,20 +47,20 @@ block content
               label.tab(for='tab-2') Sign Up
               .login-form
                 .sign-in-htm
-                  form(method='POST' action='/coachView' id="loginForm")
+                  form(method='POST' action='/executiveView' id="loginForm")
                     .group
                       label.label(for='username2') Email
-                      input#username2.input(type='text' name='username' required)
+                      input#username2.input(type='text' name='username2' required)
                     .group
                       label.label(for='password2') Password
-                      input#password2.input(type='password' name='password' data-type='password' required)
+                      input#password2.input(type='password' name='password2' data-type='password' required)
                     .group
                       input.button(type='submit' value='Sign In')
                     .hr
                     .foot-lnk
                       a(href='#forgot') Forgot Password?
                 .sign-up-htm
-                  form(id='form' method='POST' action='/coachView' enctype='multipart/form-data')
+                  form(id='form' method='POST' action='/executiveView' enctype='multipart/form-data')
                     .group
                       label.label(for='fname') First Name
                       input#fname.input(type='text' fname='fname' name='fname' required)
@@ -73,6 +73,9 @@ block content
                     .group
                       label.label(for='phoneNumber') Phone Number
                       input#phoneNumber.input(type='text' name='phone_number' required)
+                    .group
+                      label.label(for='coachID') Coach's ID
+                      input#coachID.input(type='text' name='coach_id' required)
                     .group
                       label.label(for='pw') Password
                       input#pw.input(type='password' name='password' data-type='password' required)
