@@ -1,0 +1,63 @@
+extends layout
+
+block content 
+  html 
+  head 
+    link(rel='stylesheet', href='/stylesheets/style_new.css')
+    link(rel='stylesheet', href='/stylesheets/homepage.css')
+  body
+    script
+      include ../routes/index.js
+    h1(style="text-align:center;font-size: 30px; color: #283965;") Art of Leadership
+    h4(style="text-align:center;font-size: 20px; color: #283965;") Coach Sign in / Sign Up
+    br
+    div.row
+      div.col
+      div.col-md-4.jumbotron
+        .login-wrap
+            .login-html
+              input#tab-1.sign-in(type='radio' name='tab' checked)
+              label.tab(for='tab-1') Sign In
+              input#tab-2.sign-up(type='radio' name='tab')
+              label.tab(for='tab-2') Sign Up
+              .login-form
+                .sign-in-htm
+                  form(method='POST' action='/coachView' id="loginForm")
+                    .group
+                      label.label(for='username2') Email
+                      input#username2.input(type='text' name='username' required)
+                    .group
+                      label.label(for='password2') Password
+                      input#password2.input(type='password' name='password' data-type='password' required)
+                    .group
+                      input.button(type='submit' value='Sign In')
+                    .hr
+                    .foot-lnk
+                      a(href='#forgot') Forgot Password?
+                .sign-up-htm
+                  form(id='form' method='POST' action='/coachView' enctype='multipart/form-data')
+                    .group
+                      label.label(for='fname') First Name
+                      input#fname.input(type='text' fname='fname' name='fname' required)
+                    .group
+                      label.label(for='lname') Last Name
+                      input#lname.input(type='text' lname='lname' name='lname' required)
+                    .group
+                      label.label(for='email') Email
+                      input#email.input(type='email' name='email' required)
+                    .group
+                      label.label(for='phoneNumber') Phone Number
+                      input#phoneNumber.input(type='text' name='phone_number' required)
+                    .group
+                      label.label(for='pw') Password
+                      input#pw.input(type='password' name='password' data-type='password' required)
+                    .group
+                      label.label(for='pw2') Repeat Password
+                      input#pw2.input(type='password' name='confirmPassword' data-type='password' required)
+                    .group
+                      label.label(for='bio') Professional Bio
+                      input#bio.input(type='text' name='bio' required) 
+                    .group
+                      input.button(type='submit' value='Sign Up')
+      
+    

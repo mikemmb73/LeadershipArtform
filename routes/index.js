@@ -29,8 +29,11 @@ const upload = require('../services/image-upload');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
   res.render('index', { title: 'Art of Leadership' });
+});
+
+router.get('/coachSignInSignUp', function(req, res, next){
+  res.render('coachSignInSignUp.pug', {title: 'index'});
 });
 
 /* GET signup page for executive. */

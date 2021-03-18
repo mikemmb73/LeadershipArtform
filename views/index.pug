@@ -1,57 +1,81 @@
-extends layout
+html
+  head
+    title Leadership as an Artform
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet' href='/stylesheets/main.css')
+  body
+    script
+        include js/jquery.min.js
+        include js/jquery.scrollex.min.js
+        include js/skel.min.js
+        include js/util.js
+        include js/main.js
+        include ../routes/index.js
+    // Header
+    header#header.alt
+      .logo
+        a(href='index.html') Leadership 
+          span as an Artform
+      a(href='#menu') Menu
+    // Nav
+    nav#menu
+      ul.links
+        li
+          a(href='index.html') Home
+        li
+          a(href='generic.html') Generic
+        li
+          a(href='elements.html') Elements
+    
+    // Banner
+    section.banner.full
+      article
+        img(src='/stylesheets/slide01.jpg' alt='')
+        .inner
+          header
+            p A platform for Coaches and Executives to achieve their leadership goals
+            h2 Art of Leadership
+      article
+        img(src='/stylesheets/slide02.jpg' alt='')
+        .inner
+          header
+            p Track progress on individual goals and access all completed milestones.
+            h2 Set Goals
+      article
+        img(src='/stylesheets/slide03.jpg' alt='')
+        .inner
+          header
+            p What are your aspirations for your leadership development? Let Art of Leadership guide you.
+            h2 Live your Aspirations
 
-block content
-  link(rel='stylesheet', href='/stylesheets/homepage.css')
-  script
-    include ../routes/index.js
-  h2= title
-  p Art of Leadership is a platform for Coaches and Executives to achieve their leadership goals. Through an interactive site, coaches and executives can track progress on individual goals and access all completed milestones. What are your aspirations for your leadership development? Let Art of Leadership guide you.
-  br
-  div.row
-    div.col
-    div.col-md-4.jumbotron
-      div.row
-        h4.loginLabel(style="margin-left:15px") LOG IN &nbsp
-        //a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
-        div.col-md-3
-        br
-      div.row
-        div.col
-          form(method='POST' action='/coachView' id="loginForm")
-            div.form-group
-              input.input-small#username2.form-control(type='text', name='username', placeholder="Email", style="text-align: left ;border: 1px solid #ccc;border-radius: 4px;" required)
-            div.form-group
-              input.input-small#password2.form-control(type='password', name='password', placeholder="Password", style="text-align: left ;border: 1px solid #ccc;border-radius: 4px;" required)
-            h6(style="color: red; text-align: left") #{message}
-            div.row
-              div.col-md-5
-              button.btn.btn-primary.btn-sm(type='submit' style="position: absolute; left: 15px ;border-radius: 4px;") Sign In
-              p#loginPrompt.pull-right.login-prompt
-              a(class='button btn btn-primary btn-sm' href='coachSignup' role='button' style="position: absolute; left: 120px; border-radius: 4px;").signUp_button Sign Up
-            br
-        br
-      h3#IndexHeader AS COACH
-
-    div.col
-    div.col-md-4.jumbotron
-      div.row
-        h4.loginLabel(style="margin-left:15px") LOG IN &nbsp
-        //a(class='button btn btn-primary btn-sm' href='executiveSignup' style="margin-left:60px, margin-top:1px").signUp_button Sign Up
-        div.col-md-3
-        br
-      div.row
-        div.col
-          form(method='POST' action='/executiveView' id="loginForm")
-            div.form-group
-              input.input-small#username2.form-control(type='text', name='username2', placeholder="Email", style="text-align: left ;border: 1px solid #ccc;border-radius: 4px;" required)
-            div.form-group
-              input.input-small#password2.form-control(type='password', name='password2', placeholder="Password", style="text-align: left ;border: 1px solid #ccc;border-radius: 4px;" required)
-            h6(style="color: red; text-align: left") #{message2}
-            div.row
-              div.col-md-5
-              button.btn.btn-primary.btn-sm(type='submit' style="position: absolute; left: 15px; border-radius: 4px;") Sign In
-              p#loginPrompt.pull-right.login-prompt
-              a(class='button btn btn-primary btn-sm' href='executiveSignup' style="position: absolute; left: 120px; border-radius: 4px;").signUp_button Sign Up
-            br
-      h3#IndexHeader AS EXECUTIVE
-    div.col
+    section#one.wrapper.style2
+      .inner
+        .grid-style
+          div
+            .box
+              .image.fit
+                img(src='/stylesheets/coach.jpeg' style='height: 320px' alt='')
+              .content
+                header.align-center
+                  p maecenas sapien feugiat ex purus
+                  h2 I'm a coach
+                p  Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.
+                footer.align-center
+                  a.button.alt(href='coachSignInSignUp') Login / Sign Up
+          div
+            .box
+              .image.fit
+                img(src='/stylesheets/student.jpg' style='height: 320px' alt='')
+              .content
+                header.align-center
+                  p mattis elementum sapien pretium tellus
+                  h2 I'm an executive
+                p  Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.
+                footer.align-center
+                  a.button.alt(href='#') Login / Sign Up
+    
+    // Footer
+    footer#footer
+      .copyright
+        | &copy; Leadership as an artform. All rights reserved.
