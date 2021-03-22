@@ -98,6 +98,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
         //the currCoach is mapped to the coach with the provided information.
+        console.log(user);
         if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
           res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
         }
