@@ -16,7 +16,7 @@ block content
       include ../routes/index.js
     header#header.alt
       .logo
-        a(href='index.html') Leadership 
+        a(href='/') Leadership 
           span as an Artform
       a(href='#menu') Menu
     // Nav
@@ -84,6 +84,7 @@ block content
                       input#bio.input(type='text' name='bio' required) 
                     .group
                       input.button(type='submit' value='Sign Up')
+                  h6(style="color: red; text-align: center") #{signupMessage1}
     br
     br
     footer#footer
