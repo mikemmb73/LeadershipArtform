@@ -71,11 +71,12 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
           }
           user = await signup.signUpCoach(req.body.fname, req.body.lname,
             req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
+          console.log(user);
           // if (user == null) {
           if (user == -1) { //the two password fields do not match
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
           }
-          if (user == -2) { //the email has already been logged into the database and can not be reused
+          else if (user == -2) { //the email has already been logged into the database and can not be reused
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
           }
           // }
