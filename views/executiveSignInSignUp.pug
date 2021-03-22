@@ -1,0 +1,97 @@
+//extends layout
+
+block content 
+  html 
+  head 
+    link(rel='stylesheet', href='/stylesheets/style_new.css')
+    link(rel='stylesheet', href='/stylesheets/homepage.css')
+    link(rel='stylesheet', href='/stylesheets/mainStyle.css')
+  body
+    script
+      include js/jquery.min.js
+      include js/jquery.scrollex.min.js
+      include js/skel.min.js
+      include js/util.js
+      include js/main.js
+      include ../routes/index.js
+    header#header.alt
+      .logo
+        a(href='/') Leadership 
+          span as an Artform
+      a(href='#menu') Menu
+    // Nav
+    nav#menu
+      ul.links
+        li
+          a(href='index.html') Home
+        li
+          a(href='generic.html') Generic
+        li
+          a(href='elements.html') Elements
+
+    section#One.wrapper.style3
+      .inner
+        header.align-center
+          p Art of Leadership
+          h2 Executive Sign in / Sign Up
+    br
+    br
+    div.row
+      div.col
+      div.col-md-4.jumbotron
+        .login-wrap
+            .login-html
+              input#tab-1.sign-in(type='radio' name='tab' checked)
+              label.tab(for='tab-1') Sign In
+              input#tab-2.sign-up(type='radio' name='tab')
+              label.tab(for='tab-2') Sign Up
+              .login-form
+                .sign-in-htm
+                  form(method='POST' action='/executiveView' id="loginForm")
+                    .group
+                      label.label(for='username2') Email
+                      input#username2.input(type='text' name='username2' required)
+                    .group
+                      label.label(for='password2') Password
+                      input#password2.input(type='password' name='password2' data-type='password' required)
+                    .group
+                      input.button(type='submit' value='Sign In')
+                    .hr
+                    .foot-lnk
+                      a(href='#forgot') Forgot Password?
+                .sign-up-htm
+                  form(id='form' method='POST' action='/executiveView' enctype='multipart/form-data')
+                    .group
+                      label.label(for='fname') First Name
+                      input#fname.input(type='text' fname='fname' name='fname' required)
+                    .group
+                      label.label(for='lname') Last Name
+                      input#lname.input(type='text' lname='lname' name='lname' required)
+                    .group
+                      label.label(for='email') Email
+                      input#email.input(type='email' name='email' required)
+                    .group
+                      label.label(for='phoneNumber') Phone Number
+                      input#phoneNumber.input(type='text' name='phone_number' required)
+                    .group
+                      label.label(for='coachID') Coach's ID
+                      input#coachID.input(type='text' name='coach_id' required)
+                    .group
+                      label.label(for='pw') Password
+                      input#pw.input(type='password' name='password' data-type='password' required)
+                    .group
+                      label.label(for='pw2') Repeat Password
+                      input#pw2.input(type='password' name='confirmPassword' data-type='password' required)
+                    .group
+                      label.label(for='bio') Professional Bio
+                      input#bio.input(type='text' name='bio' required) 
+                    .group
+                      input.button(type='submit' value='Sign Up')
+                  h6(style="color: red; text-align: center") #{signupMessage1}
+    br
+    br
+    footer#footer
+      .copyright
+        | &copy; Leadership as an artform. All rights reserved.
+      
+    
