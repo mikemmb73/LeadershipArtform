@@ -12,10 +12,21 @@ describe('Login Coach', function() {
     var email = "email@email.com"
     var pass = "password"
 
-    before(async function(){
+    before(function(done){
         con = mysql.connect;
-        await con.execute("DELETE FROM coaches WHERE email = ?", [email]);
-        var coach = await signUpCoach("fname", "lname", email, "2066968408", pass, pass, "bio", null)
+        con.execute("DELETE FROM coaches WHERE email = ?", [email]);
+        var coach = signUpCoach("fname", "lname", email, "2066968408", pass, pass, "bio", null)
+        done()
+    })
+
+    afterEach(function(done){
+        con.end()
+        done()
+    })
+
+    beforeEach(function(done){
+        con = mysql.connect;
+        done()
     })
 
     context("The user attempts a valid login", function(){
@@ -29,6 +40,7 @@ describe('Login Coach', function() {
     })
 
     context("The user attempts an invalid login", function(){
+
         it("it does not allow the user to login", async function(){
             var loginResponse = await getCoachAuthent(email, "incorrectPassword")
 
