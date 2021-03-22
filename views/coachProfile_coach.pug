@@ -1,8 +1,11 @@
 extends layout
 
 block content
+	script
+		alert("!")
+	script.
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/') Art of Leadership
+		a.navbar-brand(href='/coachView') Art of Leadership
 		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
 			span(class="navbar-toggler-icon")
 		div.collapse.navbar-collapse(id="navbarSupportedContent")
@@ -84,6 +87,7 @@ block content
 
 	br
 	br
+	button(class="btn btn-sm") fuck
 	div.client-info
 		h3 Clients
 		div.row.jumbotron
@@ -91,7 +95,7 @@ block content
 					.col-md-4.col-sm-4
 					h5.text-danger(style="text-align:center") You have no clients yet
 				each obj in clients
-					-var emailAddress = obj.email
+					-const emailAddress = obj.email
 					.col-md-2.col-sm-2
 						img#clientImage(src=obj.photo)
 					.col-md-2.col-sm-2
@@ -102,10 +106,11 @@ block content
 						br
 						br
 					.col-md-2.col-sm-2
-						form(method='POST' action='/coachView')
-							input(type="hidden" name="emailReminder" value=emailAddress)
-							button(class="btn btn-sm",type="submit") Send Reminder
+						input(type="hidden" name="emailReminder" value=emailAddress)
+						button(class="btn btn-sm", id="sendReminderButton") Send Reminder
 						form(method='POST' action='/executiveProfile_coach')
 							input(type="hidden" name="profileClick" value=emailAddress)
 							button(class="btn btn-sm",type="submit") View Profile
 		.row
+		script
+			include js/emailForm.js

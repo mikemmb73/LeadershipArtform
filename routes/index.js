@@ -107,6 +107,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         }
     } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
       if (data2.goalTitle != "") {
