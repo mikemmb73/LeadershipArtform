@@ -71,11 +71,12 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
           }
           user = await signup.signUpCoach(req.body.fname, req.body.lname,
             req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
+          console.log(user);
           // if (user == null) {
           if (user == -1) { //the two password fields do not match
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
           }
-          if (user == -2) { //the email has already been logged into the database and can not be reused
+          else if (user == -2) { //the email has already been logged into the database and can not be reused
             res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
           }
           // }
@@ -97,6 +98,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
         //the currCoach is mapped to the coach with the provided information.
+        console.log(user);
         if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
           res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
         }
@@ -107,6 +109,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         }
     } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
       if (data2.goalTitle != "") {

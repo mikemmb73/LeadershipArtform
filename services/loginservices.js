@@ -43,6 +43,12 @@ module.exports = {
 					currentExecutive = null;
 				}
 			}
+			else {
+				currentExecutive = null;
+			}
+		}
+		else {
+			currentExecutive = null;
 		}
 		return currentExecutive;
 	},
@@ -96,6 +102,11 @@ module.exports = {
 						currentCoach = null;
 					}
 				}
+				else {
+					currentCoach = null;
+				}
+			} else {
+				currentCoach = null;
 			}
 	    return currentCoach;
 	},
