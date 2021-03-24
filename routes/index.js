@@ -29,8 +29,15 @@ const upload = require('../services/image-upload');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
   res.render('index', { title: 'Art of Leadership' });
+});
+
+router.get('/coachSignInSignUp', function(req, res, next){
+  res.render('coachSignInSignUp.pug', {title: 'coach'});
+});
+
+router.get('/executiveSignInSignUp', function(req, res, next){
+  res.render('executiveSignInSignUp.pug', {title: 'executive'});
 });
 
 /* GET signup page for executive. */
@@ -71,12 +78,13 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
           }
           user = await signup.signUpCoach(req.body.fname, req.body.lname,
             req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
+          console.log(user);
           // if (user == null) {
           if (user == -1) { //the two password fields do not match
-            res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
+            res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
           }
-          if (user == -2) { //the email has already been logged into the database and can not be reused
-            res.render('coachSignup.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
+          else if (user == -2) { //the email has already been logged into the database and can not be reused
+            res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
           }
           // }
           else {
@@ -97,6 +105,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
         //the currCoach is mapped to the coach with the provided information.
+        console.log(user);
         if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
           res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
         }
@@ -107,6 +116,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         }
     } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
       if (data2.goalTitle != "") {
@@ -182,13 +192,13 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
       if (user == -1) { //enter if a duplicate email has been detected in the database
-        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       if (user == -2) { //enter if the coach id provided is not valid
-        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
+        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
       }
       if (user == -3) { //enter if the passwords provided do not match
-        res.render('executiveSignup.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
+        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
     } else { //enter when the executive attempts to sign in
@@ -197,7 +207,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     }
   }
   if (user == null && req.body.fname != null) {
-    res.redirect('/executiveSignup');
+    res.redirect('/executiveSignInSignUp');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });
   } else if (req.body.deleteMessage != null) { //deleting a client's message

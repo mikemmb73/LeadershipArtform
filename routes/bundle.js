@@ -85494,6 +85494,14 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Leadership as an Artform' });
 });
 
+router.get('/coachSignInSignUp', function(req, res, next){
+  res.render('coachSignInSignUp.pug', {title: 'coach'});
+});
+
+router.get('/executiveSignInSignUp', function(req, res, next){
+  res.render('executiveSignInSignUp.pug', {title: 'executive'});
+});
+
 /* GET signup page for executive. */
 router.get('/executiveSignup', function(req, res, next) {
   res.render('executiveSignup.pug', { title: 'Executive Signup' });
