@@ -4,74 +4,84 @@ block content
 	script
 		include js/coachView.js
 	script.
-	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/coachView') Art of Leadership
-		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-			span(class="navbar-toggler-icon")
-		div.collapse.navbar-collapse(id="navbarSupportedContent")
-			ul.navbar-nav.ml-auto
+	head
+		title Art of Leadership
+		meta(charset='utf-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+		link(rel='stylesheet' href='assets/css/mainProfile.css')
+	body.subpage
+		script(src='assets/js/jquery.min.js')
+		script(src='assets/js/jquery.scrollex.min.js')
+		script(src='assets/js/skel.min.js')
+		script(src='assets/js/util.js')
+		script(src='assets/js/main.js')
+		header#header
+			.logo
+				a(href='/') Art of Leadership
+			span 
+			a(href='#menu') Menu
+		nav#menu
+			ul.links
 				li
-					a.nav-item.nav-link.active(href='/coachView') Home
+					a(href='/coachView') Home
 				li
-					a.nav-link.nav-item(href='/coachProfile_coach') Profile
+					a(href='/coachProfile_coach') Profile
 				li
-					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
-				li
-					form(method='POST' action='/')
-						input(type="hidden" name="signOut" value="signOut")
-						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	br
-	.row
-		.col-md-1
-		h1 Welcome, #{user.first_name}
-		.col-md-4
-		form(method='GET' action='/coachView')
-			button.btn.btn-outline-primary(type="button",data-toggle="modal", data-target="#addClientModal" style="padding:5px;border-radius: 4px;float:center").client_button Add Client
-		.modal(role="dialog", id="addClientModal")
-			.modal-dialog-centered.custom_modal_dialog(role="document")
-				.modal-content
-					form(id = "form" method='POST' action='/coachView')
-						.modal-header
-							h5 Invite a Client
-							button(class="close",data-dismiss="modal")
-								span &times;
-						.modal-body
-							p Client Name:
-								br
-								input(type="text" name="clientName")
-							p Email Address:
-								br
-								input(type="text" name="emailAddress")
-							p Welcome Message:
-								br
-								input(type="textarea" name = "message" style="height:200px" size="85")
-						.modal-footer
-							button.btn.btn-primary(type='submit') Submit
+					a(href='/addGoal_coach') Goal
+		section#One.wrapper.style3
+			.inner
+				header.align-center
+					p Art of Leadership
+					h2 Home
+		#main.container
+			h2#elements Welcome, Coach #{user.first_name}
+			br
+			br
+			.row(class='200%')
+				div.row.client_title
+					script
+						var clients = !{JSON.stringify(clients)};
+				div.6u(class='12u$(medium)')
+					
+					h2 Progress Approval Requests:
+					br
+					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+						- var noApprovals = "true";
+						.card-body
+							each obj in clients
+								each goal in obj.goals_list
+									if goal.progress_acceptance != goal.progress
+									- noApprovals = "false";
+									hr
+									img#clientImage(src=obj.photo , style="width: 50px;")
+									h3 #{obj.fname} #{obj.lname}
+									p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
+									form(method='POST' action='/viewGoal_coach')
+										input(type="hidden" name="goal_id" value=goal.id)
+										button.special.icon.fa-search(style="float:left" type="submit") Details
+									form(method='POST' action='/coachView')
+										button.special.icon.fa-check(style="float:right" type="submit") Accept
+										input(type="hidden" name="acceptRequest" value=goal.goal_id)
+									br
+						if noApprovals == "true"
+							h3.text-danger(style="text-align:center") No pending approvals
+				div.6u(class='$ 12u$(medium)')
+					.modal(role="dialog", id="addClientModal")
+						.modal-dialog-centered.custom_modal_dialog(role="document")
+							.modal-content
+								form(id = "form" method='POST' action='/coachView')
+									.modal-header
+										h2 Invite a Client
+									.modal-body
+										p Client Name:
+											br
+											input(type="text" name="clientName")
+									p Email Address:
+										br
+										input(type="text" name="emailAddress")
+									p Welcome Message:
+										br
+										input(type="textarea" name = "message" style="height:200px" size="85")
+								.modal-footer
+									button.special.icon(type='submit') Submit
 
-	div.row.client_title
-		script.
-			var clients = !{JSON.stringify(clients)};
-	div.jumbotron
-		h3 Progress Approval Requests:
-		br
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			- var noApprovals = "true";
-			.card-body
-				each obj in clients
-					each goal in obj.goals_list
-						if goal.progress_acceptance != goal.progress
-							- noApprovals = "false";
-							br
-							br
-							h5 #{obj.fname} #{obj.lname}
-							p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
-							form(method='POST' action='/viewGoal_coach')
-								input(type="hidden" name="goal_id" value=goal.id)
-								button.btn.btn-primary.btn-sm.view_goal_button(style="float:right" type="submit") View Goal
-							form(method='POST' action='/coachView')
-								button.badge.badge-pill.badge-info(style="float:left" type="submit") Accept these changes
-								input(type="hidden" name="acceptRequest" value=goal.goal_id)
-			if noApprovals == "true"
-				h4.text-danger(style="text-align:center") No pending approvals
-				br
-				br
