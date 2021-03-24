@@ -1,90 +1,40 @@
 extends layout
 
 block content
-	script
-		include js/coachView.js
-	script.
-	head
-		title Art of Leadership
-		meta(charset='utf-8')
-		meta(name='viewport' content='width=device-width, initial-scale=1')
-		link(rel='stylesheet' href='assets/css/mainProfile.css')
-	body.subpage
-		script(src='assets/js/jquery.min.js')
-		script(src='assets/js/jquery.scrollex.min.js')
-		script(src='assets/js/skel.min.js')
-		script(src='assets/js/util.js')
-		script(src='assets/js/main.js')
-		header#header
-			.logo
-				a(href='/') Art of Leadership
-			span 
-			a(href='#menu') Menu
-		nav#menu
-			ul.links
+	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+		a.navbar-brand(href='/coachView') Art of Leadership
+		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+			span(class="navbar-toggler-icon")
+		div.collapse.navbar-collapse(id="navbarSupportedContent")
+			ul.navbar-nav.ml-auto
 				li
-					a(href='/coachView') Home
+					a.nav-item.nav-link(href='/coachView') Home
 				li
-					a(href='/coachProfile_coach') Profile
+					a.nav-link.nav-item.active(href='/coachProfile_coach') Profile
 				li
-					a(href='/addGoal_coach') Goal
-		section#One.wrapper.style3
-			.inner
-				header.align-center
-					p Art of Leadership
-					h2 Profile
-					
-		#main.container
-			.row(style="width:100%;")
-				div.row.client_title
-					script
-						var clients = !{JSON.stringify(clients)};
-				div.6u(style="width:50%;")
-					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
-					br
-					button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="position: relative; left: 38%;").client_button Edit Profile
-					br
-					br
-					br
-					h2(style="text-align: center;")  #{user.full_name}
-					h2(style="text-align: center;")  Coach ID: #{user.coach_id}
-					h2(style="text-align: center;")  EMAIL: #{user.user_email}
-					p(style="text-align: center;")  #{user.biography}
-				div.6u(style="width:50%;")
-					h2 Clients
-					form(method='GET' action='/coachProfile_coach')
-						input(type="hidden" name="remindAll" value="remindAll")
-						button.special(type="submit", style="border-radius: 4px;") Remind All
-					br
-					div.client-info
-						div.row.uniform
-							if clients.length == 0
-								div
-								h5.text-danger(style="text-align:center") You have no clients yet
-							each obj in clients
-								div.row(style="width:100%;")
-									-var emailAddress = obj.email
-									div(style="width:30%;")
-										img#clientImage(src=obj.photo , style="width: 130px;")
-									div(style="width:50%;")
-										h3(style="text-align: center;") #{obj.fname} #{obj.lname}
-										p(style="text-align: center;") #{obj.email}
-										p(style="text-align: center;") #{obj.bio}
-									div(style="width:20%;")
-										form(method='POST' action='/coachView')
-											input(type="hidden" name="emailReminder" value=emailAddress)
-											button.special(class="icon fa-envelope-o" ,type="submit") Remind
-										form(method='POST' action='/executiveProfile_coach')
-											input(type="hidden" name="profileClick" value=emailAddress)
-											button.special(class="icon fa-search" , type="submit") Details
-									br
-					
-
+					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
+				li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
 	div.row.client-info
-		//button(class="btn btn-outline-primary",type="button",data-toggle="modal", data-target="#addClientModal", style="padding:5px;border-radius: 4px;").client_button Add Client
-			.modal(role="dialog", id="addClientModal", style="display: block ; opacity: 1;filter: alpha(opacity=100); background: #fff;")
-				//.modal-dialog-centered.custom_modal_dialog(role="document")
-					//.modal-content
+		div.col-md-1
+		div.col-md-2
+			img#profileImage(src=user.photograph)
+		div.col-md-2
+		div.col-md-5
+			br
+			h1 #{user.full_name}
+			h5 Coach ID: #{user.coach_id}
+			h5 EMAIL: #{user.user_email}
+			p #{user.biography}
+			form(method='GET' action='/coachProfile_coach')
+				input(type="hidden" name="remindAll" value="remindAll")
+				button(class="btn btn-outline-primary",type="submit", style="padding:5px;border-radius: 4px;") Remind All
+				button(class="btn btn-outline-primary",type="button",data-toggle="modal", data-target="#addClientModal", style="padding:5px;border-radius: 4px;").client_button Add Client
+			.modal(role="dialog", id="addClientModal")
+				.modal-dialog-centered.custom_modal_dialog(role="document")
+					.modal-content
 						form(id = "form" method='POST' action='/coachView')
 							.modal-header
 								h5 Invite a Client
@@ -103,32 +53,61 @@ block content
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
 		div.col-md-1
-		.modal(role="dialog", id="editProfileModal",style="display: none;width:900px; position: fixed; float: center;right: 5%;bottom: 10%;z-index: 1 !important;  background: #eee;")
-			.modal-dialog-centered.custom_modal_dialog(role="document", style="padding-right: 0px; padding-top: 10px; z-index: 1;")
+			button(class="btn badge badge-info badge-pill",type="button",data-toggle="modal", data-target="#editProfileModal").client_button Edit Profile
+		.modal(role="dialog", id="editProfileModal")
+			.modal-dialog-centered.custom_modal_dialog(role="document")
 				.modal-content
 					form(id = "form" method='POST' , name="editProfileForm",action='/coachProfile_coach', enctype="multipart/form-data")
 						.modal-header
-							h2 Edit Profile
-						.modal-body(style="width:100%; height:100%; display: flex;")
-							div(style="width:40%;")
-								p First Name:
-									br
-									input(type="text" name="newFName" placeholder=user.first_name)
-								p Last Name:
-									br
-									input(type="text" name="newLName" placeholder=user.last_name)
-								p Email Address:
-									br
-									input(type="text" name="newEmail" size="30" placeholder=user.user_email)
-							div(style="width:10%;")
-							div(style="width:50%;")
-							
-								p Short Biography
-									br
-									input(type="textarea" name="newBio" style="height:150px" size="50" placeholder=user.biography)
-								p Photo
-									br
-									input#image.form-control(type='file' name='image' accept='image/*')
+							h5 Edit Profile
+							button(class="close",data-dismiss="modal")
+								span &times;
+						.modal-body
+							p First Name:
+								br
+								input(type="text" name="newFName" placeholder=user.first_name)
+							p Last Name:
+								br
+								input(type="text" name="newLName" placeholder=user.last_name)
+							p Email Address:
+								br
+								input(type="text" name="newEmail" size="30" placeholder=user.user_email)
+							p Short Biography
+								br
+								input(type="textarea" name="newBio" style="height:150px" size="60" placeholder=user.biography)
+							p Photo
+								br
+								input#image.form-control(type='file' name='image' accept='image/*')
 						.modal-footer
-							button.special(type='submit') Update
-							button(data-dismiss="modal") Cancel
+							button.btn.badge.badge-pill.badge-info(type='submit') Update
+
+
+	br
+	br
+	button(class="btn btn-sm") fuck
+	div.client-info
+		h3 Clients
+		div.row.jumbotron
+				if clients.length == 0
+					.col-md-4.col-sm-4
+					h5.text-danger(style="text-align:center") You have no clients yet
+				each obj in clients
+					-const emailAddress = obj.email
+					.col-md-2.col-sm-2
+						img#clientImage(src=obj.photo)
+					.col-md-2.col-sm-2
+						h3 #{obj.fname} #{obj.lname}
+						p #{obj.email}
+						p #{obj.bio}
+						br
+						br
+						br
+					.col-md-2.col-sm-2
+						input(type="hidden" name="emailReminder" value=emailAddress)
+						button(class="btn btn-sm", id="sendReminderButton") Send Reminder
+						form(method='POST' action='/executiveProfile_coach')
+							input(type="hidden" name="profileClick" value=emailAddress)
+							button(class="btn btn-sm",type="submit") View Profile
+		.row
+		script
+			include js/emailForm.js
