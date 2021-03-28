@@ -10,10 +10,34 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+#CreateNewGoal {
+	display: none;
+}
 
+.goalChoice{
+	display:inline;
+	font-size:130%;
+	color: #444;
+}
+h3{
+	font-weight:900;
+}
+#UsePreviousGoal{
+	background-color: rgba(0, 0, 0, 0.125);
+}
+.submitButton{
+	margin-top: 20px;
+	float:right;
+	font-size:150%;
+}
+.question{
+	padding: 15px;
+}
+.jumbotron{
+	padding: 5px;
+}
 
-
-
+.card-
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------*/

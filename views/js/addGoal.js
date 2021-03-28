@@ -4,7 +4,14 @@ var mcIndex = 0;
 var freeResponseIndex = 0;
 var numQuestions = 0;
 var numDelete = 0;
-
+function ShowCreateNewGoal(){
+  document.getElementById("UsePreviousGoal").style.display="none";
+  document.getElementById("CreateNewGoal").style.display="block";
+}
+function ShowUsePreviousGoal(){
+  document.getElementById("UsePreviousGoal").style.display="block";
+  document.getElementById("CreateNewGoal").style.display="none";
+}
 function mcDropdown(){
 
   var thisIndex = mcIndex;
@@ -14,7 +21,7 @@ function mcDropdown(){
   jumbotron.setAttribute("id", jumboID);
   numQuestions++;
   var jumbotronAtt = document.createAttribute("class");
-  jumbotronAtt.value = "jumbotron";
+  jumbotronAtt.value = "question";
   jumbotron.setAttributeNode(jumbotronAtt);
 
 
@@ -60,6 +67,8 @@ function mcDropdown(){
   var inputTitle = document.createElement("input");
   var inputType = document.createAttribute("type");
   var inputName = document.createAttribute("name");
+  var inputAtt  = document.createAttribute("class");
+  inputAtt.value = "questionInput";
   inputType.value="textarea";
   inputName.value="mcQuestions[" + mcIndex + "][0]";
   inputTitle.setAttributeNode(inputType);
