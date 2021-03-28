@@ -39,10 +39,10 @@ block content
 				div.row.client_title
 					script
 						var clients = !{JSON.stringify(clients)};
-				div.6u(style="width:50%;")
+				div.6u(style="width:40%;")
 					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
 					br
-					button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="position: relative; left: 38%;").client_button Edit Profile
+					button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="position: relative; left: 35%;").client_button Edit Profile
 					br
 					br
 					br
@@ -50,7 +50,7 @@ block content
 					h2(style="text-align: center;")  Coach ID: #{user.coach_id}
 					h2(style="text-align: center;")  EMAIL: #{user.user_email}
 					p(style="text-align: center;")  #{user.biography}
-				div.6u(style="width:50%;")
+				div.6u(style="width:60%;")
 					h2 Clients
 					form(method='GET' action='/coachProfile_coach')
 						input(type="hidden" name="remindAll" value="remindAll")
@@ -62,27 +62,33 @@ block content
 								div
 								h5.text-danger(style="text-align:center") You have no clients yet
 							each obj in clients
-								div.row(style="width:100%;")
+								div.row(style="height:10px;width:100%;")
+								div.row(style="width:100%; background-color: #EEE; position: relative; left: 55px; border-radius: 20px;box-shadow: 5px 5px grey;")
 									-var emailAddress = obj.email
 									div(style="width:30%;")
 										img#clientImage(src=obj.photo , style="width: 130px;")
-									div(style="width:50%;")
-										h3(style="text-align: center;") #{obj.fname} #{obj.lname}
-										p(style="text-align: center;") #{obj.email}
-										p(style="text-align: center;") #{obj.bio}
-									div(style="width:20%;")
+									div(style="width:40%;")
+										h3(style="text-align: left;") #{obj.fname} #{obj.lname}
+										p(style="text-align: left;") #{obj.email}
+										p(style="text-align: left;") #{obj.bio}
+									div(style="width:30%;")
 										form(method='POST' action='/coachView')
 											input(type="hidden" name="emailReminder" value=emailAddress)
 											button.special(class="icon fa-envelope-o" ,type="submit") Remind
 										form(method='POST' action='/executiveProfile_coach')
 											input(type="hidden" name="profileClick" value=emailAddress)
 											button.special(class="icon fa-search" , type="submit") Details
-									br
+		br
+		br
+		br
+		footer#footer
+			div(class = "copyright")
+				|By Leadership as an Artform
 					
 
 	div.row.client-info
 		//button(class="btn btn-outline-primary",type="button",data-toggle="modal", data-target="#addClientModal", style="padding:5px;border-radius: 4px;").client_button Add Client
-			.modal(role="dialog", id="addClientModal", style="display: block ; opacity: 1;filter: alpha(opacity=100); background: #fff;")
+			.modal(role="dialog", id="addClientModal", style="display: block ; opacity: 1;filter: alpha(opacity=100); background: #EEE; border-radius: 10px;")
 				//.modal-dialog-centered.custom_modal_dialog(role="document")
 					//.modal-content
 						form(id = "form" method='POST' action='/coachView')
@@ -103,7 +109,7 @@ block content
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
 		div.col-md-1
-		.modal(role="dialog", id="editProfileModal",style="display: none;width:900px; position: fixed; float: center;right: 5%;bottom: 10%;z-index: 1 !important;  background: #eee;")
+		.modal(role="dialog", id="editProfileModal",style="display: none;width:900px; position: fixed; float: center;right: 5%;bottom: 10%;z-index: 1 !important;background: #DDD; border-radius: 10px;")
 			.modal-dialog-centered.custom_modal_dialog(role="document", style="padding-right: 0px; padding-top: 10px; z-index: 1;")
 				.modal-content
 					form(id = "form" method='POST' , name="editProfileForm",action='/coachProfile_coach', enctype="multipart/form-data")
@@ -131,4 +137,4 @@ block content
 									input#image.form-control(type='file' name='image' accept='image/*')
 						.modal-footer
 							button.special(type='submit') Update
-							button(data-dismiss="modal") Cancel
+							button(data-dismiss="modal" style="position:absolute; left: 85%;") Cancel
