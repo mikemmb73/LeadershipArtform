@@ -40,20 +40,21 @@ block content
 			.row(class='200%')
 				.6u(class='12u$(medium)')
 					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-						h3 Pick Recipients
+						h2 Pick Recipients
 						div.card-body
 							if clients.length == 0
 								h6.text-danger(style="text-align:center") You must first invite a client to add and assign a goal
 							else
 								.form-group
-									select.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
+									select.recipientList.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
 										each obj in clients
 											var recipName = obj.fname + obj.lname;
 											option(value=recipName) #{obj.fname} #{obj.lname}
 									p To select multiple, hold shift or drag with mouse
-					h3 Frequency Reminder
+					hr
+					h2 Set Reminder
 					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-						div.card-body
+						div
 							form
 								input(type='radio', name='frequency', value='4', checked='')
 								|  None
@@ -70,45 +71,49 @@ block content
 								input(type='radio', name='frequency', value='3')
 								|  Monthly
 				.6u(class='12u$(medium)')
-					a.goalChoice(href='#', onclick='ShowUsePreviousGoal()') Use a Previous Goal
-					h3.goalChoice  / 
-					a.goalChoice(href='#', onclick='ShowCreateNewGoal()') Creat a New Goal
+					h2.goalChoiceSelected#prevGoalButton(href='#', onclick='ShowUsePreviousGoal()') Use a Previous Goal
+					h2.goalChoice  / 
+					h2.goalChoice#newGoalButton(href='#', onclick='ShowCreateNewGoal()') Creat a New Goal
 					div.fullDiv#UsePreviousGoal
 						div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-							div.card-body
+							div.prevGoalList
 								- var allGoals = [];
 								- var goalCheck = true;
+								- var count=1;
 									each cli in clients2
 										each goal in cli.goals_list
 											each entry in allGoals
 												if entry.valueOf() == goal.goal_title.valueOf()
 													-goalCheck = false;
 											if goalCheck
-												br
 												-var name = goal.goal_title;
-												input.btn-primary(type='submit' value=name name="GoalButton")
-												each question in goal.goal_questions
-													p #{question.title}
-												br
+												input.button.special.btn-primary(type='submit' value=name name="GoalButton")
+												div.prevGoalBlock
+													each question in goal.goal_questions
+														p.fullDiv #{count}, #{question.title}
+														-count+=1;
+													-count=1;
 											-goalCheck = true;
 											-allGoals.push(goal.goal_title);
 					div.fullDiv#CreateNewGoal
 						div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-							div.card-body
+							div.subTitle
 								| Goal Title
-							div.card-footer
 								input(type='text', name='goalTitle')
-							div.card-body
+							div.subTitle
 								| Goal Description
-							div.card-footer
 								input(type='text', name='goalDescription' size='125')
-						div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-							div.card-body#questionCard
-								| Choose Question Type
-							div.jumbotron#questionDropdown(style="display:none")
-							div.card-footer
-								p Add Question
-								input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
-								input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
-								input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
-			input.button.special.submitButton(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")
+						br
+				div.fullDiv#CreateGoalQuestions
+					h2.questionSheetTitle Questions Sheet
+					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
+						div.card-body#questionCard
+						div.jumbotron#questionDropdown(style="display:none")
+						div.card-footer
+							div.subTitle Add Question
+							input(class='btn btn-secondary btn-sm' type='button', value='Multiple Choice', onclick='mcDropdown()')
+							input(class='btn btn-secondary btn-sm' type='button', value='Free Response', onclick='freeResponseDropdown()')
+							input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
+					br
+					br
+					input.button.special.submitButton(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")

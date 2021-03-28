@@ -10,20 +10,50 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-#CreateNewGoal {
+.inlinebox{
+	display:inline;
+	margin:0.3rem;
+	border: solid 1px;
+	background: rgba(144, 144, 144, 0.075);
+	border-color: rgba(144, 144, 144, 0.25);
+	height: 2.75rem;
+	border-radius: 2px;
+	width: 50%;
+}
+.inline{
+	display:inline;
+	margin:0.3rem;
+}
+#CreateNewGoal, #CreateGoalQuestions {
 	display: none;
 }
-
+.questionSheetTitle{
+	margin-top: 1.5rem;
+	text-align: center;
+}
 .goalChoice{
 	display:inline;
-	font-size:130%;
+	text-decoration: underline;
+	 cursor:pointer;
+/*	font-size:160%;
 	color: #444;
+	margin-top: -100px;*/
+}
+.recipientList{
+	height: 150px;
+}
+.goalChoiceSelected{
+	display:inline;
+	color:#d9aa00;
+	font-weight:bold;
+	text-decoration: underline;
+	 cursor:pointer;
 }
 h3{
 	font-weight:900;
 }
 #UsePreviousGoal{
-	background-color: rgba(0, 0, 0, 0.125);
+	/*background-color: rgba(0, 0, 0, 0.125);*/
 }
 .submitButton{
 	margin-top: 20px;
@@ -37,7 +67,32 @@ h3{
 	padding: 5px;
 }
 
-.card-
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.prevGoalBlock{
+	margin-bottom: 1.5rem;
+	background-color: rgba(144, 144, 144, 0.075);
+	border-radius: 2px;
+	border: solid 1px;
+	border-color: rgba(144, 144, 144, 0.25);
+	margin-top: 0.5rem;
+}
+.prevGoalList{
+	 overflow-y: scroll; /* Show vertical scrollbar */
+	 max-height:570px;
+}
+.subTitle{
+	font-size: 120%;
+}
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------*/
@@ -1695,9 +1750,9 @@ h3{
 		font-style: italic;
 	}
 
-	p {
+/*	p {
 		margin: 0 0 2rem 0;
-	}
+	}*/
 
 		p.special {
 			text-transform: uppercase;
@@ -2181,7 +2236,7 @@ h3{
 		padding: 0.75rem 1rem;
 	}
 
-	input[type="checkbox"],
+/*	input[type="checkbox"],
 	input[type="radio"] {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -2193,7 +2248,7 @@ h3{
 		opacity: 0;
 		width: 1rem;
 		z-index: -1;
-	}
+	}*/
 
 		input[type="checkbox"] + label,
 		input[type="radio"] + label {
