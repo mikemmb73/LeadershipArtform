@@ -3,7 +3,7 @@ extends layout
 block content
 	include mixins/print_goal_coach.pug
 	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/') Art of Leadership
+		a.navbar-brand(href='/coachView') Art of Leadership
 		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
 			span(class="navbar-toggler-icon")
 		div.collapse.navbar-collapse(id="navbarSupportedContent")
@@ -26,18 +26,12 @@ block content
 		div.col-md-6
 			br
 			h1 #{user.name}
-			h6 #{user.username}
+			h6 email: #{user.username}
 			-var username = user.username
 			input(type="hidden" name="profileClick" value=username)
 			p #{user.bio_info}
-		div.col-md-2
-
-
-		br
-	div.row.client-info
-		div.col-md-4
-		div.col-md-4
-			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal") Add Note
+			br
+			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal" style="background-color:black; border: none;border-radius: 4px;") Add Note
 			.modal(role="dialog", id="addNoteModal")
 				.modal-dialog-centered.custom_modal_dialog(role="document")
 					.modal-content
@@ -52,9 +46,7 @@ block content
 									input(type="hidden" name="profileClick" value=username)
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
-			br
-			br
-			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#sendMessageModal") Send Message
+			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#sendMessageModal" style="background-color:black; border: none;border-radius: 4px; position: relative;left: 20px") Send Message
 			.modal(role="dialog", id="sendMessageModal")
 				.modal-dialog-centered.custom_modal_dialog(role="document")
 					.modal-content
@@ -72,6 +64,15 @@ block content
 									input(type="hidden" name="sendMessage" value="sendMessage")
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
+			
+		div.col-md-2
+
+
+		br
+	div.row.client-info
+		div.col-md-4
+		div.col-md-4
+			
 
 	br
 	div.card.border-dark.client-info

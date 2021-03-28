@@ -2,7 +2,7 @@ extends layout
 
 block content
 		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-			a.navbar-brand(href='/') Art of Leadership
+			a.navbar-brand(href='/executiveView') Art of Leadership
 			button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
 				span(class="navbar-toggler-icon")
 			div.collapse.navbar-collapse(id="navbarSupportedContent")
@@ -27,7 +27,7 @@ block content
 			div.col-md-6
 				br
 				h1 #{user.full_name}
-				h3 #{user.user_email}
+				h3 EMAIL: #{user.user_email}
 				h5 COACH ID: #{user.coach_id}
 				p #{user.biography}
 			div.col-md-1
