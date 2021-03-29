@@ -37,41 +37,51 @@ block content
 			h2#elements Welcome, Coach #{user.first_name}
 			br
 			br
-			.row(class='200%')
+			.row(class='200%' ,style="width:100%;")
 				div.row.client_title
 					script
 						var clients = !{JSON.stringify(clients)};
-				div.6u(class='12u$(medium)')
+				div(style="width:0%;")
+					br
+				div(style="width:50%;")
 					
 					h2 Progress Approval Requests:
-					br
 					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 						- var noApprovals = "true";
 						.card-body
 							each obj in clients
 								each goal in obj.goals_list
-									if goal.progress_acceptance != goal.progress
-									- noApprovals = "false";
-									hr
-									img#clientImage(src=obj.photo , style="width: 50px;")
-									h3 #{obj.fname} #{obj.lname}
-									p  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
-									form(method='POST' action='/viewGoal_coach')
-										input(type="hidden" name="goal_id" value=goal.id)
-										button.special.icon.fa-search(style="float:left" type="submit") Details
-									form(method='POST' action='/coachView')
-										button.special.icon.fa-check(style="float:right" type="submit") Accept
-										input(type="hidden" name="acceptRequest" value=goal.goal_id)
-									br
+									div(style="width:100%")
+										br
+										br
+									div(style="width:100%; background-color:#EEE; border-radius: 20px; height: 220px; padding-left: 20px;padding-right: 20px;box-shadow: 5px 5px grey;")
+										if goal.progress_acceptance != goal.progress
+										- noApprovals = "false";
+										div.row(style="display: inline; width: 100%;")
+											div
+												img#clientImage(src=obj.photo , style="width: 70px;  ") 
+											div
+												h2(style="") #{obj.fname} #{obj.lname}
+										p(style="position:relative; left:25px;")  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
+										form(method='POST' action='/viewGoal_coach')
+											input(type="hidden" name="goal_id" value=goal.id)
+											button.special.icon.fa-search(style="float:left" type="submit") Details
+										form(method='POST' action='/coachView')
+											button.special.icon.fa-check(style="float:right" type="submit") Accept
+											input(type="hidden" name="acceptRequest" value=goal.goal_id)
 						if noApprovals == "true"
 							h3.text-danger(style="text-align:center") No pending approvals
-				div.6u(class='$ 12u$(medium)')
-					.modal(role="dialog", id="addClientModal")
+				div(style="width:10%;")
+					br
+				div(style="width:35%;")
+					h2 Invite a Client:
+					br
+					br
+					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: 5px 5px grey;")
 						.modal-dialog-centered.custom_modal_dialog(role="document")
 							.modal-content
 								form(id = "form" method='POST' action='/coachView')
 									.modal-header
-										h2 Invite a Client
 									.modal-body
 										p Client Name:
 											br
@@ -81,7 +91,12 @@ block content
 										input(type="text" name="emailAddress")
 									p Welcome Message:
 										br
-										input(type="textarea" name = "message" style="height:200px" size="85")
+										input(type="text" name = "message" style="height:100px; width:100%" )
 								.modal-footer
 									button.special.icon(type='submit') Submit
-
+		br
+		br
+		br
+		footer#footer
+			div(class = "copyright")
+				|By Leadership as an Artform						
