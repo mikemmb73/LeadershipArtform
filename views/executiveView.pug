@@ -1,27 +1,76 @@
 extends layout
 
 block content
-	include mixins/print_goal.pug
-	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/executiveView') Art of Leadership
-		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-			span(class="navbar-toggler-icon")
-		div.collapse.navbar-collapse(id="navbarSupportedContent")
-			ul.navbar-nav.ml-auto
+	head
+		title Art of Leadership
+		meta(charset='utf-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+		link(rel='stylesheet' href='assets/css/mainProfile.css')
+		include mixins/print_goal.pug
+	body.subpage
+		script(src='assets/js/jquery.min.js')
+		script(src='assets/js/jquery.scrollex.min.js')
+		script(src='assets/js/skel.min.js')
+		script(src='assets/js/util.js')
+		script(src='assets/js/main.js')
+		header#header
+			.logo
+				a(href='/') Art of Leadership
+			span 
+			a(href='#menu') Menu
+		nav#menu
+			ul.links
 				li
-					a.nav-item.nav-link.active(href='/executiveView') Home
+					a(href='/executiveView') Home
 				li
-					a.nav-link.nav-item(href='/executiveProfile') Profile
+					a(href='/executiveProfile') Profile
 				li
-					a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
+					a(href='/addGoal_executive') Goal
 				li
-					a.nav-item.nav-link(href='/addGoal_executive') Add Goal
-				li
-					form(method='POST' action='/')
-						input(type="hidden" name="signOut" value="signOut")
-						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	.row
-		h2(style="padding:15px") Hello, #{user.name}
+					a(href='/coachProfile_executive') Coach
+		section#One.wrapper.style3
+			.inner
+				header.align-center
+					p Art of Leadership
+					h2 Home
+					
+		#main.container
+			h2 Hello, #{user.name}!
+			br
+			.row(style="width:100%;")
+				div(style="width:45%;")
+					h2 Messages from Coach:
+					br
+					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px;box-shadow: 5px 5px grey;")
+						form(method='POST' action='/executiveView')
+							div.card-header 
+								button.special(style="float: right" classe-"btn btn-danger" type="submit") DELETE
+							div.card-body
+								if user.coach_message.length == 0
+									h4.text-danger(style="text-align:center") No current messages
+								else
+									h3 #{user.coach_message}
+							input( type="hidden" name="deleteMessage" value="deleteMessage")
+				div(style="width:10%;")
+					br
+				div(style="width:45%;")
+					h2 Current Goals:
+					div
+						if user.exec_goals.length == 0
+							h4.text-danger(style="text-align:center") There are no current goals
+						else
+							each goal in user.exec_goals
+								br
+								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 5px 5px grey;")
+									if goal.goal_progress < 100
+										+print_goal(goal)
+		br
+		br
+		br
+		footer#footer
+			div(class = "copyright")
+				|By Leadership as an Artform
+		
 	.col-lg-4
 	- var today = new Date()
 	- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -36,24 +85,3 @@ block content
 				.alert.alert-dismissible.alert-success
 					h5.text-success(style="text-align:center") You have a new goal
 
-	div.jumbotron
-		h3 Messages from coach:
-		br
-		div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
-			form(method='POST' action='/executiveView')
-				div.card-header Delete message
-					button(style="float: right" classe-"btn btn-danger" type="submit") X
-				div.card-body
-					if user.coach_message.length == 0
-						h4.text-danger(style="text-align:center") No current messages
-					else
-						p #{user.coach_message}
-				input(type="hidden" name="deleteMessage" value="deleteMessage")
-	div.jumbotron
-		h3 Current Goals
-		if user.exec_goals.length == 0
-			h4.text-danger(style="text-align:center") There are no current goals
-		else
-			each goal in user.exec_goals
-				if goal.goal_progress < 100
-					+print_goal(goal)
