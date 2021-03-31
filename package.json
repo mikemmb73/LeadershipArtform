@@ -45,13 +45,11 @@
   "bugs": {
     "url": "https://github.com/emalysz/LeadershipArtform/issues"
   },
-<<<<<<< HEAD
-  "homepage": "https://github.com/emalysz/LeadershipArtform#readme"
-=======
+  
   "homepage": "https://github.com/emalysz/LeadershipArtform#readme",
   "devDependencies": {
     "chai": "^4.3.3",
     "mocha": "^8.3.1"
   }
->>>>>>> master
+
 }
