@@ -17,6 +17,7 @@ If choosing to host on the actual website, use these environmental variables
 If choosing to host locally, use your mySQL credentials
 */
 
+<<<<<<< HEAD
 var connection = mysql2.createPool({
   connectionLimit : 10,
   host     : 'localhost',
@@ -24,6 +25,17 @@ var connection = mysql2.createPool({
   password : 'qwertyui',
   database : 'Leadership_Artform'
 });
+=======
+
+// var connection = mysql2.createPool({
+//   connectionLimit : 10,
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : '123',
+//   database : 'Leadership_Artform'
+// });
+>>>>>>> master
+
 
 
 module.exports = {

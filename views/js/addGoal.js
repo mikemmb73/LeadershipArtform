@@ -4,19 +4,45 @@ var mcIndex = 0;
 var freeResponseIndex = 0;
 var numQuestions = 0;
 var numDelete = 0;
+function ShowCreateNewGoal(){
+  document.getElementById("UsePreviousGoal").style.display="none";
+  document.getElementById("CreateNewGoal").style.display="block";
+  document.getElementById("CreateGoalQuestions").style.display="block";
+
+  document.getElementById("newGoalButton").className="goalChoiceSelected";
+  document.getElementById("prevGoalButton").className="goalChoice";
+}
+function ShowUsePreviousGoal(){
+  document.getElementById("UsePreviousGoal").style.display="block";
+  document.getElementById("CreateNewGoal").style.display ="none";
+  document.getElementById("CreateGoalQuestions").style.display="block";
+
+  document.getElementById("prevGoalButton").className="goalChoiceSelected";
+  document.getElementById("newGoalButton").className="goalChoice";
+}
 
 function mcDropdown(){
 
+ 
+
+
+
+  var inline = document.createAttribute("class");
+  inline.value="inlinebox";
+
+
   var thisIndex = mcIndex;
   var jumbotron = document.createElement("div");
-  var jumboID = "jumbotron" + numQuestions;
+  var jumboID = "newQuestion" + numQuestions;
   console.log(jumboID);
   jumbotron.setAttribute("id", jumboID);
   numQuestions++;
   var jumbotronAtt = document.createAttribute("class");
-  jumbotronAtt.value = "jumbotron";
+  jumbotronAtt.value = "question";
   jumbotron.setAttributeNode(jumbotronAtt);
 
+  var smalljumbo = document.createElement("div");
+  jumbotron.appendChild(smalljumbo);
 
   var bigJumbo = document.getElementById("questionCard");
   bigJumbo.appendChild(jumbotron);
@@ -33,7 +59,7 @@ function mcDropdown(){
   closeButton.setAttributeNode(closeButtonClass);
   var closeButtonText = document.createTextNode("X");
   closeButton.appendChild(closeButtonText);
-  jumbotron.appendChild(closeButton);
+  smalljumbo.appendChild(closeButton);
   closeButton.onclick = function(){
     jumbotron.style.display = "none";
     numDelete++;
@@ -54,22 +80,27 @@ function mcDropdown(){
   var questionTitleLabel_ = document.createElement("label");
   var questionTitleLabel = document.createTextNode("Question Title");
   questionTitleLabel_.appendChild(questionTitleLabel);
-  jumbotron.appendChild(questionTitleLabel);
+  smalljumbo.appendChild(questionTitleLabel);
 
  //Area for coach to type in Question Title
   var inputTitle = document.createElement("input");
   var inputType = document.createAttribute("type");
   var inputName = document.createAttribute("name");
+  var inputAtt  = document.createAttribute("class");
+  inputAtt.value = "questionInput";
   inputType.value="textarea";
   inputName.value="mcQuestions[" + mcIndex + "][0]";
   inputTitle.setAttributeNode(inputType);
   inputTitle.setAttributeNode(inputName);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  inputTitle.setAttributeNode(inlinebox);
   inputTitle.required = true;
-  jumbotron.appendChild(inputTitle);
+  smalljumbo.appendChild(inputTitle);
 
 
   var br2 = document.createElement("br");
-  jumbotron.appendChild(br2);
+  smalljumbo.appendChild(br2);
 
   //Multiple Choice Options
   //Option1 Title
@@ -77,7 +108,7 @@ function mcDropdown(){
   var option1TitleLabel_ = document.createElement("label");
   var option1TitleLabel = document.createTextNode("Option 1 Value: ");
   questionTitleLabel_.appendChild(option1TitleLabel);
-  jumbotron.appendChild(option1TitleLabel);
+  smalljumbo.appendChild(option1TitleLabel);
   //Area for coach to type in Question Title
   var option1Title = document.createElement("input");
   var option1Type = document.createAttribute("type");
@@ -86,16 +117,19 @@ function mcDropdown(){
   option1Name.value = "mcQuestions[" + mcIndex + "][1]";
   option1Title.setAttributeNode(option1Type);
   option1Title.setAttributeNode(option1Name);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  option1Title.setAttributeNode(inlinebox);
   option1Title.required = true;
-  jumbotron.appendChild(option1Title);
+  smalljumbo.appendChild(option1Title);
   var br2 = document.createElement("br");
-  jumbotron.appendChild(br2);
+  smalljumbo.appendChild(br2);
   //Option2 Title
   var option2TitleLabel_ = document.createElement("label");
   var option2TitleLabel = document.createTextNode("Option 2 Value: ");
 
   questionTitleLabel_.appendChild(option2TitleLabel);
-  jumbotron.appendChild(option2TitleLabel);
+  smalljumbo.appendChild(option2TitleLabel);
   //Area for coach to type in Question Title
   var option2Title = document.createElement("input");
   var option2Type = document.createAttribute("type");
@@ -104,8 +138,11 @@ function mcDropdown(){
   option2Name.value="mcQuestions[" + mcIndex + "][2]";
   option2Title.setAttributeNode(option2Type);
   option2Title.setAttributeNode(option2Name);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  option2Title.setAttributeNode(inlinebox);
   option2Title.required = true;
-  jumbotron.appendChild(option2Title);
+  smalljumbo.appendChild(option2Title);
 
 
   //Add Option button
@@ -119,20 +156,24 @@ function mcDropdown(){
   var addOptionButtonClass = document.createAttribute("class");
   addOptionButtonClass.value="btn-primary";
   addOptionButton.setAttributeNode(addOptionButtonClass);
-  jumbotron.appendChild(addOptionButton);  
+  smalljumbo.appendChild(addOptionButton);  
 
   var br2 = document.createElement("br");
-   jumbotron.appendChild(br2);
+  smalljumbo.appendChild(br2);
 
   var num = 3;
   var optionIndex = 3;
   addOptionButton.onclick = function() {
     var option3TitleLabel_ = document.createElement("label");
     var numVal = "Option " + num + " Value: ";
-    var option3TitleLabel = document.createTextNode(numVal);
+    var option3TitleLabel =  document.createElement("P");
+    option3TitleLabel.innerText = numVal;
+    var addOptionButtonClass = document.createAttribute("class");
+    addOptionButtonClass.value="inline";
+    option3TitleLabel.setAttributeNode(addOptionButtonClass);
     questionTitleLabel_.appendChild(option3TitleLabel);
 
-    jumbotron.appendChild(option3TitleLabel);
+    smalljumbo.appendChild(option3TitleLabel);
 
 //Area for coach to type in Question Title
     var option3Title = document.createElement("input");
@@ -144,13 +185,17 @@ function mcDropdown(){
     option3Title.setAttributeNode(option3Type);
     option3Title.setAttributeNode(option3Name);
     option3Title.required = true;
-    jumbotron.appendChild(option3Title);
+    var addOptionButtonClass = document.createAttribute("class");
+    addOptionButtonClass.value="inlinebox";
+    option3Title.setAttributeNode(addOptionButtonClass);
+    smalljumbo.appendChild(option3Title);
     var br2 = document.createElement("br");
-    jumbotron.appendChild(br2);
+    smalljumbo.appendChild(br2);
     num++;
     optionIndex++;
   };
-
+  var br2 = document.createElement("hr");
+  jumbotron.appendChild(br2);
   mcIndex = mcIndex + 1;
 
 }
@@ -161,8 +206,8 @@ function freeResponseDropdown(){
 
   var jumbotron = document.createElement("div");
   var jumbotronAtt = document.createAttribute("class");
-  jumbotronAtt.value = "jumbotron";
-  var jumboID = "jumbotron" + numQuestions;
+  jumbotronAtt.value = "question";
+  var jumboID = "newQuestion" + numQuestions;
   console.log(jumboID);
   jumbotron.setAttribute("id", jumboID);
   numQuestions++;
@@ -213,13 +258,16 @@ function freeResponseDropdown(){
   inputType.value="textarea";
   inputTitle.setAttributeNode(inputType);
   inputTitle.setAttributeNode(inputName);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  inputTitle.setAttributeNode(inlinebox);
   var inputTitleID = document.createAttribute("id");
   inputTitleID.value="freeResponseQuestion";
   inputTitle.setAttributeNode(inputTitleID);
   inputTitle.required = true;
   jumbotron.appendChild(inputTitle);
 
-  var br2 = document.createElement("br");
+  var br2 = document.createElement("hr");
   jumbotron.appendChild(br2);
 
   freeResponseIndex++;
@@ -234,11 +282,11 @@ function likertDropdown(){
   jumbotron.setAttribute("id", jumboID);
   numQuestions++;
   var jumbotronAtt = document.createAttribute("class");
-  jumbotronAtt.value = "jumbotron";
+  jumbotronAtt.value = "question";
 
   //jumbotron id
   var jumbotronID = document.createAttribute("id");
-  jumbotronID.value="newQuestionJumbotron" + jCount;
+  jumbotronID.value="newQuestion" + numQuestions;
   //console.log("jumbotronID is " + jumbotronID.value);
   //console.log("jCount is now " + jCount);
   jumbotron.setAttributeNode(jumbotronID);
@@ -289,6 +337,9 @@ function likertDropdown(){
   inputQuestion.setAttributeNode(inputQuestionType);
   inputQuestion.setAttributeNode(inputQuestionID);
   inputQuestion.setAttributeNode(inputQuestionName);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  inputQuestion.setAttributeNode(inlinebox);
   inputQuestion.required = true;
   jumbotron.appendChild(inputQuestion);
 
@@ -309,6 +360,9 @@ function likertDropdown(){
   leftSideInput.setAttributeNode(leftSideInputType);
   leftSideInput.setAttributeNode(lSideID);
   leftSideInput.setAttributeNode(leftSideName);
+  var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  leftSideInput.setAttributeNode(inlinebox);
   leftSideInput.required = true;
   jumbotron.appendChild(leftSideInput);
 
@@ -329,10 +383,13 @@ function likertDropdown(){
   rightSideInput.setAttributeNode(rightSideInputType);
   rightSideInput.setAttributeNode(rSideID);
   rightSideInput.setAttributeNode(rightSideName);
+   var inlinebox = document.createAttribute("class");
+  inlinebox.value="inlinebox";
+  rightSideInput.setAttributeNode(inlinebox);
   rightSideInput.required = true;
   jumbotron.appendChild(rightSideInput);
 
-  var br3 = document.createElement("br");
+  var br3 = document.createElement("hr");
   jumbotron.appendChild(br3);
 
   likertIndex++;
@@ -429,7 +486,7 @@ function displaySave(result){
   var likertScaleLeft = document.getElementById("likertScaleLeft").value;
   var likertScaleRight = document.getElementById("likertScaleRight").value;
 
-  var id = "newQuestionJumbotron" + count;
+  var id = "newQuestion" + count;
   //console.log("id is " + id);
   var jumbotron = document.getElementById(id);
   while (jumbotron.firstChild) {

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha"
   },
   "dependencies": {
     "aws-sdk": "^2.437.0",
@@ -26,7 +27,7 @@
     "mysql2-promise": "^0.1.4",
     "node-mandrill": "^1.0.1",
     "nodemailer": "^5.1.1",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.4",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "popups": "^1.1.3",
@@ -44,5 +45,13 @@
   "bugs": {
     "url": "https://github.com/emalysz/LeadershipArtform/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/emalysz/LeadershipArtform#readme"
+=======
+  "homepage": "https://github.com/emalysz/LeadershipArtform#readme",
+  "devDependencies": {
+    "chai": "^4.3.3",
+    "mocha": "^8.3.1"
+  }
+>>>>>>> master
 }
