@@ -197,8 +197,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       }
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
-      console.log("1");
-      console.log(user);
+
       if (user == -1) { //enter if a duplicate email has been detected in the database
         res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
@@ -216,8 +215,6 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     }
   }
   if (user == null && req.body.fname != null) {
-    console.log("2");
-    console.log(user);
     res.redirect('/executiveSignInSignUp');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });

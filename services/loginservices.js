@@ -30,7 +30,6 @@ module.exports = {
 			if (rows.length != 0) {
 				var pw = currExecutive[0].pass;
 				const validPassword = bcrypt.compareSync(password, pw);
-				console.log("valid: " + validPassword);
 				if (validPassword) {
 					isCorrectPass = true;
 					currentExecutive = currExecutive[0];
@@ -103,7 +102,6 @@ module.exports = {
 						currentCoach = currCoach[0];
 					}
 					else {
-						console.log("Password doesn't match (inside loginservices)");
 						currentCoach = null;
 					}
 				}
