@@ -15,7 +15,7 @@ function ShowCreateNewGoal(){
 function ShowUsePreviousGoal(){
   document.getElementById("UsePreviousGoal").style.display="block";
   document.getElementById("CreateNewGoal").style.display ="none";
-  document.getElementById("CreateGoalQuestions").style.display="block";
+  document.getElementById("CreateGoalQuestions").style.display="none";
 
   document.getElementById("prevGoalButton").className="goalChoiceSelected";
   document.getElementById("newGoalButton").className="goalChoice";
