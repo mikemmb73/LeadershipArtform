@@ -6,6 +6,7 @@ If choosing to host on the actual website, use these environmental variables
 (specified in the .env file) to access AWS.
 */
 
+
 var connection = mysql.createPool({
   connectionLimit : 10,
   host     : process.env.RDS_HOSTNAME,
@@ -24,7 +25,7 @@ If choosing to host locally, use your mySQL credentials
 //   connectionLimit : 10,
 //   host     : 'localhost',
 //   user     : 'root',
-//   password : 'Pickoftheweek1!',
+//   password : 'SuperSecret1',
 //   database : 'Leadership_Artform'
 // });
 

@@ -21,6 +21,7 @@ module.exports = {
   notes- coach_id will entered as -1, since the executive entered this goal
   **/
   addGoalExecutive: async function(goalData, currExecutive) {
+    print(goalData)
     var today = new Date();
     var nextWeek = new Date();
     nextWeek.setDate(nextWeek.getDate() + 7);
@@ -201,6 +202,9 @@ module.exports = {
   the client form will be a string and will not need to loop through the entire clientForm
   **/
   addGoalCoach: async function(goalData, currCoach, clients) {
+    console.log(goalData)
+    console.log(clients)
+    
     console.log("CLIENT FORM" + goalData.clientForm.length);
     typeof clientForm;
     if (Array.isArray(goalData.clientForm)) {

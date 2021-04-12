@@ -6,6 +6,7 @@ user wishes to sign up
 ****/
 
 var mysql = require("./sqlconnect.js");
+var bcrypt = require('bcrypt-nodejs');
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 var currentExecutive;
@@ -31,7 +32,9 @@ module.exports = {
         currentCoach = -1;
       }
       else {
-        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), password, fname.trim(), lname.trim(), phone, bio, photo]);
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(password, salt);
+        await mysql.connect.execute("INSERT INTO coaches(email, password, fname, lname, phone_number, bio, photo) VALUES(?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), hash, fname.trim(), lname.trim(), phone, bio, photo]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM coaches WHERE email = ?", [email.toLowerCase().trim()]);
         const currCoach = rows2.map(x => new ExecutiveCoach.ExecutiveCoach(x));
         console.log("Current coach: " + currCoach[0]);
@@ -65,7 +68,9 @@ module.exports = {
         currentExecutive = -3;
       }
       else {
-        await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), password, fname.trim(), lname.trim(), phone, message, bio, photo, coach_id]);
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(password, salt);
+        await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), hash, fname.trim(), lname.trim(), phone, message, bio, photo, coach_id]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
         const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];
