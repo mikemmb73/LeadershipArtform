@@ -28,6 +28,10 @@ block content
 					a(href='/addGoal_executive') Goal
 				li
 					a(href='/coachProfile_executive') Coach
+				li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
 		section#One.wrapper.style3
 			.inner
 				header.align-center
@@ -38,10 +42,10 @@ block content
 			h2 Hello, #{user.name}!
 			br
 			.row(style="width:100%;")
-				div(style="width:45%;")
+				div(class="6u 12u$(medium)")
 					h2 Messages from Coach:
 					br
-					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px;box-shadow: 5px 5px grey;")
+					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
 						form(method='POST' action='/executiveView')
 							div.card-header 
 								button.special(style="float: right" classe-"btn btn-danger" type="submit") DELETE
@@ -51,9 +55,7 @@ block content
 								else
 									h3 #{user.coach_message}
 							input( type="hidden" name="deleteMessage" value="deleteMessage")
-				div(style="width:10%;")
-					br
-				div(style="width:45%;")
+				div(class="6u 12u$(medium)")
 					h2 Current Goals:
 					div
 						if user.exec_goals.length == 0
@@ -61,7 +63,7 @@ block content
 						else
 							each goal in user.exec_goals
 								br
-								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 5px 5px grey;")
+								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
 									if goal.goal_progress < 100
 										+print_goal(goal)
 		br

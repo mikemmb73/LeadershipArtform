@@ -28,6 +28,10 @@ block content
 					a(href='/coachProfile_coach') Profile
 				li
 					a(href='/addGoal_coach') Goal
+				li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
 		section#One.wrapper.style3
 			.inner
 				header.align-center
@@ -39,10 +43,11 @@ block content
 				div.row.client_title
 					script
 						var clients = !{JSON.stringify(clients)};
-				div.6u(style="width:40%;")
+				div(class="6u 12u$(medium)")
 					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
 					br
-					button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="position: relative; left: 35%;").client_button Edit Profile
+					div(style="display: flex;justify-content: center;align-items: center;")
+						button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="").client_button Edit
 					br
 					br
 					br
@@ -50,7 +55,7 @@ block content
 					h2(style="text-align: center;")  Coach ID: #{user.coach_id}
 					h2(style="text-align: center;")  EMAIL: #{user.user_email}
 					p(style="text-align: center;")  #{user.biography}
-				div.6u(style="width:60%;")
+				div(class="6u 12u$(medium)")
 					h2 Clients
 					form(method='GET' action='/coachProfile_coach')
 						input(type="hidden" name="remindAll" value="remindAll")
@@ -63,18 +68,18 @@ block content
 								h5.text-danger(style="text-align:center") You have no clients yet
 							each obj in clients
 								div.row(style="height:10px;width:100%;")
-								div.row(style="width:100%; background-color: #EEE; position: relative; left: 55px; border-radius: 20px;box-shadow: 5px 5px grey;")
+								div.row(style="width:100%; background-color: #EEE; position: relative; left: 55px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
 									-var emailAddress = obj.email
 									div(style="width:30%;")
 										img#clientImage(src=obj.photo , style="width: 130px;")
-									div(style="width:40%;")
+									div(style="width:30%;")
 										h3(style="text-align: left;") #{obj.fname} #{obj.lname}
 										p(style="text-align: left;") #{obj.email}
 										p(style="text-align: left;") #{obj.bio}
-									div(style="width:30%;")
+									div(style="width:40%;")
 										form(method='POST' action='/coachView')
 											input(type="hidden" name="emailReminder" value=emailAddress)
-											button.special(class="icon fa-envelope-o" ,type="submit") Remind
+											button.special(class="icon fa-envelope-o" ,type="submit",style="") Remind
 										form(method='POST' action='/executiveProfile_coach')
 											input(type="hidden" name="profileClick" value=emailAddress)
 											button.special(class="icon fa-search" , type="submit") Details
