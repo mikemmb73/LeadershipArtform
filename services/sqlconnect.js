@@ -17,15 +17,13 @@ var connection = mysql2.createPool({
 If choosing to host locally, use your mySQL credentials
 */
 
-
 // var connection = mysql2.createPool({
 //   connectionLimit : 10,
 //   host     : 'localhost',
 //   user     : 'root',
-//   password : '123',
+//   password : 'qwertyui',
 //   database : 'Leadership_Artform'
 // });
-
 
 
 module.exports = {

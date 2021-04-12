@@ -6,6 +6,7 @@ executive or coach decides to log in.
 ****/
 
 var mysql = require("./sqlconnect.js");
+var bcrypt = require('bcrypt-nodejs');
 var ExecutiveCoach = require('../model/executiveCoach');
 var Executive = require('../model/executive');
 var Goal = require("../model/goal")
@@ -28,7 +29,8 @@ module.exports = {
 		if (rows != null) {
 			if (rows.length != 0) {
 				var pw = currExecutive[0].pass;
-				if (pw == password) {
+				const validPassword = bcrypt.compareSync(password, pw);
+				if (validPassword) {
 					isCorrectPass = true;
 					currentExecutive = currExecutive[0];
 					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
@@ -94,11 +96,12 @@ module.exports = {
 			if (rows != null) {
 	      if (rows.length != 0) {
 					var pw = currCoach[0].pass;
-					if (pw == password) {
+					const validPassword = bcrypt.compareSync(password, pw);
+
+					if (validPassword) {
 						currentCoach = currCoach[0];
 					}
 					else {
-						console.log("Password doesn't match (inside loginservices)");
 						currentCoach = null;
 					}
 				}

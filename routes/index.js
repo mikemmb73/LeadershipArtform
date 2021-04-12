@@ -30,14 +30,20 @@ const upload = require('../services/image-upload');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Art of Leadership' });
+  currExecutive = null;
+  currCoach = null;
 });
 
 router.get('/coachSignInSignUp', function(req, res, next){
   res.render('coachSignInSignUp.pug', {title: 'coach'});
+  currExecutive = null;
+  currCoach = null;
 });
 
 router.get('/executiveSignInSignUp', function(req, res, next){
   res.render('executiveSignInSignUp.pug', {title: 'executive'});
+  currExecutive = null;
+  currCoach = null;
 });
 
 /* GET signup page for executive. */
@@ -191,6 +197,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       }
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
+
       if (user == -1) { //enter if a duplicate email has been detected in the database
         res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
@@ -202,6 +209,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       }
       currExecutive = user;
     } else { //enter when the executive attempts to sign in
+      console.log("Sign in here");
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
