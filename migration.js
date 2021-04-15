@@ -6,7 +6,7 @@ If choosing to host on the actual website, use these environmental variables
 (specified in the .env file) to access AWS.
 */
 
-/*
+
 var connection = mysql.createPool({
   connectionLimit : 10,
   host     : process.env.RDS_HOSTNAME,
@@ -15,19 +15,19 @@ var connection = mysql.createPool({
   port     : process.env.RDS_PORT,
   database : process.env.RDS_DB_NAME
 });
-*/
+
 
 /*
 If choosing to host locally, use your mySQL credentials
 */
 
-var connection = mysql.createPool({
-  connectionLimit : 10,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'SuperSecret1',
-  database : 'Leadership_Artform'
-});
+// var connection = mysql.createPool({
+//   connectionLimit : 10,
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'qwertyui',
+//   database : 'Leadership_Artform'
+// });
 
 
 migration.init(connection, __dirname + '/migrations');
