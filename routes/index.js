@@ -29,6 +29,8 @@ const upload = require('../services/image-upload');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  currCoach = null;
+  currExecutive = null;
   res.render('index', { title: 'Art of Leadership' });
 });
 
