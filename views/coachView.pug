@@ -28,6 +28,10 @@ block content
 					a(href='/coachProfile_coach') Profile
 				li
 					a(href='/addGoal_coach') Goal
+				li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
 		section#One.wrapper.style3
 			.inner
 				header.align-center
@@ -37,13 +41,11 @@ block content
 			h2#elements Welcome, Coach #{user.first_name}
 			br
 			br
-			.row(class='200%' ,style="width:100%;")
+			div(class='row 200%')
 				div.row.client_title
 					script
 						var clients = !{JSON.stringify(clients)};
-				div(style="width:0%;")
-					br
-				div(style="width:50%;")
+				div(class="6u 12u$(medium)")
 					
 					h2 Progress Approval Requests:
 					div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
@@ -54,7 +56,7 @@ block content
 									div(style="width:100%")
 										br
 										br
-									div(style="width:100%; background-color:#EEE; border-radius: 20px; height: 220px; padding-left: 20px;padding-right: 20px;box-shadow: 5px 5px grey;")
+									div(style="width:100%; background-color:#EEE; border-radius: 20px; padding-left: 20px;padding-right: 20px;padding-bottom:30px;box-shadow: 3px 3px #DDD;")
 										if goal.progress_acceptance != goal.progress
 										- noApprovals = "false";
 										div.row(style="display: inline; width: 100%;")
@@ -62,22 +64,20 @@ block content
 												img#clientImage(src=obj.photo , style="width: 70px;  ") 
 											div
 												h2(style="") #{obj.fname} #{obj.lname}
-										p(style="position:relative; left:25px;")  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
+										p(style="position:relative; left:25px;padding-right:20px;")  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
 										form(method='POST' action='/viewGoal_coach')
 											input(type="hidden" name="goal_id" value=goal.id)
-											button.special.icon.fa-search(style="float:left" type="submit") Details
+											button.special.icon.fa-search(style="float:left; bottom:20px;" type="submit") Details
 										form(method='POST' action='/coachView')
-											button.special.icon.fa-check(style="float:right" type="submit") Accept
+											button.special.icon.fa-check(style="float:right; bottom:20px;" type="submit") Accept
 											input(type="hidden" name="acceptRequest" value=goal.goal_id)
 						if noApprovals == "true"
 							h3.text-danger(style="text-align:center") No pending approvals
-				div(style="width:10%;")
-					br
-				div(style="width:35%;")
+				div(class="6u 12u$(medium)")
 					h2 Invite a Client:
 					br
 					br
-					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: 5px 5px grey;")
+					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: 3px 3px #DDD;")
 						.modal-dialog-centered.custom_modal_dialog(role="document")
 							.modal-content
 								form(id = "form" method='POST' action='/coachView')

@@ -8,13 +8,13 @@ mixin print_goal(goal)
     h2 #{goal.goal_title}
     div.card-header Update Due: #{formatDate(goal.goal_due_date)}
     div.card-body
-      div.goal_info.row
-        div.goal_data.col-md-6
+      div.goal_info.row(style="width:100%")
+        div.goal_data.col-md-6(style="width:70%")
           p #{goal.goal_description}
-        div.form_view_goal.col-md-6
+        div.form_view_goal.col-md-6(style="width:30%")
           form(method="POST", action="/viewGoal_executive")
             input(type="hidden" name="goal_id" value=goal.id)
-            button.special(class="icon fa-search" , type='submit', style="margin-left:75px") DETAILS
+            button.special(class="icon fa-search" , type='submit', style="float:right;") DETAILS
       div.progress.row(style="width: 100%; position: relative; left: 30px;")
         -var progress = 'width: ' + goal.goal_progress + '%';
         if goal.goal_progress == 100
