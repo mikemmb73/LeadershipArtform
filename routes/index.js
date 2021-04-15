@@ -29,21 +29,21 @@ const upload = require('../services/image-upload');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Art of Leadership' });
   currExecutive = null;
   currCoach = null;
+  res.render('index', { title: 'Art of Leadership' });
 });
 
 router.get('/coachSignInSignUp', function(req, res, next){
-  res.render('coachSignInSignUp.pug', {title: 'coach'});
   currExecutive = null;
   currCoach = null;
+  res.render('coachSignInSignUp.pug', {title: 'coach'});
 });
 
 router.get('/executiveSignInSignUp', function(req, res, next){
-  res.render('executiveSignInSignUp.pug', {title: 'executive'});
   currExecutive = null;
   currCoach = null;
+  res.render('executiveSignInSignUp.pug', {title: 'executive'});
 });
 
 /* GET signup page for executive. */
@@ -110,6 +110,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
     } else if (req.body.username != null) { //signin a user
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
+        console.log(currCoach);
         //the currCoach is mapped to the coach with the provided information.
         if (user == null) {   // auth passes null if username doesn't match pass
           res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
@@ -157,8 +158,6 @@ router.get('/executiveView', async function(req,res,next){
     res.redirect('/');
   } else {
     //map to the correct executive if executive's username and password are provided and log them in
-    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
-    currExecutive = user;
 	   res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
    }
 });
@@ -176,12 +175,15 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     await responseServices.updateDeadline(goal);
 
     //the user is remapped to include all of its new responses and update currExecutive
+    console.log("Sign in here 2");
     var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
     currExecutive = user;
+    console.log("Here4");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
   else if (req.body.progress != null){ //called when an executive tries to update the progress
     await addGoalService.updateProgress(req.body.goalID, req.body.progress);
+    console.log("Here3");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   }
 
@@ -208,6 +210,7 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       }
       currExecutive = user;
     } else { //enter when the executive attempts to sign in
+      console.log("Sign in here 1");
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
@@ -220,8 +223,11 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
     var message = " ";
     await emailservices.updateMessage(message, currExecutive.username)
     currExecutive.coach_message = message;
+    console.log("Here2");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
   } else {
+      // Successfully sign in as an executive
+      console.log("Here1");
       res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
@@ -288,11 +294,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
 /* GET profile page for coach when logged in as coach. */
 router.get('/coachProfile_coach', async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
-  var promise = Promise.resolve(clients);
-  promise.then(function(value) {
-    res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: value});
-  })
-	// res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
 
 /* POST profile page for coach when logged in as coach and uploads image correctly. */
