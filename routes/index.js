@@ -111,8 +111,7 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
         //the currCoach is mapped to the coach with the provided information.
-        console.log(user);
-        if (user == null && req.body.username != null) {   // auth passes null if username doesn't match pass
+        if (user == null) {   // auth passes null if username doesn't match pass
           res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
         }
         else {
@@ -209,7 +208,6 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
       }
       currExecutive = user;
     } else { //enter when the executive attempts to sign in
-      console.log("Sign in here");
       user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
       currExecutive = user;
     }
@@ -290,7 +288,11 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
 /* GET profile page for coach when logged in as coach. */
 router.get('/coachProfile_coach', async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
-	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
+  var promise = Promise.resolve(clients);
+  promise.then(function(value) {
+    res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: value});
+  })
+	// res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
 
 /* POST profile page for coach when logged in as coach and uploads image correctly. */

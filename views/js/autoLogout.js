@@ -1,5 +1,5 @@
-var timeoutWarning = 10000;
-var timeoutNow = 10000;
+var timeoutWarning = 600000;
+var timeoutNow = 600000;
 var logoutUrl = '/';
 
 var warningTimer;
