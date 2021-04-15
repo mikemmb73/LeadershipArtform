@@ -29,20 +29,14 @@ const upload = require('../services/image-upload');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  currExecutive = null;
-  currCoach = null;
   res.render('index', { title: 'Art of Leadership' });
 });
 
 router.get('/coachSignInSignUp', function(req, res, next){
-  currExecutive = null;
-  currCoach = null;
   res.render('coachSignInSignUp.pug', {title: 'coach'});
 });
 
 router.get('/executiveSignInSignUp', function(req, res, next){
-  currExecutive = null;
-  currCoach = null;
   res.render('executiveSignInSignUp.pug', {title: 'executive'});
 });
 
