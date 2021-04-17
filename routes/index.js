@@ -157,8 +157,7 @@ router.get('/executiveView', async function(req,res,next){
     res.redirect('/');
   } else {
     //map to the correct executive if executive's username and password are provided and log them in
-    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
-    currExecutive = user;
+    
 	   res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
    }
 });

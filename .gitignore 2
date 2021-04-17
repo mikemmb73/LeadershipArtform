@@ -1,0 +1,42 @@
+# OS X
+.DS_Store*
+Icon?
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+.env
+
+services/sqlconnect.js
+migration.js
+
+# Coveralls
+coverage
+
+# Benchmarking
+benchmarks/graphs
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+.project
+.settings/.jsdtscope
+.settings/org.eclipse.wst.jsdt.ui.superType.container
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+archive.zip
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/Project/v15/.suo
