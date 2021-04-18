@@ -16,7 +16,8 @@ block content
     script(src='assets/js/main.js')
     header#header 
       .logo
-        a(href='/') Art of Leadership
+        a(href='/') Leadership
+          span  as an Artform
       span 
       a(href='#menu') Menu
     nav#menu
@@ -27,6 +28,10 @@ block content
           a(href='/coachProfile_coach') Profile
         li
           a(href='/addGoal_coach') Goal
+        li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
     section#One.wrapper.style3.inner
       header.align-center
         p Art of Leadership
