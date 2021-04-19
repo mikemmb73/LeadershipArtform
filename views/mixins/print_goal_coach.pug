@@ -2,17 +2,17 @@ mixin print_goal_coach(goal)
   while goal.goal_due_date < Date.now()
     - var new_date = new Date(goal.goal_due_date.getTime() + 604800000)
     - goal.goal_due_date = new_date
-  div.card.text-black.bg-primary-mb-3(style='max-width:120rem')
-    div.card-header Update Due from Executive: #{formatDate(goal.goal_due_date)}
+  div.card.text-black.bg-primary-mb-3(style='padding: 10px; max-width:60%; background-color: #EEE; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;')
+    div.card-header(style="margin-bottom: 10px;") Update Due from Executive: #{formatDate(goal.goal_due_date)}
     div.card-body
       div.goal_info.row
         div.goal_data.col-md-6
-          h4 #{goal.goal_title}
-          p #{goal.goal_description}
+          h4(style="font-size: 20px;") Goal Title: #{goal.goal_title}
+          p Goal Description: #{goal.goal_description}
         div.form_view_goal.col-md-6
           form(method="POST", action="/viewGoal_coach")
             input(type="hidden" name="goal_id" value=goal.id)
-            button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:75px") View Goal
+            button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:100px; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; " ) View Goal
       div.progress.row
         -var progress = 'width: ' + goal.goal_progress + '%';
         if goal.goal_progress == 100
@@ -26,3 +26,4 @@ mixin print_goal_coach(goal)
   -   var year = date.getFullYear();
   -   return monthNames[month] + ' ' + day + ', ' + year; }
   br
+

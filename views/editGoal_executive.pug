@@ -1,89 +1,115 @@
 extends layout
 
 block content
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a.navbar-brand(href='/executiveView') Art of Leadership
-    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-      span(class="navbar-toggler-icon")
-    div.collapse.navbar-collapse(id="navbarSupportedContent")
-      ul.navbar-nav.ml-auto
-        li
-          a.nav-item.nav-link(href='/executiveView') Home
-        li
-          a.nav-link.nav-item(href='/executiveProfile') Profile
-        li
-          a.nav-link.nav-item(href='/coachProfile_executive') Coach's Profile
-        li
-          a.nav-item.nav-link(href='/addGoal_executive') Add Goal
-        li
-          a.nav-item.nav-link#signOut(href='/') Sign Out
-  .row
-    .col-md-2
-    .col-md-8
-      br
-      form(method='POST', action='/executiveView')
-        input(type='hidden' name='isEditGoalExec' value='yes')
-        input(type='hidden' name='goalID' value=goal.id)
-        - var mcQuestionCount = 0;
-        - var likertQuestionCount = 0;
-        h1 #{goal.goal_title}
-        .progress
-          -var progress = 'width: ' + goal.goal_progress + '%';
-          div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
-        each question,index in goal.goal_questions
-          h5 #{question.question_title}
-          - var mcOptionCount = 1;
-          - var mcQuestionName
-          - var mcOptionName
-          - var likertQuestionName
-          if question.question_type == 0
-            - mcQuestionCount++
-            - mcQuestionName = 'mcQuestion' + index
-            - var qs = question.question_qs.split(',')
-            - qs = qs.slice(0,qs.length-1)
-            each q in qs
-              - mcOptionName = 'MC'+mcOptionCount
-              if q != ' '
-                .form-group
-                  .form-check
-                    .label
-                        input(type='radio', value=mcOptionName, name=mcQuestionName)
-                        |   #{q}
-                        -
-                          mcOptionCount++
-                br
-          if question.question_type == 1
-            .form-group
-              input.form-control(type='textarea' id="frAnswer" name="frResponse")
-          if question.question_type == 2
-            - likertQuestionName = "likert"+likertQuestionCount;
-            - likertQuestionCount++
-            - var qs = question.question_qs.split(',')
-              .form-group
-                .form-check
-                  ul.likert
-                    li
-                      .label
-                        input(type='radio', value='1L', name=likertQuestionName)
-                        |   1. #{qs[0]}
-                    li
-                      .label
-                        input(type='radio', value='2L', name=likertQuestionName)
-                        | 2
-                    li
-                      .label
-                        input(type='radio', value='3L', name=likertQuestionName)
-                        | 3
-                    li
-                      .label
-                        input(type='radio', value='4L', name=likertQuestionName)
-                        | 4
-                    li
-                      .label
-                        input(type='radio', value='5L', name=likertQuestionName)
-                        |   5. #{qs[1]}
-          br
-        input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)
-        input(type='hidden' name="likertQuestionCount" value=likertQuestionCount)
-        input.btn.btn-outline-primary.btn-lg(type="submit" value="Submit" id="editGoalButton")
-  .col-md-2
+	script
+		include js/autoLogout.js
+		include js/coachView.js
+	script.
+	head
+		title Art of Leadership
+		meta(charset='utf-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+		link(rel='stylesheet' href='assets/css/mainProfile.css')
+	body.subpage
+		script(src='assets/js/jquery.min.js')
+		script(src='assets/js/jquery.scrollex.min.js')
+		script(src='assets/js/skel.min.js')
+		script(src='assets/js/util.js')
+		script(src='assets/js/main.js')
+		header#header
+			.logo
+				a(href='/') Leadership
+					span  as an Artform
+			span 
+			a(href='#menu') Menu
+		nav#menu
+			ul.links
+				li
+					a(href='/executiveView') Home
+				li
+					a(href='/executiveProfile') Profile
+				li
+					a(href='/addGoal_executive') Goal
+				li
+					a(href='/coachProfile_executive') Coach
+				li
+					form(method='POST' action='/')
+						input(type="hidden" name="signOut" value="signOut")
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
+		section#One.wrapper.style3
+			.inner
+				header.align-center
+					p Art of Leadership
+					h2 New Response
+		#main.container
+			.row(style="width:100%;")
+			div(style="width:50%; background-color: #EEE; padding: 20px;position: relative; left: 25%; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+				form(method='POST', action='/executiveView')
+					input(type='hidden' name='isEditGoalExec' value='yes')
+					input(type='hidden' name='goalID' value=goal.id)
+					- var mcQuestionCount = 0;
+					- var likertQuestionCount = 0;
+					h2 #{goal.goal_title}
+					
+					.progress
+						-var progress = 'width: ' + goal.goal_progress + '%';
+						div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+					each question,index in goal.goal_questions
+						h3 #{question.question_title}
+						- var mcOptionCount = 1;
+						- var mcQuestionName
+						- var mcOptionName
+						- var likertQuestionName
+						if question.question_type == 0
+							- mcQuestionCount++
+							- mcQuestionName = 'mcQuestion' + index
+							- var qs = question.question_qs.split(',')
+							- qs = qs.slice(0,qs.length-1)
+							each q in qs
+								- mcOptionName = 'MC'+mcOptionCount
+								- mcOptionCount++
+								if q != ' '
+									
+									input(type='radio', value=mcOptionName, name=mcQuestionName, id=mcOptionName)
+									label(for=mcOptionName) #{q}
+								
+									br
+						if question.question_type == 1
+							.form-group
+								input.form-control(type='textarea' id="frAnswer" name="frResponse")
+						if question.question_type == 2
+							- likertQuestionName = "likert"+likertQuestionCount;
+							- likertQuestionCount++
+							- var qs = question.question_qs.split(',')
+								.form-group
+									.form-check
+										ul.likert
+											li
+												.label
+													input(type='radio', value='1L', name=likertQuestionName)
+													|   1. #{qs[0]}
+											li
+												.label
+													input(type='radio', value='2L', name=likertQuestionName)
+													| 2
+											li
+												.label
+													input(type='radio', value='3L', name=likertQuestionName)
+													| 3
+											li
+												.label
+													input(type='radio', value='4L', name=likertQuestionName)
+													| 4
+											li
+												.label
+													input(type='radio', value='5L', name=likertQuestionName)
+													|   5. #{qs[1]}
+						br
+					input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)
+					input(type='hidden' name="likertQuestionCount" value=likertQuestionCount)
+					input.special(type="submit" value="Submit" id="editGoalButton")
+
+		br
+		footer#footer
+			div(class = "copyright")
+				|By Leadership as an Artform

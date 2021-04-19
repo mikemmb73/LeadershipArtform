@@ -1,91 +1,106 @@
 extends layout
 
 block content
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a.navbar-brand(href='/coachView') Art of Leadership
-    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-      span(class="navbar-toggler-icon")
-    div.collapse.navbar-collapse(id="navbarSupportedContent")
-      ul.navbar-nav.ml-auto
+  include mixins/print_goal_coach.pug
+  head 
+    title Art of Leadership
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet' href='assets/css/mainProfile.css')
+  body 
+    script(src='assets/js/jquery.min.js')
+    script(src='assets/js/jquery.scrollex.min.js')
+    script(src='assets/js/skel.min.js')
+    script(src='assets/js/util.js')
+    script(src='assets/js/main.js')
+    header#header 
+      .logo
+        a(href='/') Leadership
+          span  as an Artform
+      span 
+      a(href='#menu') Menu
+    nav#menu
+      ul.links
         li
-          a.nav-item.nav-link(href='/coachView') Home
+          a(href='/coachView') Home
         li
-          a.nav-link.nav-item(href='/coachProfile_coach') Profile
+          a(href='/coachProfile_coach') Profile
         li
-          a.nav-item.nav-link(href='/addGoal_coach') Add Goal
+          a(href='/addGoal_coach') Goal
         li
           form(method='POST' action='/')
             input(type="hidden" name="signOut" value="signOut")
-            button(style="color:red" class="btn btn-sm" type="submit").signOut_button Sign Out
-  div
-    .row
-      .col-md-4
-      .col-md-4.goal-info
-        br
-        br
-        h3(style="text-align:center")  #{goal.goal_title}
-        p(style="text-align:center")  #{goal.goal_description}
-      .col-md-4
-    .row
-      .col-md-5
-      .col-md-2
-        button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal" style="float:center") Update Progress
-        .modal(role="dialog", id="updateProgressModal" style='max-width:70rem')
-          .modal-dialog-centered.custom_modal_dialog(role="document")
-            .modal-content
-              form(id = "progressForm" method='POST' action='/viewGoal_coach')
-                .modal-header
-                  h5 Update Progress
-                  button.close(type='button' data-dismiss="modal")
-                    span &times;
-                .modal-body
-                  p(style="text-align:center") Please enter a number 1-100:
-                    br
-                    input(type="number" name="progress" min="1" max="100")
-                    input(type="hidden" name="coachChange" value="yes")
-                    input(type="hidden" name="goal_id" value=goal.id)
-                .modal-footer
-                  button.btn.btn-primary(type='submit') Submit
+            button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
+    section#One.wrapper.style3.inner
+      header.align-center
+        p Art of Leadership
+        h2 Executive Profile
 
-    .row
-      -var progress = 'width: ' + goal.goal_progress + '%';
-      if goal.goal_progress == 100
-        div.progress.progress-bar.bg-success(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+    div.goals(style="margin-left: 30px;")
+      .row
+        .col-md-4
+        .col-md-4.goal-info
+          br
+          br
+          h2 #{goal.goal_title}
+          p(style="font-size: 20px;") Goal Description: #{goal.goal_description}
+        .col-md-4
+      .row
+        .col-md-5
+        .col-md-2(style="margin-left: 30px; padding: 10px; width:80%; background-color: #EEE; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+          button.btn.btn-outline-primary.btn-sm(type="button" data-toggle="modal" data-target="#updateProgressModal") Update Progress
+          .modal(role="dialog", id="updateProgressModal" style='text-align: center;')
+            .modal-dialog-centered.custom_modal_dialog(role="document")
+              .modal-content
+                form(id = "progressForm" method='POST' action='/viewGoal_coach')
+
+                  .modal-body
+                    p(style="font-size: 20px;") Please enter a number 1-100:
+                      br
+                      input(type="number" name="progress" min="1" max="100")
+                      input(type="hidden" name="coachChange" value="yes")
+                      input(type="hidden" name="goal_id" value=goal.id)
+                  .modal-footer
+                    button.special(type='submit') Submit
+      .row
+        -var progress = 'width: ' + goal.goal_progress + '%';
+        if goal.goal_progress == 100
+          div.progress.progress-bar.bg-success(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+        else
+          div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
+    
+    div.jumbotron
+      h3(style="margin-top: 30px; margin-left: 30px;") Previous Responses
+      script.
+        function updateResponse(val) {
+          document.getElementById('dropdownMenuButton').innerHTML = document.getElementById('val' + val).innerHTML;
+          var x = !{JSON.stringify(goal.goal_responses)}
+          var goal_questions = !{JSON.stringify(goal.goal_questions)}
+          var currResponse = x[val];
+          for (var i=0; i<goal_questions.length; i++) {
+              document.getElementById('q' + i).innerHTML = "<h3>" + goal_questions[i].title + "</h3><p> Answer: " + currResponse.responses[i].answer + "</p>";
+          }
+
+        };
+      if (goal.goal_responses.length == 0)
+        p No Responses Yet.
       else
-        div.progress.progress-bar.bg-warning(role='progressbar' style=progress aria-valuenow='25' aria-valuemin='0' aria-valuemax='100')
-  div.jumbotron
-    h3 Previous Responses
-    script.
-      function updateResponse(val) {
-        console.log(val);
-        document.getElementById('dropdownMenuButton').innerHTML = document.getElementById('val' + val).innerHTML;
-         var x = !{JSON.stringify(goal.goal_responses)}
-         var goal_questions = !{JSON.stringify(goal.goal_questions)}
-         console.log(goal_questions);
-         console.log(goal_questions.length)
-         var currResponse = x[val];
-         console.log(currResponse);
-         for (var i=0; i<goal_questions.length; i++) {
-            document.getElementById('q' + i).innerHTML = "<h3>" + goal_questions[i].title + "</h3><p> Answer: " + currResponse.responses[i].answer + "</p>";
-         }
-
-      };
-    if (goal.goal_responses.length == 0)
-      p No Responses Yet.
-    else
-      div.dropdown(style='float: left')
-        button.btn.btn-secondary.dropdown-toggle(type="button", data-toggle="dropdown", id="dropdownMenuButton", aria-haspopup="true", aria-expanded="false") #{formatDate(goal.goal_responses[0].date)}
-        div.dropdown-menu(aria-labelledby="dropdownMenuButton")
-          each r,index in goal.goal_responses
-            a(href="javascript:updateResponse(" + index + ")").dropdown-item(id="val" + index ) #{formatDate(r.date)}
-        - function formatDate(date) {
-          - var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-          - var day = date.getDate();
-          - var month = date.getMonth();
-          - var year = date.getFullYear();
-          - return monthNames[month] + ' ' + day + ', ' + year; }
-      .jumbotron
-        each q, index in goal.goal_questions
-          div(id='q' + index)
-            h6 #{q.question_title}
-            p Answer: #{currResponse.answers_array[index].response_answer}
+        div.dropdown(style='margin-left: 30px; padding: 10px; width:80%; background-color: #EEE; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;')
+          p #{formatDate(goal.goal_responses[0].date)}
+          - function formatDate(date) {
+            - var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            - var day = date.getDate();
+            - var month = date.getMonth();
+            - var year = date.getFullYear();
+            - return monthNames[month] + ' ' + day + ', ' + year; }
+          .jumbotron
+            each q, index in goal.goal_questions
+              div(id='q' + index)
+                h3 Question: #{q.question_title}
+                p Answer: #{currResponse.answers_array[index].response_answer}
+    br
+    br
+    br
+    footer#footer
+      div(class = "copyright")
+        |By Leadership as an Artform

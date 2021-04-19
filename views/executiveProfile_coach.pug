@@ -1,104 +1,118 @@
-extends layout
+extends layout 
 
 block content
 	include mixins/print_goal_coach.pug
-	nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-		a.navbar-brand(href='/coachView') Art of Leadership
-		button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-			span(class="navbar-toggler-icon")
-		div.collapse.navbar-collapse(id="navbarSupportedContent")
-			ul.navbar-nav.ml-auto
+	head 
+		title Art of Leadership
+		meta(charset='utf-8')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+		link(rel='stylesheet' href='assets/css/mainProfile.css')
+		link(rel='stylesheet' href='assets/css/executiveProfile_coach.css')
+	body 
+		script(src='assets/js/jquery.min.js')
+		script(src='assets/js/jquery.scrollex.min.js')
+		script(src='assets/js/skel.min.js')
+		script(src='assets/js/util.js')
+		script(src='assets/js/main.js')
+		header#header 
+			.logo
+				a(href='/') Leadership
+					span  as an Artform
+			span 
+			a(href='#menu') Menu
+		nav#menu
+			ul.links
 				li
-					a.nav-item.nav-link(href='/coachView') Home
+					a(href='/coachView') Home
 				li
-					a.nav-link.nav-item(href='/coachProfile_coach') Profile
+					a(href='/coachProfile_coach') Profile
 				li
-					a.nav-item.nav-link(href='/addGoal_coach') Add Goal
+					a(href='/addGoal_coach') Goal
 				li
 					form(method='POST' action='/')
 						input(type="hidden" name="signOut" value="signOut")
-						button(style="color: red" class="btn btn-sm",type="submit").signOut_button Sign Out
-	div.row.client-info
-		div.col-md-1
-		div.col-md-2
-			img#profileImage(src=user.photograph)
-		div.col-md-1
-		div.col-md-6
-			br
-			h1 #{user.name}
-			h6 email: #{user.username}
-			-var username = user.username
-			input(type="hidden" name="profileClick" value=username)
-			p #{user.bio_info}
-			br
-			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal" style="background-color:black; border: none;border-radius: 4px;") Add Note
-			.modal(role="dialog", id="addNoteModal")
-				.modal-dialog-centered.custom_modal_dialog(role="document")
-					.modal-content
-						form(id = "form" method='POST' action='/executiveProfile_coach')
-							.modal-header
-								h5 Add Note
-								button.close(type='button' data-dismiss="modal")
-									span &times;
-							.modal-body
-									input(type="text" name="noteContent" size="75px")
-									input(type="hidden" name="currExecID" value=user.execID)
-									input(type="hidden" name="profileClick" value=username)
-							.modal-footer
-								button.btn.btn-primary(type='submit') Submit
-			button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#sendMessageModal" style="background-color:black; border: none;border-radius: 4px; position: relative;left: 20px") Send Message
-			.modal(role="dialog", id="sendMessageModal")
-				.modal-dialog-centered.custom_modal_dialog(role="document")
-					.modal-content
-						form(id = "form" method='POST' action='/executiveProfile_coach')
-							.modal-header
-								h5 Send Message to #{user.name}
-								button.close(type='button' data-dismiss="modal")
-									span &times;
-							.modal-body
-								p Message:
-									-var emailAddress = user.username
-									input(type="text" name="clientMessage" style="height=200px" size="80")
-									input(type="hidden" name="messageClient" value=emailAddress)
-									input(type="hidden" name="profileClick" value=username)
-									input(type="hidden" name="sendMessage" value="sendMessage")
-							.modal-footer
-								button.btn.btn-primary(type='submit') Submit
-			
-		div.col-md-2
+						button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
+		section#One.wrapper.style3
+			.inner
+				header.align-center
+					p Art of Leadership
+					h2 Executive Profile
 
+		div.row.client-info.text-center
+			div.col-md-5.col-xs-12
+				img#profileImage(src=user.photograph)
+				br
+				div.info
+					h1 #{user.name}
+					h2 email: #{user.username}
+					-var username = user.username
+					input(type="hidden" name="profileClick" value=username)
+					h3 Bio: #{user.bio_info}
+			div.col-md-7.col-xs-12.text-center
+				br
+				div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+					button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#addNoteModal" style="border: none;border-radius: 4px; margin-bottom: 20px;") Add Note
+					.modal(role="dialog", id="addNoteModal")
+						.modal-dialog-centered.custom_modal_dialog(role="document")
+							.modal-content
+								form(id = "form" method='POST' action='/executiveProfile_coach')
 
+									.modal-body
+											input(type="text" name="noteContent" size="75px")
+											input(type="hidden" name="currExecID" value=user.execID)
+											input(type="hidden" name="profileClick" value=username)
+									.modal-footer
+										button.special(style="margin-top:30px" type="submit") Submit
+				div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+					button.btn-btn-block.btn-info(type='button' data-toggle="modal" data-target="#sendMessageModal" style="border: none;border-radius: 4px; position: relative; margin-bottom: 20px;") Send Message
+					.modal(role="dialog", id="sendMessageModal")
+						.modal-dialog-centered.custom_modal_dialog(role="document")
+							.modal-content
+								form(id = "form" method='POST' action='/executiveProfile_coach')
+
+									.modal-body
+										p Message:
+											-var emailAddress = user.username
+											input(type="text" name="clientMessage" style="height=200px" size="80")
+											input(type="hidden" name="messageClient" value=emailAddress)
+											input(type="hidden" name="profileClick" value=username)
+											input(type="hidden" name="sendMessage" value="sendMessage")
+									.modal-footer
+										button.special(classe-"btn btn-danger" type="submit") Submit
+				
+
+		div.card.border-dark.client-info
+			.card-header
+				h3 Notes
+			.card-body
+				each note in notes
+					div(style="padding: 10px; max-width:60%; background-color: #EEE; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; margin-bottom: 10px;")
+						- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+						- var dateFormat = note.note_date.toLocaleDateString("en-US", options);
+						h3 #{dateFormat}
+						h4 #{note.note_content}
 		br
-	div.row.client-info
-		div.col-md-4
-		div.col-md-4
-			
-
-	br
-	div.card.border-dark.client-info
-		.card-header
-			h3 Notes
-		.card-body
-			each note in notes
-				- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-				- var dateFormat = note.note_date.toLocaleDateString("en-US", options);
-				h6 #{dateFormat}
-				p #{note.note_content}
-	br
-	div.jumbotron.client-info
-		h3 Current Goals
-		if user.exec_goals.length == 0
-			h4.text-danger(style="text-align:center") There are no current goals
-		else
-			each goal in user.exec_goals
-				if goal.goal_progress < 100
-					+print_goal_coach(goal)
+		div.jumbotron.client-info
+			h3 Current Goals
+			if user.exec_goals.length == 0
+				h4.text-danger(style="text-align:center") There are no current goals
+			else
+				each goal in user.exec_goals
+					if goal.goal_progress < 100
+						+print_goal_coach(goal)
 
 
-	div.jumbotron.client-info
-		h3 Completed Goals
-		if pastGoals.length != 0
-			each pastGoal in pastGoals
-				+print_goal_coach(pastGoal)
-		else
-			h4.text-danger(style="text-align:center") There are no completed goals
+		div.jumbotron.client-info
+			h3 Completed Goals
+			if pastGoals.length != 0
+				each pastGoal in pastGoals
+					+print_goal_coach(pastGoal)
+			else
+				h4.text-danger(style="text-align:center") There are no completed goals
+		
+		br
+		br
+		br
+		footer#footer
+			div(class = "copyright")
+				|By Leadership as an Artform
