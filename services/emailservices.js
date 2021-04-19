@@ -29,51 +29,55 @@ module.exports = {
 	**/
 	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function");
-		var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
-		newMessage += "Please go to http://leadersmeetgoals.com/executiveSignup to sign up as an executive.";
+		if(currCoach != null){
+			var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
+			newMessage += "Please go to http://leadersmeetgoals.com/executiveSignup to sign up as an executive.";
 
-		// Create sendEmail params
-		var params = {
-		  Destination: { /* required */
-		    // CcAddresses: [
-		    //   'EMAIL_ADDRESS',
-		    //   /* more items */
-		    // ],
-		    ToAddresses: [
-		      email,
-		      /* more items */
-		    ]
-		  },
-		  Message: { /* required */
-		    Body: { /* required */
-		      Html: {
-		       Charset: "UTF-8",
-		       Data: newMessage
-		      },
-		      Text: {
-		       Charset: "UTF-8",
-		       Data: "TEXT_FORMAT_BODY"
-		      }
-		     },
-		     Subject: {
-		      Charset: 'UTF-8',
-		      Data: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Art of Leadership!'
-		     }
-		    },
-		  Source: 'leadershipartform@gmail.com', /* required */
-		  ReplyToAddresses: [
-		     'leadershipartform@gmail.com',
-		    /* more items */
-		  ],
-		};
-		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-		sendPromise.then(
-		  function(data) {
-		    console.log(data.MessageId);
-		  }).catch(
-		    function(err) {
-		    console.error(err, err.stack);
-		  });
+			// Create sendEmail params
+			var params = {
+			Destination: { /* required */
+				// CcAddresses: [
+				//   'EMAIL_ADDRESS',
+				//   /* more items */
+				// ],
+				ToAddresses: [
+				email,
+				/* more items */
+				]
+			},
+			Message: { /* required */
+				Body: { /* required */
+				Html: {
+				Charset: "UTF-8",
+				Data: newMessage
+				},
+				Text: {
+				Charset: "UTF-8",
+				Data: "TEXT_FORMAT_BODY"
+				}
+				},
+				Subject: {
+				Charset: 'UTF-8',
+				Data: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Art of Leadership!'
+				}
+				},
+			Source: 'leadershipartform@gmail.com', /* required */
+			ReplyToAddresses: [
+				'leadershipartform@gmail.com',
+				/* more items */
+			],
+			};
+			var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+			sendPromise.then(
+			function(data) {
+				console.log(data.MessageId);
+			}).catch(
+				function(err) {
+				console.error(err, err.stack);
+			});
+		}else{
+			console.log("coach data passed unsuccessfully")
+		}
 
 	},
 
