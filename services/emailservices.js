@@ -31,7 +31,7 @@ module.exports = {
 		console.log("in function");
 		if(currCoach != null){
 			var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
-			newMessage += "Please go to http://leadersmeetgoals.com/executiveSignup to sign up as an executive.";
+			newMessage += "Please go to https://leadersmeetgoals.com/executiveSignInSignUp to sign up as an executive.";
 
 			// Create sendEmail params
 			var params = {
