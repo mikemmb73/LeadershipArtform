@@ -339,7 +339,7 @@ router.post('/coachProfile_coach', upload.single('image'), async function(req,re
 
 
 /* GET profile page for coach when logged in as executive. */
-router.get('/coachProfile_executive', async function(req,res,next){
+router.get('/coachProfile_executive', requireLogin, async function(req,res,next){
   currCoach  = await loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
