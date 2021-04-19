@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session')
+//var session = require('express-session')
+var session = require('client-sessions')
 const bodyParser = require("body-parser");
 const dotenv = require('dotenv');
 dotenv.config();
@@ -22,9 +23,18 @@ var app = express();
 //const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+//this enables the use of the session
+app.use(session({
+  cookieName: 'session',
+  secret: 'lMQdwKOpWmmm04YrdlozHbkX3rYZZuoJKWQqe6JaVlQ3yp1VpeWwzYtuamR6MgD',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -56,5 +66,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

@@ -27,17 +27,36 @@ const util = require('util');
 const upload = require('../services/image-upload');
 //const singleUpload = upload.single('image');
 
+//ensure auth
+function requireLogin (req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/');
+  } else {
+    next();
+  }
+};
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Art of Leadership' });
 });
 
 router.get('/coachSignInSignUp', function(req, res, next){
-  res.render('coachSignInSignUp.pug', {title: 'coach'});
+  // if(req.session.user.coach_id != undefined){
+  //   console.log("user already signed in")
+  //   res.redirect("/coachView");
+  // }else{
+    res.render('coachSignInSignUp.pug', {title: 'coach'});
+  // }
 });
 
 router.get('/executiveSignInSignUp', function(req, res, next){
-  res.render('executiveSignInSignUp.pug', {title: 'executive'});
+  // if(req.session.user.executive_id != undefined){
+  //   console.log("user already signed in")
+  //   res.redirect("/executiveView");
+  // }else{
+    res.render('executiveSignInSignUp.pug', {title: 'executive'});
+  //}
 });
 
 /* GET signup page for executive. */
@@ -59,66 +78,23 @@ router.get('/coachView', function(req, res, next) {
   if (req.body.remindAll != null) {
     emailservices.sendAllReminders(clients);
   }
+  if (req.session && req.session.user) {
+    console.log(req.session.user)
+  }
   res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
 });
 
 
 /* POST homepage for coach. */
-router.post('/coachView', upload.single('image'), async function(req, res) {
+router.post('/coachView', requireLogin, upload.single('image'), async function(req, res) {
   console.log(req.body);
+  console.log(req.session);
+  currCoach = req.session.user;
+  clients = req.session.user.executives;
 
-    if (req.body.fname != null) { //if it is not null, we know we will be signing up a coach
-      //Mike - removed this line as it caused the page to hang if you tried to sign up a user while still logged in, there may be a more elegant way to do this
-      //if (currCoach == null) {
-          //the user (coach) is created in signUpCoach with the information in the form
-          var image;
-          if (req.file == null) {
-            image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
-          } else {
-            image = req.file.location;
-          }
-          user = await signup.signUpCoach(req.body.fname, req.body.lname,
-            req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
-          console.log(user);
-          // if (user == null) {
-          if (user == -1) { //the two password fields do not match
-            res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
-          }
-          else if (user == -2) { //the email has already been logged into the database and can not be reused
-            res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
-          }
-          // }
-          else {
-            var promise = Promise.resolve(user);
-            promise.then(function(value) {
-              currCoach = user;
-              var clientList = [];
-              res.render('coachView.pug', {
-                title: 'Coach View',
-                user: currCoach,
-                clients: clientList
-              });
-            });
-
-          }
-      //}
-    } else if (req.body.username != null) { //signin a user
-        console.log("sign in started")
-        user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
-        currCoach = user;
-        console.log(currCoach);
-        //the currCoach is mapped to the coach with the provided information.
-        if (user == null) {   // auth passes null if username doesn't match pass
-          res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
-        }
-        else {
-          //Once logged in, the clients field will be populated with the coach's clients
-          clients = await loginservices.getClientGoals(user);
-          res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
-        }
-    } else if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
+    if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
-        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
+        res.render('coachView.pug', {title: 'CoachView', user: req.session.user, clients: req.session.user.executives});
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
       if (data2.goalTitle != "") {
@@ -138,25 +114,78 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         //res.redirect('coachView');
     } else { //sending an email to invite a client
         console.log("in email")
+        
         var name = req.body.clientName;
         var email = req.body.emailAddress;
         var message = req.body.message;
   	    await emailservices.sendEmail(currCoach, name, email, message);
-        res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
+        res.redirect('/coachView');
     }
+});
 
+router.post('/coachSignUpAction', upload.single('image'), async function(req, res) {
+  if (req.body.fname != null) { //if it is not null, we know we will be signing up a coach
+    //Mike - removed this line as it caused the page to hang if you tried to sign up a user while still logged in, there may be a more elegant way to do this
+    //if (currCoach == null) {
+        //the user (coach) is created in signUpCoach with the information in the form
+        var image;
+        if (req.file == null) {
+          image = "https://user-images-leadership-artform.s3.us-west-2.amazonaws.com/1555710265346";
+        } else {
+          image = req.file.location;
+        }
+        user = await signup.signUpCoach(req.body.fname, req.body.lname,
+          req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
+        console.log(user);
+        // if (user == null) {
+        if (user == -1) { //the two password fields do not match
+          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
+        }
+        else if (user == -2) { //the email has already been logged into the database and can not be reused
+          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
+        }
+        // }
+        else {
+          var promise = Promise.resolve(user);
+          promise.then(function(value) {
+            currCoach = user;
+            var clientList = [];
+            req.session.user = user;
+            res.redirect('/coachView');
+          });
 
+        }
+    //}
+  } 
+});
 
+router.post('/coachSignInAction', async function(req, res) {
+  if (req.body.username != null) { //signin a user
+    console.log("sign in started")
+    user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
+    currCoach = user;
+    console.log(currCoach);
+    //the currCoach is mapped to the coach with the provided information.
+    if (user == null) {   // auth passes null if username doesn't match pass
+      res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
+    }
+    else {
+      //Once logged in, the clients field will be populated with the coach's clients
+      clients = await loginservices.getClientGoals(user);
+      req.session.user = user;
+      res.redirect('/coachView')
+    }
+  }
 });
 
 /* GET homepage for executive. */
-router.get('/executiveView', async function(req,res,next){
-  if (currExecutive == null) {
-    res.redirect('/');
-  } else {
+router.get('/executiveView', requireLogin, async function(req,res,next){
     //map to the correct executive if executive's username and password are provided and log them in
-	   res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-   }
+    if(req.session.user.executive_id != undefined){
+      res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+    }else{
+      res.redirect('/coachView')
+    }
 });
 
 /* POST homepage for execuctive. */
@@ -289,7 +318,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
 });
 
 /* GET profile page for coach when logged in as coach. */
-router.get('/coachProfile_coach', async function(req,res,next){
+router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: currCoach, clients: clients});
 });
@@ -353,6 +382,8 @@ router.post('/', function(req, res) {
     currExecutive = null;
     currCoach = null;
     clients = null;
+    req.session.user = null;
+
     res.render('index', { title: 'Art of Leadership' });
   } else {
     var email = req.body.User;
