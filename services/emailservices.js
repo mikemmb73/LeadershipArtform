@@ -91,7 +91,7 @@ module.exports = {
 		console.log("EMAIL CLIENTS");
 		console.log(clients);
 		clients.forEach(function(entry) {
-			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 			var newMessage = "Hello, " + "<br>" + message;
 
 			// Create sendEmail params
@@ -151,7 +151,7 @@ module.exports = {
 	awaiting approval to use the AWS email service
 	**/
 	sendOneReminder: function(email) {
-		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 		var newMessage = "Hello, " + "<br>" + message;
 
 		// Create sendEmail params
