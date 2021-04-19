@@ -84,14 +84,12 @@ router.get('../model/executiveCoach.js', function(req, res) {
 });
 
 /* GET homepage for coach. */
-router.get('/coachView', function(req, res, next) {
+router.get('/coachView', requireLogin, function(req, res, next) {
   if (req.body.remindAll != null) {
     emailservices.sendAllReminders(clients);
   }
-  if (req.session && req.session.user) {
-    console.log(req.session.user)
-  }
-  res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
+
+  res.render('coachView.pug', { title: 'Coach View',  user: req.session.user, clients: clients});
 });
 
 
