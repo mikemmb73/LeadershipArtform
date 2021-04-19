@@ -21,7 +21,7 @@ module.exports = {
   notes- coach_id will entered as -1, since the executive entered this goal
   **/
   addGoalExecutive: async function(goalData, currExecutive) {
-    print(goalData)
+    // print(goalData)
     var today = new Date();
     var nextWeek = new Date();
     nextWeek.setDate(nextWeek.getDate() + 7);
@@ -205,7 +205,6 @@ module.exports = {
     console.log(goalData)
     console.log(clients)
     
-    console.log("CLIENT FORM" + goalData.clientForm.length);
     typeof clientForm;
     if (Array.isArray(goalData.clientForm)) {
       for (var x = 0; x < goalData.clientForm.length; x++) {
@@ -248,48 +247,53 @@ module.exports = {
         }
       }
     } else {
-        console.log("printing goal data");
-        console.log(goalData);
-        console.log("goal data is not array" + goalData.clientForm[i]);
-        var fullName = goalData.clientForm.split(" ");
-        var today = new Date();
-        var nextWeek = new Date();
-        nextWeek.setDate(nextWeek.getDate() + 7);
-        for (var j = 0; j < clients.length; j++) {
-          console.log("+" + clients[j].fname.valueOf() + "+");
-          console.log("+" + fullName[0].valueOf() + "+");
-          console.log("+" + clients[j].lname.valueOf() + "+");
-          console.log("+" + fullName[1].valueOf() + "+");
-          if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
-            console.log("IN THE LOOP TO ADD QUESTION");
-            await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
-            console.log("added goal");
-            const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
-            const currGoalArray = rows.map(x => new Goal.Goal(x));
-            const currGoal = currGoalArray[0];
-            currGoal.goal_due_date = nextWeek;
-            if (goalData.mcQuestions != null) {
-              for (var i=0; i<goalData.mcQuestions.length; i++) {
-                var choices = "";
-                for (var j=1; j<goalData.mcQuestions[0].length; j++) {
-                  choices += goalData.mcQuestions[0][j] + ",";
+        if(goalData.clientForm == undefined){
+          //this happens if there is an error with the request (i.e. the coach has no clients)
+          //this will push the user back to the home screen but at least the page won't hang, we should add an error here
+        }else{
+          console.log("printing goal data");
+          console.log(goalData);
+          console.log("goal data is not array" + goalData.clientForm[i]);
+          var fullName = goalData.clientForm.split(" ");
+          var today = new Date();
+          var nextWeek = new Date();
+          nextWeek.setDate(nextWeek.getDate() + 7);
+          for (var j = 0; j < clients.length; j++) {
+            console.log("+" + clients[j].fname.valueOf() + "+");
+            console.log("+" + fullName[0].valueOf() + "+");
+            console.log("+" + clients[j].lname.valueOf() + "+");
+            console.log("+" + fullName[1].valueOf() + "+");
+            if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
+              console.log("IN THE LOOP TO ADD QUESTION");
+              await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
+              console.log("added goal");
+              const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
+              const currGoalArray = rows.map(x => new Goal.Goal(x));
+              const currGoal = currGoalArray[0];
+              currGoal.goal_due_date = nextWeek;
+              if (goalData.mcQuestions != null) {
+                for (var i=0; i<goalData.mcQuestions.length; i++) {
+                  var choices = "";
+                  for (var j=1; j<goalData.mcQuestions[0].length; j++) {
+                    choices += goalData.mcQuestions[0][j] + ",";
+                  }
+                  await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
                 }
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.mcQuestions[i][0], 0, choices]);
               }
-            }
-            if (goalData.frQuestions != null) {
-              for (var i=0; i<goalData.frQuestions.length; i++) {
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, ""]);
+              if (goalData.frQuestions != null) {
+                for (var i=0; i<goalData.frQuestions.length; i++) {
+                  await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.frQuestions[i], 1, ""]);
+                }
               }
-            }
-            if (goalData.likertQuestions != null) {
-              for (var i=0; i<goalData.likertQuestions.length; i++) {
-                var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
-                await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
+              if (goalData.likertQuestions != null) {
+                for (var i=0; i<goalData.likertQuestions.length; i++) {
+                  var choices = goalData.likertQuestions[i][1] + "," + goalData.likertQuestions[i][2];
+                  await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.id ,goalData.likertQuestions[i][0], 2, choices]);
+                }
               }
             }
           }
-      }
+        }
     }
   },
 
