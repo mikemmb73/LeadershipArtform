@@ -77,10 +77,12 @@ function mcDropdown(){
   };
 
   //Question Title
-  var questionTitleLabel_ = document.createElement("label");
+  var questionTitleLabel_ = document.createElement("h6");
   var questionTitleLabel = document.createTextNode("Question Title");
+
+  var inputAtt  = document.createAttribute("class");
   questionTitleLabel_.appendChild(questionTitleLabel);
-  smalljumbo.appendChild(questionTitleLabel);
+  smalljumbo.appendChild(questionTitleLabel_);
 
  //Area for coach to type in Question Title
   var inputTitle = document.createElement("input");
@@ -105,10 +107,10 @@ function mcDropdown(){
   //Multiple Choice Options
   //Option1 Title
 
-  var option1TitleLabel_ = document.createElement("label");
+  var option1TitleLabel_ = document.createElement("h6");
   var option1TitleLabel = document.createTextNode("Option 1 Value: ");
-  questionTitleLabel_.appendChild(option1TitleLabel);
-  smalljumbo.appendChild(option1TitleLabel);
+  option1TitleLabel_.appendChild(option1TitleLabel);
+  smalljumbo.appendChild(option1TitleLabel_);
   //Area for coach to type in Question Title
   var option1Title = document.createElement("input");
   var option1Type = document.createAttribute("type");
@@ -125,11 +127,11 @@ function mcDropdown(){
   var br2 = document.createElement("br");
   smalljumbo.appendChild(br2);
   //Option2 Title
-  var option2TitleLabel_ = document.createElement("label");
+  var option2TitleLabel_ = document.createElement("h6");
   var option2TitleLabel = document.createTextNode("Option 2 Value: ");
 
-  questionTitleLabel_.appendChild(option2TitleLabel);
-  smalljumbo.appendChild(option2TitleLabel);
+option2TitleLabel_.appendChild(option2TitleLabel);
+  smalljumbo.appendChild(option2TitleLabel_);
   //Area for coach to type in Question Title
   var option2Title = document.createElement("input");
   var option2Type = document.createAttribute("type");
@@ -164,16 +166,16 @@ function mcDropdown(){
   var num = 3;
   var optionIndex = 3;
   addOptionButton.onclick = function() {
-    var option3TitleLabel_ = document.createElement("label");
+    var option3TitleLabel_ = document.createElement("h6");
     var numVal = "Option " + num + " Value: ";
-    var option3TitleLabel =  document.createElement("P");
-    option3TitleLabel.innerText = numVal;
-    var addOptionButtonClass = document.createAttribute("class");
-    addOptionButtonClass.value="inline";
-    option3TitleLabel.setAttributeNode(addOptionButtonClass);
-    questionTitleLabel_.appendChild(option3TitleLabel);
+    var option3TitleLabel =  document.createTextNode(numVal);
 
-    smalljumbo.appendChild(option3TitleLabel);
+  //   var addOptionButtonClass = document.createAttribute("class");
+  //   addOptionButtonClass.value="inline";
+  //   option3TitleLabel.setAttributeNode(addOptionButtonClass);
+    option3TitleLabel_.appendChild(option3TitleLabel);
+
+    smalljumbo.appendChild(option3TitleLabel_);
 
 //Area for coach to type in Question Title
     var option3Title = document.createElement("input");
@@ -245,10 +247,10 @@ function freeResponseDropdown(){
 
 
   //Question Label
-  var questionTitleLabel_ = document.createElement("label");
+  var questionTitleLabel_ = document.createElement("h6");
   var questionTitleLabel = document.createTextNode("Question");
   questionTitleLabel_.appendChild(questionTitleLabel);
-  jumbotron.appendChild(questionTitleLabel);
+  jumbotron.appendChild(questionTitleLabel_);
 
   //Area for coach to type in Question
   var inputTitle = document.createElement("input");
@@ -323,10 +325,10 @@ function likertDropdown(){
     }
   };
 
-  var questionTitleLabel_ = document.createElement("label");
+  var questionTitleLabel_ = document.createElement("h6");
   var questionTitleLabel = document.createTextNode("Scaled question (1-5)");
   questionTitleLabel_.appendChild(questionTitleLabel);
-  jumbotron.appendChild(questionTitleLabel);
+  jumbotron.appendChild(questionTitleLabel_);
 
   var inputQuestion = document.createElement("input");
   var inputQuestionType = document.createAttribute("type");
@@ -346,10 +348,10 @@ function likertDropdown(){
   var br = document.createElement("br");
   jumbotron.appendChild(br);
 
-  var leftSideLabel_ = document.createElement("label");
+  var leftSideLabel_ = document.createElement("h6");
   var leftSideLabel = document.createTextNode("1 = ");
   leftSideLabel_.appendChild(leftSideLabel);
-  jumbotron.appendChild(leftSideLabel);
+  jumbotron.appendChild(leftSideLabel_);
 
   var leftSideInput = document.createElement("input");
   var leftSideInputType = document.createAttribute("type");
@@ -369,10 +371,10 @@ function likertDropdown(){
   var br2 = document.createElement("br");
   jumbotron.appendChild(br2);
 
-  var rightSideLabel_ = document.createElement("label");
+  var rightSideLabel_ = document.createElement("h6");
   var rightSideLabel = document.createTextNode("5 = ");
   rightSideLabel_.appendChild(rightSideLabel);
-  jumbotron.appendChild(rightSideLabel);
+  jumbotron.appendChild(rightSideLabel_);
 
   var rightSideInput = document.createElement("input");
   var rightSideInputType = document.createAttribute("type");
