@@ -151,6 +151,7 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
             currCoach = user;
             var clientList = [];
             req.session.user = user;
+            req.session.user.password = "";
             res.redirect('/coachView');
           });
 
@@ -173,6 +174,8 @@ router.post('/coachSignInAction', async function(req, res) {
       //Once logged in, the clients field will be populated with the coach's clients
       clients = await loginservices.getClientGoals(user);
       req.session.user = user;
+      req.session.user.password = "";
+
       res.redirect('/coachView')
     }
   }
