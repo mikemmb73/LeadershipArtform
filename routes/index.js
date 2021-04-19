@@ -307,29 +307,31 @@ router.get('/executiveProfile_coach', async function(req,res,next){
 });
 
 /* POST profile page for executive when logged in as coach. */
-router.post('/executiveProfile_coach', async function(req,res,next) {
+//requireLogin checks to make sure user is logged in as a coach
+router.post('/executiveProfile_coach', requireLogin, async function(req,res,next) {
   //retrieve the current executive's notes, past goals, and goals when logged in as the coach
   var notes;
+  currCoach = req.session.user;
+
   currExecutive = await loginservices.getExecutive(req.body.profileClick);
 
   var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
 
-  var execGoals = await profileServices.getExecGoals(currExecutive.execID);
+  var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
   currExecutive.exec_goals = execGoals;
 
-
-
   if (req.body.noteContent != null){ //enter when the coach tries to add note on executive
-    await notesServices.addNote(req.body.currExecID, currCoach.coach_id_val, req.body.noteContent);
-    notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+    await notesServices.addNote(currExecutive.executive_id, currCoach.coach_id, req.body.noteContent);
+    notes = await notesServices.viewNotes(currExecutive.executive_id, currCoach.coach_id);
   } else if (req.body.sendMessage != null) { //sending a message to a client
+    console.log("in message")
     var message = req.body.clientMessage;
     var client = req.body.messageClient;
     //updates the client's message
     emailservices.updateMessage(message, client)
   }
 
-  notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id_val);
+  notes = await notesServices.viewNotes(currExecutive.execID, currCoach.coach_id);
   var promise = Promise.resolve(currExecutive);
   promise.then(function(value) {
     res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: value, notes: notes, pastGoals:pastGoals});
