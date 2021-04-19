@@ -86,14 +86,12 @@ router.get('../model/executiveCoach.js', function(req, res) {
 });
 
 /* GET homepage for coach. */
-router.get('/coachView', function(req, res, next) {
+router.get('/coachView', requireLogin, function(req, res, next) {
   if (req.body.remindAll != null) {
     emailservices.sendAllReminders(clients);
   }
-  if (req.session && req.session.user) {
-    console.log(req.session.user)
-  }
-  res.render('coachView.pug', { title: 'Coach View',  user: currCoach, clients: clients});
+
+  res.render('coachView.pug', { title: 'Coach View',  user: req.session.user, clients: clients});
 });
 
 
@@ -132,7 +130,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
         var email = req.body.emailAddress;
         var message = req.body.message;
   	    await emailservices.sendEmail(currCoach, name, email, message);
-        res.redirect('/coachView');
+        res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     }
   }else{
     res.redirect('/');
@@ -198,12 +196,10 @@ router.post('/coachSignInAction', async function(req, res) {
 });
 
 /* GET homepage for executive. */
-router.get('/executiveView', requireLogin, async function(req,res,next){
+router.get('/executiveView', requireExecLogin, async function(req,res,next){
     //map to the correct executive if executive's username and password are provided and log them in
     if(req.session.user.executive_id != undefined){
       res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-    }else{
-      res.redirect('/coachView')
     }
 });
 
@@ -300,7 +296,7 @@ router.post('/executiveProfile', upload.single('image'), async function(req,res,
 });
 
 /* GET profile page for executive when logged in as coach. */
-router.get('/executiveProfile_coach', async function(req,res,next){
+router.get('/executiveProfile_coach', requireLogin, async function(req,res,next){
   //populates the executive's profile with past goals on the coach's view
   var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
   res.render('executiveProfile_coach.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
@@ -354,7 +350,7 @@ router.post('/coachProfile_coach', requireLogin, upload.single('image'), async f
     image = req.file.location;
   }
   await profileServices.editCoachInfo(newInfo, req.session.user, image);
-  res.redirect('/coachProfile_coach');
+  res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: clients});
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 

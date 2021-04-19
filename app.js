@@ -36,6 +36,12 @@ app.use(session({
   activeDuration: 5 * 60 * 1000,
 }));
 
+app.use((req, res, next) => {
+  console.log("has sesh" + req.session.user)
+  res.locals.user = req.session.user;
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 
 //app.use(bodyParser.json());
 

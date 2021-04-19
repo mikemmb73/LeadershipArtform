@@ -31,7 +31,7 @@ module.exports = {
 		console.log("in function");
 		if(currCoach != null){
 			var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
-			newMessage += "Please go to http://leadersmeetgoals.com/executiveSignup to sign up as an executive.";
+			newMessage += "Please go to https://leadersmeetgoals.com/executiveSignInSignUp to sign up as an executive.";
 
 			// Create sendEmail params
 			var params = {
@@ -91,7 +91,7 @@ module.exports = {
 		console.log("EMAIL CLIENTS");
 		console.log(clients);
 		clients.forEach(function(entry) {
-			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 			var newMessage = "Hello, " + "<br>" + message;
 
 			// Create sendEmail params
@@ -151,7 +151,7 @@ module.exports = {
 	awaiting approval to use the AWS email service
 	**/
 	sendOneReminder: function(email) {
-		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 		var newMessage = "Hello, " + "<br>" + message;
 
 		// Create sendEmail params
