@@ -21,7 +21,7 @@ module.exports = {
   notes- coach_id will entered as -1, since the executive entered this goal
   **/
   addGoalExecutive: async function(goalData, currExecutive) {
-    print(goalData)
+    // print(goalData)
     var today = new Date();
     var nextWeek = new Date();
     nextWeek.setDate(nextWeek.getDate() + 7);
