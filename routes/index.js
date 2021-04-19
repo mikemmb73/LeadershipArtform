@@ -68,7 +68,8 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
   console.log(req.body);
 
     if (req.body.fname != null) { //if it is not null, we know we will be signing up a coach
-      if (currCoach == null) {
+      //Mike - removed this line as it caused the page to hang if you tried to sign up a user while still logged in, there may be a more elegant way to do this
+      //if (currCoach == null) {
           //the user (coach) is created in signUpCoach with the information in the form
           var image;
           if (req.file == null) {
@@ -100,8 +101,9 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
             });
 
           }
-      }
+      //}
     } else if (req.body.username != null) { //signin a user
+        console.log("sign in started")
         user = await loginservices.getCoachAuthent(req.body.username, req.body.password);
         currCoach = user;
         console.log(currCoach);
@@ -135,12 +137,13 @@ router.post('/coachView', upload.single('image'), async function(req, res) {
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
         //res.redirect('coachView');
     } else { //sending an email to invite a client
+        console.log("in email")
         var name = req.body.clientName;
         var email = req.body.emailAddress;
         var message = req.body.message;
   	    await emailservices.sendEmail(currCoach, name, email, message);
         res.render('coachView.pug', {title: 'Coach View', user: currCoach, clients: clients});
-      }
+    }
 
 
 
