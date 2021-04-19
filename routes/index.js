@@ -36,6 +36,16 @@ function requireLogin (req, res, next) {
   }
 };
 
+function requireExecLogin(req, res, next){
+  if (!req.session.user) {
+    res.redirect('/');
+  }else if(req.session.user.executive_id == undefined){
+    res.redirect('/');
+  }else{
+    next();
+  }
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Art of Leadership' });
@@ -89,8 +99,9 @@ router.get('/coachView', function(req, res, next) {
 router.post('/coachView', requireLogin, upload.single('image'), async function(req, res) {
   console.log(req.body);
   console.log(req.session);
-  currCoach = req.session.user;
-  clients = req.session.user.executives;
+  if(typeof req.session.user.coach_id === 'number'){
+    currCoach = req.session.user;
+    clients = req.session.user.executives;
 
     if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
@@ -121,6 +132,9 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
   	    await emailservices.sendEmail(currCoach, name, email, message);
         res.redirect('/coachView');
     }
+  }else{
+    res.redirect('/');
+  }
 });
 
 router.post('/coachSignUpAction', upload.single('image'), async function(req, res) {
@@ -327,7 +341,7 @@ router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
 });
 
 /* POST profile page for coach when logged in as coach and uploads image correctly. */
-router.post('/coachProfile_coach', upload.single('image'), async function(req,res,next) {
+router.post('/coachProfile_coach', requireLogin, upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   var image;
   if (req.file == null) {
@@ -335,14 +349,14 @@ router.post('/coachProfile_coach', upload.single('image'), async function(req,re
   } else {
     image = req.file.location;
   }
-  await profileServices.editCoachInfo(newInfo, currCoach, image);
+  await profileServices.editCoachInfo(newInfo, req.session.user, image);
   res.redirect('/coachProfile_coach');
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
 
 /* GET profile page for coach when logged in as executive. */
-router.get('/coachProfile_executive', requireLogin, async function(req,res,next){
+router.get('/coachProfile_executive', async function(req,res,next){
   currCoach  = await loginservices.getExecutiveCoach(currExecutive);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
