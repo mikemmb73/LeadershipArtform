@@ -320,7 +320,7 @@ router.post('/executiveProfile_coach', async function(req,res,next) {
 /* GET profile page for coach when logged in as coach. */
 router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
-	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: req.session.user.executives});
+	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: clients});
 });
 
 /* POST profile page for coach when logged in as coach and uploads image correctly. */
