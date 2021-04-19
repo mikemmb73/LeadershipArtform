@@ -36,6 +36,16 @@ function requireLogin (req, res, next) {
   }
 };
 
+function requireExecLogin(req, res, next){
+  if (!req.session.user) {
+    res.redirect('/');
+  }else if(req.session.user.executive_id == undefined){
+    res.redirect('/');
+  }else{
+    next();
+  }
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   currCoach = null;
@@ -91,8 +101,9 @@ router.get('/coachView', function(req, res, next) {
 router.post('/coachView', requireLogin, upload.single('image'), async function(req, res) {
   console.log(req.body);
   console.log(req.session);
-  currCoach = req.session.user;
-  clients = req.session.user.executives;
+  if(typeof req.session.user.coach_id === 'number'){
+    currCoach = req.session.user;
+    clients = req.session.user.executives;
 
     if (req.body.emailReminder != null) { //the coach has chosen to send a reminder to a specific executive
         await emailservices.sendOneReminder(req.body.emailReminder);
@@ -123,6 +134,9 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
   	    await emailservices.sendEmail(currCoach, name, email, message);
         res.redirect('/coachView');
     }
+  }else{
+    res.redirect('/');
+  }
 });
 
 router.post('/coachSignUpAction', upload.single('image'), async function(req, res) {
@@ -153,6 +167,7 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
             currCoach = user;
             var clientList = [];
             req.session.user = user;
+            req.session.user.password = "";
             res.redirect('/coachView');
           });
 
@@ -175,6 +190,8 @@ router.post('/coachSignInAction', async function(req, res) {
       //Once logged in, the clients field will be populated with the coach's clients
       clients = await loginservices.getClientGoals(user);
       req.session.user = user;
+      req.session.user.password = "";
+
       res.redirect('/coachView')
     }
   }
@@ -326,7 +343,7 @@ router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
 });
 
 /* POST profile page for coach when logged in as coach and uploads image correctly. */
-router.post('/coachProfile_coach', upload.single('image'), async function(req,res,next) {
+router.post('/coachProfile_coach', requireLogin, upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   var image;
   if (req.file == null) {
@@ -334,7 +351,7 @@ router.post('/coachProfile_coach', upload.single('image'), async function(req,re
   } else {
     image = req.file.location;
   }
-  await profileServices.editCoachInfo(newInfo, currCoach, image);
+  await profileServices.editCoachInfo(newInfo, req.session.user, image);
   res.redirect('/coachProfile_coach');
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
@@ -363,12 +380,21 @@ router.post('/coachProfile_coach', function(req, res) {
 });
 
 /* GET add goal page when logged in as coach. */
-router.get('/addGoal_coach', async function(req,res,next){
-  var clients2 = await loginservices.getClientGoals(currCoach);
-  var promise = Promise.resolve(clients2);
-  promise.then(function(value) {
-    res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
-  });
+router.get('/addGoal_coach', requireLogin, async function(req,res,next){
+  //check if the user logged in is a coach 
+  if(typeof req.session.user.coach_id === 'number'){
+    currCoach = req.session.user;
+
+    var clients2 = await loginservices.getClientGoals(currCoach);
+    var promise = Promise.resolve(clients2);
+    promise.then(function(value) {
+      res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
+    });
+
+  //if its not a coach then redirect back home (graceful error)
+  }else{
+    res.redirect('/');
+  }
 });
 
 
