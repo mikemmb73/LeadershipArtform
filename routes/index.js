@@ -449,6 +449,7 @@ router.post('/editGoal_executive', requireExecLogin, async function(req, res) {
     var goal = await responseServices.getGoalWithID(goal_id);
     var questions = await responseServices.getQuestions(goal_id);
     goal.goal_questions = questions;
+
     res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
   }
   else {  //if coming from addGoal_executive
@@ -467,6 +468,8 @@ router.post('/viewGoal_executive', async function(req, res) {
     console.log("WE ARE POSTING IN VIEW_GOAL EXEC" + req.body.goal_id);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     var currResponse;
+    req.session.user = req.session.user;
+
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
@@ -477,6 +480,7 @@ router.post('/viewGoal_executive', async function(req, res) {
       //it should not directly change the database until the coach has access to it
       await addGoalService.updateProgress(req.body.goal_id, req.body.progress);
     }
+    
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
 });
 
