@@ -31,6 +31,8 @@ const upload = require('../services/image-upload');
 function requireLogin (req, res, next) {
   if (!req.session.user) {
     res.redirect('/');
+  } else if(req.session.user.executive_id != undefined){
+    res.redirect('/');
   } else {
     next();
   }
@@ -201,31 +203,8 @@ router.get('/executiveView', requireExecLogin, async function(req,res,next){
     }
 });
 
-/* POST homepage for execuctive. */
-router.post('/executiveView', upload.single('image'), async function(req,res,next) {
-  if (req.body.isEditGoalExec == 'yes'){ //marked as 'yes' if teh executive has entered a response
-    var goal = await responseServices.getGoalWithID(req.body.goalID);
-    var mcQuestionCount = req.body.mcQuestionCount;
-    var likertQuestionCount = req.body.likertQuestionCount;
-    //the response is added to the database
-    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
-
-    //the deadline is moved up one week
-    await responseServices.updateDeadline(goal);
-
-    //the user is remapped to include all of its new responses and update currExecutive
-    console.log("Sign in here 2");
-    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
-    currExecutive = user;
-    console.log("Here4");
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-  else if (req.body.progress != null){ //called when an executive tries to update the progress
-    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
-    console.log("Here3");
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-
+/* POST for exec sign up */
+router.post('/execSignUpAction', upload.single('image'), async function(req,res,next){
   if (currExecutive == null) {
     if (req.body.fname != null) { //called when the executive is trying to sign up
       //an executive is created with all of the form information
@@ -248,38 +227,81 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
         res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
-    } else { //enter when the executive attempts to sign in
-      console.log("Sign in here 1");
-      user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
-      currExecutive = user;
+      req.session.user = user;
+      req.session.user.password = "";
     }
   }
+});
+
+//POST to sign in executive
+router.post('/execSignInAction', upload.single('image'), async function(req,res,next){
+  if(req.body.username2 != null){ //enter when the executive attempts to sign in
+    console.log("Sign in here 1");
+    user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
+    currExecutive = user;
+    req.session.user = user;
+    req.session.user.password = "";
+  }
+
+  //check what happened during auth
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignInSignUp');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });
-  } else if (req.body.deleteMessage != null) { //deleting a client's message
+  }  else {
+      // Successfully sign in as an executive
+      console.log("Here1");
+
+      res.render('executiveView.pug', {title: 'ExecutiveView', user: req.session.user});
+  }
+});
+
+
+/* POST homepage for execuctive. */
+router.post('/executiveView', requireExecLogin, upload.single('image'), async function(req,res,next) {
+  currExecutive = req.session.user;
+
+  if (req.body.isEditGoalExec == 'yes'){ //marked as 'yes' if teh executive has entered a response
+    var goal = await responseServices.getGoalWithID(req.body.goalID);
+    var mcQuestionCount = req.body.mcQuestionCount;
+    var likertQuestionCount = req.body.likertQuestionCount;
+    //the response is added to the database
+    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+
+    //the deadline is moved up one week
+    await responseServices.updateDeadline(goal);
+
+    //the user is remapped to include all of its new responses and update currExecutive
+    console.log("Sign in here 2");
+    var user = await loginservices.getExecutiveAuthent(currExecutive.email, currExecutive.password);
+    currExecutive = user;
+    req.session.user = user;
+
+    console.log("Here4");
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }
+  else if (req.body.progress != null){ //called when an executive tries to update the progress
+    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
+    console.log("Here3");
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }else if (req.body.deleteMessage != null) { //deleting a client's message
     var message = " ";
-    await emailservices.updateMessage(message, currExecutive.username)
+    await emailservices.updateMessage(message, currExecutive.email)
     currExecutive.coach_message = message;
     console.log("Here2");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  } else {
-      // Successfully sign in as an executive
-      console.log("Here1");
-      res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
 
 /* GET profile page for executive. */
-router.get('/executiveProfile', async function(req,res,next){
+router.get('/executiveProfile', requireExecLogin, async function(req,res,next){
   //populates the executive's profile with their past goals
-  var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
-	res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
+  var pastGoals = await profileServices.getExecCompletedGoals(req.session.user.executive_id);
+	res.render('executiveProfile.pug', {title: 'Executive Profile', user: req.session.user, pastGoals: pastGoals});
 });
 
 /* POST profile page for executive. */
-router.post('/executiveProfile', upload.single('image'), async function(req,res,next) {
+router.post('/executiveProfile', requireExecLogin, upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   //allows the executive to edit their information
   var image;
