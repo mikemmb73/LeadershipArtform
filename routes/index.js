@@ -31,6 +31,8 @@ const upload = require('../services/image-upload');
 function requireLogin (req, res, next) {
   if (!req.session.user) {
     res.redirect('/');
+  } else if(req.session.user.executive_id != undefined){
+    res.redirect('/');
   } else {
     next();
   }
@@ -203,31 +205,8 @@ router.get('/executiveView', requireExecLogin, async function(req,res,next){
     }
 });
 
-/* POST homepage for execuctive. */
-router.post('/executiveView', upload.single('image'), async function(req,res,next) {
-  if (req.body.isEditGoalExec == 'yes'){ //marked as 'yes' if teh executive has entered a response
-    var goal = await responseServices.getGoalWithID(req.body.goalID);
-    var mcQuestionCount = req.body.mcQuestionCount;
-    var likertQuestionCount = req.body.likertQuestionCount;
-    //the response is added to the database
-    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
-
-    //the deadline is moved up one week
-    await responseServices.updateDeadline(goal);
-
-    //the user is remapped to include all of its new responses and update currExecutive
-    console.log("Sign in here 2");
-    var user = await loginservices.getExecutiveAuthent(currExecutive.username, currExecutive.pass);
-    currExecutive = user;
-    console.log("Here4");
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-  else if (req.body.progress != null){ //called when an executive tries to update the progress
-    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
-    console.log("Here3");
-    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  }
-
+/* POST for exec sign up */
+router.post('/execSignUpAction', upload.single('image'), async function(req,res,next){
   if (currExecutive == null) {
     if (req.body.fname != null) { //called when the executive is trying to sign up
       //an executive is created with all of the form information
@@ -250,38 +229,81 @@ router.post('/executiveView', upload.single('image'), async function(req,res,nex
         res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
-    } else { //enter when the executive attempts to sign in
-      console.log("Sign in here 1");
-      user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
-      currExecutive = user;
+      req.session.user = user;
+      req.session.user.password = "";
     }
   }
+});
+
+//POST to sign in executive
+router.post('/execSignInAction', upload.single('image'), async function(req,res,next){
+  if(req.body.username2 != null){ //enter when the executive attempts to sign in
+    console.log("Sign in here 1");
+    user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
+    currExecutive = user;
+    req.session.user = user;
+    req.session.user.password = "";
+  }
+
+  //check what happened during auth
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignInSignUp');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
       res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });
-  } else if (req.body.deleteMessage != null) { //deleting a client's message
+  }  else {
+      // Successfully sign in as an executive
+      console.log("Here1");
+
+      res.render('executiveView.pug', {title: 'ExecutiveView', user: req.session.user});
+  }
+});
+
+
+/* POST homepage for execuctive. */
+router.post('/executiveView', requireExecLogin, upload.single('image'), async function(req,res,next) {
+  currExecutive = req.session.user;
+
+  if (req.body.isEditGoalExec == 'yes'){ //marked as 'yes' if teh executive has entered a response
+    var goal = await responseServices.getGoalWithID(req.body.goalID);
+    var mcQuestionCount = req.body.mcQuestionCount;
+    var likertQuestionCount = req.body.likertQuestionCount;
+    //the response is added to the database
+    await responseServices.addResponses(goal, req.body, mcQuestionCount, likertQuestionCount);
+
+    //the deadline is moved up one week
+    await responseServices.updateDeadline(goal);
+
+    //the user is remapped to include all of its new responses and update currExecutive
+    console.log("Sign in here 2");
+    var user = await loginservices.getExecutiveAuthent(currExecutive.email, currExecutive.password);
+    currExecutive = user;
+    req.session.user = user;
+
+    console.log("Here4");
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }
+  else if (req.body.progress != null){ //called when an executive tries to update the progress
+    await addGoalService.updateProgress(req.body.goalID, req.body.progress);
+    console.log("Here3");
+    res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
+  }else if (req.body.deleteMessage != null) { //deleting a client's message
     var message = " ";
-    await emailservices.updateMessage(message, currExecutive.username)
+    await emailservices.updateMessage(message, currExecutive.email)
     currExecutive.coach_message = message;
     console.log("Here2");
     res.render('executiveView.pug', {title: 'Executive View', user: currExecutive});
-  } else {
-      // Successfully sign in as an executive
-      console.log("Here1");
-      res.render('executiveView.pug', {title: 'ExecutiveView', user: currExecutive});
   }
 });
 
 /* GET profile page for executive. */
-router.get('/executiveProfile', async function(req,res,next){
+router.get('/executiveProfile', requireExecLogin, async function(req,res,next){
   //populates the executive's profile with their past goals
-  var pastGoals = await profileServices.getExecCompletedGoals(currExecutive.execID);
-	res.render('executiveProfile.pug', {title: 'Executive Profile', user: currExecutive, pastGoals: pastGoals});
+  var pastGoals = await profileServices.getExecCompletedGoals(req.session.user.executive_id);
+	res.render('executiveProfile.pug', {title: 'Executive Profile', user: req.session.user, pastGoals: pastGoals});
 });
 
 /* POST profile page for executive. */
-router.post('/executiveProfile', upload.single('image'), async function(req,res,next) {
+router.post('/executiveProfile', requireExecLogin, upload.single('image'), async function(req,res,next) {
   var newInfo = req.body;
   //allows the executive to edit their information
   var image;
@@ -356,16 +378,19 @@ router.post('/coachProfile_coach', requireLogin, upload.single('image'), async f
 
 
 /* GET profile page for coach when logged in as executive. */
-router.get('/coachProfile_executive', async function(req,res,next){
-  currCoach  = await loginservices.getExecutiveCoach(currExecutive);
+router.get('/coachProfile_executive', requireExecLogin, async function(req,res,next){
+  console.log("IN GET COACH VAL")
+  console.log(req.session.user)
+  currCoach  = await loginservices.getExecutiveCoach(req.session.user);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
     res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
   });
 });
 
+//THIS MAY NEED WORK
 /* POST profile page for coach when logged in as coach. */
-router.post('/coachProfile_coach', function(req, res) {
+router.post('/coachProfile_coach', requireLogin, function(req, res) {
   if (req.body.remindAll != null) { //if the remind all button is clicked, this will send a reminder to all clients
     emailservices.sendAllReminders(clients);
   } else { //this will invite a client to the web platform.
@@ -397,7 +422,7 @@ router.get('/addGoal_coach', requireLogin, async function(req,res,next){
 
 
 /* GET add goal page when logged in as executive. */
-router.get('/addGoal_executive', function(req,res,next){
+router.get('/addGoal_executive', requireExecLogin, function(req,res,next){
 	res.render('addGoal_executive.pug', {title: 'Add Goal'});
 });
 
@@ -420,18 +445,19 @@ router.post('/', function(req, res) {
 
 
 /* POST to edit goal page when logged in as executive. */
-router.post('/editGoal_executive', async function(req, res) {
+router.post('/editGoal_executive', requireExecLogin, async function(req, res) {
   if (req.body.isViewGoal == "yes"){ //if coming from viewGoal_executive
     var goal_id = req.body.goal_id;
     var goal = await responseServices.getGoalWithID(goal_id);
     var questions = await responseServices.getQuestions(goal_id);
     goal.goal_questions = questions;
+
     res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
   }
   else {  //if coming from addGoal_executive
       var data = qs.parse(req.body);
-      await addGoalService.addGoalExecutive(data, currExecutive);
-      var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
+      await addGoalService.addGoalExecutive(data, req.session.user);
+      var goal = await addGoalService.viewGoalExecutive(data, req.session.user);
       //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
 
       res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
@@ -444,6 +470,8 @@ router.post('/viewGoal_executive', async function(req, res) {
     console.log("WE ARE POSTING IN VIEW_GOAL EXEC" + req.body.goal_id);
     var goal = await addGoalService.getGoalWithId(req.body.goal_id);
     var currResponse;
+    req.session.user = req.session.user;
+
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
@@ -454,6 +482,7 @@ router.post('/viewGoal_executive', async function(req, res) {
       //it should not directly change the database until the coach has access to it
       await addGoalService.updateProgress(req.body.goal_id, req.body.progress);
     }
+    
     res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
 });
 
