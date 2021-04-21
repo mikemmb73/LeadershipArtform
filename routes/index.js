@@ -50,6 +50,8 @@ function requireExecLogin(req, res, next){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  currCoach = null;
+  currExecutive = null;
   res.render('index', { title: 'Art of Leadership' });
 });
 
