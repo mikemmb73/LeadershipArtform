@@ -122,7 +122,7 @@ module.exports = {
 	getClients: async function(user) {
 	    var id = user.coach_id_val;
 	    console.log("ID HERE: " + id);
-	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + user.coach_id_val + ", coach_id)";
+	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + user.coach_id + ", coach_id)";
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new Executive.Executive(x));
 	    return currCoach;
@@ -134,8 +134,7 @@ module.exports = {
 	purpose- Returns the coach that is mapped to the executive.
 	**/
 	getExecutiveCoach: async function(executive) {
-		console.log
-		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coachID + ", coach_id)";
+		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coach_id + ", coach_id)";
 	    const [rows, fields] = await mysql.connect.execute(getStatement);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 	    return currCoach[0];

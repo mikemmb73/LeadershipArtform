@@ -376,16 +376,19 @@ router.post('/coachProfile_coach', requireLogin, upload.single('image'), async f
 
 
 /* GET profile page for coach when logged in as executive. */
-router.get('/coachProfile_executive', async function(req,res,next){
-  currCoach  = await loginservices.getExecutiveCoach(currExecutive);
+router.get('/coachProfile_executive', requireExecLogin, async function(req,res,next){
+  console.log("IN GET COACH VAL")
+  console.log(req.session.user)
+  currCoach  = await loginservices.getExecutiveCoach(req.session.user);
   var promise = Promise.resolve(currCoach);
   promise.then(function(value) {
     res.render('coachProfile_executive.pug', {title: 'Coach Profile', user: value});
   });
 });
 
+//THIS MAY NEED WORK
 /* POST profile page for coach when logged in as coach. */
-router.post('/coachProfile_coach', function(req, res) {
+router.post('/coachProfile_coach', requireLogin, function(req, res) {
   if (req.body.remindAll != null) { //if the remind all button is clicked, this will send a reminder to all clients
     emailservices.sendAllReminders(clients);
   } else { //this will invite a client to the web platform.
@@ -417,7 +420,7 @@ router.get('/addGoal_coach', requireLogin, async function(req,res,next){
 
 
 /* GET add goal page when logged in as executive. */
-router.get('/addGoal_executive', function(req,res,next){
+router.get('/addGoal_executive', requireExecLogin, function(req,res,next){
 	res.render('addGoal_executive.pug', {title: 'Add Goal'});
 });
 
@@ -440,7 +443,7 @@ router.post('/', function(req, res) {
 
 
 /* POST to edit goal page when logged in as executive. */
-router.post('/editGoal_executive', async function(req, res) {
+router.post('/editGoal_executive', requireExecLogin, async function(req, res) {
   if (req.body.isViewGoal == "yes"){ //if coming from viewGoal_executive
     var goal_id = req.body.goal_id;
     var goal = await responseServices.getGoalWithID(goal_id);
@@ -450,8 +453,8 @@ router.post('/editGoal_executive', async function(req, res) {
   }
   else {  //if coming from addGoal_executive
       var data = qs.parse(req.body);
-      await addGoalService.addGoalExecutive(data, currExecutive);
-      var goal = await addGoalService.viewGoalExecutive(data, currExecutive);
+      await addGoalService.addGoalExecutive(data, req.session.user);
+      var goal = await addGoalService.viewGoalExecutive(data, req.session.user);
       //getClientsSelected() should grab the clients chosen in a goal form on addGoal_coach and then set clients: to that returned var
 
       res.render('editGoal_executive.pug', {title: 'View Goal', goal: goal});
