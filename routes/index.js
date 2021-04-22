@@ -122,7 +122,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
         console.log("this is the client's goal ID" + req.body.acceptRequest);
         console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
         await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
-        clients = await loginservices.getClientGoals(user);
+        clients = await loginservices.getClientGoals(req.session.user);
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
         //res.redirect('coachView');
     } else { //sending an email to invite a client
