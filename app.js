@@ -15,10 +15,6 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-
-
-
-
 //pug compile
 //const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
@@ -37,7 +33,6 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-  console.log("has sesh" + req.session.user)
   res.locals.user = req.session.user;
   next();
 });

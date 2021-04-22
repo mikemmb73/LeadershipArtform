@@ -51,10 +51,10 @@ block content
 							div.card-header 
 								button.special(style="float: right" classe-"btn btn-danger" type="submit") DELETE
 							div.card-body
-								if user.coach_message.length == 0
+								if user.message.length == 0
 									h4.text-danger(style="text-align:center") No current messages
 								else
-									h3 #{user.coach_message}
+									h3 #{user.message}
 							input( type="hidden" name="deleteMessage" value="deleteMessage")
 				div(class="6u 12u$(medium)")
 					h2 Current Goals:
@@ -81,7 +81,7 @@ block content
 	- var alreadyMessaged = "false"
 	if user.exec_goals.length != 0
 		each goal in user.exec_goals
-			- var goalDateFormat = goal.goal_date.toLocaleDateString("en-US", options)
+			- var goalDateFormat = goal.currDueDate.toLocaleDateString("en-US", options)
 			if goalDateFormat == todayDateFormat && alreadyMessaged == "false"
 				- alreadyMessaged = true
 				br
