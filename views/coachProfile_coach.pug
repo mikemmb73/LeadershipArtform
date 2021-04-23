@@ -45,17 +45,17 @@ block content
 					script
 						var clients = !{JSON.stringify(clients)};
 				div(class="6u 12u$(medium)")
-					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
+					img#profileImage(src=user.photo style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
 					br
 					div(style="display: flex;justify-content: center;align-items: center;")
 						button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="").client_button Edit
 					br
 					br
 					br
-					h2(style="text-align: center;")  #{user.full_name}
+					h2(style="text-align: center;")  #{user.fname} #{user.lname}
 					h2(style="text-align: center;")  Coach ID: #{user.coach_id}
-					h2(style="text-align: center;")  EMAIL: #{user.user_email}
-					p(style="text-align: center;")  #{user.biography}
+					h2(style="text-align: center;")  EMAIL: #{user.email}
+					p(style="text-align: center;")  #{user.bio}
 				div(class="6u 12u$(medium)")
 					h2 Clients
 					form(method='GET' action='/coachProfile_coach')
@@ -125,20 +125,24 @@ block content
 							div(style="width:40%;")
 								p First Name:
 									br
-									input(type="text" name="newFName" placeholder=user.first_name)
+									input(type="text" name="newFName" placeholder=user.fname)
 								p Last Name:
 									br
-									input(type="text" name="newLName" placeholder=user.last_name)
+									input(type="text" name="newLName" placeholder=user.lname)
 								p Email Address:
 									br
-									input(type="text" name="newEmail" size="30" placeholder=user.user_email)
+									input(type="text" name="newEmail" size="30" placeholder=user.email)
 							div(style="width:10%;")
 							div(style="width:50%;")
 							
 								p Short Biography
 									br
+<<<<<<< HEAD
 									//input(type="textarea",name="newBio",  style="width:100px;",placeholder=user.biography)
 									textarea(name="newBio",rows="5",placeholder=user.biography)
+=======
+									input(type="textarea" name="newBio" style="height:150px" size="50" placeholder=user.bio)
+>>>>>>> HaoSun_FixSignupBug
 								p Photo
 									br
 									input#image.form-control(type='file' name='image' accept='image/*')

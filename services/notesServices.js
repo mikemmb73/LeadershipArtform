@@ -41,6 +41,9 @@ module.exports = {
     **/
   viewNotes: async function(execID, coachID) {
     console.log("in viewNotes");
+    console.log(execID)
+    console.log(coachID)
+    
     const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE executive_id = ?", [execID]);
     const execRowsArray = execRows.map(x => new Executive.Executive(x));
     const exec = execRowsArray[0];
