@@ -12,6 +12,7 @@ var Executive = require('../model/executive');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const schedule = require('node-schedule');
 
 aws.config.update({
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
@@ -233,5 +234,21 @@ module.exports = {
 	      console.log("CURRENT COACH NOW HAS THIS MESSAGE" + exec.coach_message);
 	      return exec;
 	    }
-	}
+	},
+
+  scheduleReminder: async function(email, frequency) {
+    let today = new Date();
+    const startTime = new Date(today.now() + 1000 * 60);
+    const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
+    const rule;
+    if (frequency == 1) {
+      rule = '0 0 9 * * *';
+    } else if (frequency == 7) {
+      rule = '0 0 9 * * 1';
+    } else if (frequency == 30) {
+      rule = '0 0 9 1 * *';
+    }
+
+    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, sendOneReminder(email));
+  }
 };

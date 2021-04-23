@@ -127,7 +127,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
         //res.redirect('coachView');
     } else { //sending an email to invite a client
         console.log("in email")
-        
+
         var name = req.body.clientName;
         var email = req.body.emailAddress;
         var message = req.body.message;
@@ -173,7 +173,7 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
 
         }
     //}
-  } 
+  }
 });
 
 router.post('/coachSignInAction', async function(req, res) {
@@ -239,6 +239,8 @@ router.post('/execSignUpAction', upload.single('image'), async function(req,res,
       req.session.user.password = "";
       var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
       req.session.user.exec_goals = execGoals;
+
+      res.render('executiveView.pug', {title: 'ExecutiveView', user: req.session.user});
     }
   }
 });
@@ -425,7 +427,7 @@ router.post('/coachProfile_coach', requireLogin, function(req, res) {
 
 /* GET add goal page when logged in as coach. */
 router.get('/addGoal_coach', requireLogin, async function(req,res,next){
-  //check if the user logged in is a coach 
+  //check if the user logged in is a coach
   if(typeof req.session.user.coach_id === 'number'){
     currCoach = req.session.user;
 
