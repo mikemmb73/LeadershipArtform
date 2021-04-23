@@ -16,9 +16,10 @@
 	border: solid 1px;
 	background: rgba(144, 144, 144, 0.075);
 	border-color: rgba(144, 144, 144, 0.25);
-	height: 2.75rem;
+	
 	border-radius: 2px;
 	width: 50%;
+	/*//margin-left: 15%;*/
 }
 .inline{
 	display:inline;
@@ -49,9 +50,22 @@
 	text-decoration: underline;
 	 cursor:pointer;
 }
+.goalChoiceSelected2{
+	display:inline;
+	color:#d9aa00;
+	font-weight:bold;
+}
 h3{
 	font-weight:900;
 }
+h6{
+	display: inline;
+	font-size: 111rem;
+}
+/*.questionText{
+	display: inline;
+	width: 13%;
+}*/
 #UsePreviousGoal{
 	/*background-color: rgba(0, 0, 0, 0.125);*/
 }
@@ -62,6 +76,7 @@ h3{
 }
 .question{
 	padding: 15px;
+	padding-left: 0px;
 }
 .jumbotron{
 	padding: 5px;
@@ -1803,7 +1818,9 @@ h3{
 	}
 
 	h6 {
-		font-size: 0.7rem;
+		font-size: 1.1rem;
+		width: 15%;
+		display: inline-block;
 	}
 
 	sub {
