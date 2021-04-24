@@ -110,12 +110,16 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
         res.render('coachView.pug', {title: 'CoachView', user: req.session.user, clients: req.session.user.executives});
     } else if (req.body.addCoachGoal != null) { //the coach has chosen to add a goal to executive(s)
       var data2 = qs.parse(req.body);
+      console.log("frequency: " + req.body.frequency);
+
+
+      clients = await loginservices.getClients (req.session.user);
       if (data2.goalTitle != "") {
-        await addGoalService.addGoalCoach(data2, currCoach, clients);
+        await addGoalService.addGoalCoach(data2, currCoach, clients, req.body.frequency);
       } else {
         console.log(data2.GoalButton);
         console.log(req.body.GoalButton);
-        await addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients);
+        await addGoalService.addPrevGoal(data2, req.body.GoalButton, currCoach, clients, req.body.frequency);
       }
       res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
     } else if (req.body.acceptRequest != null) { //approving a client's progress update

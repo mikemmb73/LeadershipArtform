@@ -236,7 +236,7 @@ module.exports = {
 	    }
 	},
 
-  scheduleReminder: async function(email, frequency) {
+  scheduleReminder: function(email, frequency) {
     let today = new Date();
     const startTime = new Date(today.now() + 1000 * 60);
     const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
