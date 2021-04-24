@@ -201,10 +201,10 @@ module.exports = {
   client form will be of an array type, and will enter the first if statement. If only one client,
   the client form will be a string and will not need to loop through the entire clientForm
   **/
-  addGoalCoach: async function(goalData, currCoach, clients) {
+  addGoalCoach: async function(goalData, currCoach, clients, frequency) {
     console.log(goalData)
-    console.log(clients)
-    
+    console.log("clients" + clients)
+    console.log(clients[0])
     typeof clientForm;
     if (Array.isArray(goalData.clientForm)) {
       for (var x = 0; x < goalData.clientForm.length; x++) {
@@ -215,7 +215,14 @@ module.exports = {
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
           if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
-
+            // Email Reminder
+            if (frequency == 0) {
+              emailservices.scheduleReminder(clients[j].email, 1);
+            } else if (frequency == 1) {
+              emailservices.scheduleReminder(clients[j].email, 7);
+            } else if (frequency == 2) {
+              emailservices.scheduleReminder(clients[j].email, 30);
+            }
 
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
             console.log("added goal");
@@ -253,6 +260,7 @@ module.exports = {
         }else{
           console.log("printing goal data");
           console.log(goalData);
+          console.log("clientForm: " + goalData.clientForm);
           console.log("goal data is not array" + goalData.clientForm[i]);
           var fullName = goalData.clientForm.split(" ");
           var today = new Date();
@@ -264,6 +272,15 @@ module.exports = {
             console.log("+" + clients[j].lname.valueOf() + "+");
             console.log("+" + fullName[1].valueOf() + "+");
             if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
+              // Email Reminder
+              if (frequency == 0) {
+                emailservices.scheduleReminder(clients[j].email, 1);
+              } else if (frequency == 1) {
+                emailservices.scheduleReminder(clients[j].email, 7);
+              } else if (frequency == 2) {
+                emailservices.scheduleReminder(clients[j].email, 30);
+              }
+              
               console.log("IN THE LOOP TO ADD QUESTION");
               await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
               console.log("added goal");
