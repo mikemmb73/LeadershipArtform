@@ -58,10 +58,6 @@
 h3{
 	font-weight:900;
 }
-h6{
-	display: inline;
-	font-size: 111rem;
-}
 /*.questionText{
 	display: inline;
 	width: 13%;
@@ -126,6 +122,9 @@ h6{
 		font-size: 100%;
 		font: inherit;
 		vertical-align: baseline;
+	}
+	p{
+		font-size: 1.1rem;
 	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -222,7 +221,6 @@ h6{
 	}
 
 	@media screen and (max-width: 1280px) {
-
 		.container.\31 25\25 {
 			width: 100%;
 			max-width: 81.25rem;
@@ -4421,3 +4419,18 @@ h6{
 			}
 
 		}
+
+@media screen and (max-width: 1280px) {
+	h6{
+		width: 17%;
+	}
+}
+@media screen and (max-width: 800px) {
+	h6{
+		width: 60%;
+		margin-bottom: 5px;
+	}
+	.inlinebox{
+		width: 70%;
+	}
+}
