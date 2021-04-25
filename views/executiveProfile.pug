@@ -41,15 +41,15 @@ block content
 		#main.container
 			.row(style="width:100%;")
 				div(class="6u 12u$(medium)")
-					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
+					img#profileImage(src=user.photo style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
 					br
 					div(style="display: flex;justify-content: center;align-items: center;")
 						button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="").client_button Edit
 					br
 					br
-					h2(style="text-align: center;")  #{user.name}
-					h2(style="text-align: center;")  EMAIL: #{user.username}
-					p(style="text-align: center;")  #{user.bio_info}
+					h2(style="text-align: center;")  #{user.fname} #{user.lname}
+					h2(style="text-align: center;")  EMAIL: #{user.email}
+					p(style="text-align: center;")  #{user.bio}
 				div(class="6u 12u$(medium)")
 					h2 Completed Goals
 					div
@@ -80,19 +80,19 @@ block content
 							div(style="width:40%;")
 								p First Name:
 									br
-									input(type="text" name="newFName" placeholder=user.first_name)
+									input(type="text" name="newFName" placeholder=user.fname)
 								p Last Name:
 									br
-									input(type="text" name="newLName" placeholder=user.last_name)
+									input(type="text" name="newLName" placeholder=user.lname)
 								p Email Address:
 									br
-									input(type="text" name="newEmail" size="30" placeholder=user.user_email)
+									input(type="text" name="newEmail" size="30" placeholder=user.email)
 							div(style="width:10%;")
 							div(style="width:50%;")
 							
 								p Short Biography
 									br
-									input(type="textarea" name="newBio" style="height:150px" size="50" placeholder=user.biography)
+									input(type="textarea" name="newBio" style="height:150px" size="50" placeholder=user.bio)
 								p Photo
 									br
 									input#image.form-control(type='file' name='image' accept='image/*')

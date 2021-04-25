@@ -37,7 +37,7 @@ block content
               label.tab(for='tab-2') Sign Up
               .login-form
                 .sign-in-htm
-                  form(method='POST' action='/executiveView' id="loginForm")
+                  form(method='POST' action='/execSignInAction' id="loginForm")
                     .group
                       label.label(for='username2') Email
                       input#username2.input(type='text' name='username2' required)
@@ -49,7 +49,7 @@ block content
                     .hr
 
                 .sign-up-htm
-                  form(id='form' method='POST' action='/executiveView' enctype='multipart/form-data')
+                  form(id='form' method='POST' action='/execSignUpAction' enctype='multipart/form-data')
                     .group
                       label.label(for='fname') First Name
                       input#fname.input(type='text' fname='fname' name='fname' required)
