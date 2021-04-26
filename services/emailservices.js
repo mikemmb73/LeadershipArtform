@@ -254,7 +254,7 @@ module.exports = {
     const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
     var rule = '';
     if (frequency == 1) {
-      rule = '10 * * * * *';
+      rule = '0 0 9 * * *';
     } else if (frequency == 7) {
       rule = '0 0 9 * * 1';
     } else if (frequency == 30) {
@@ -307,7 +307,6 @@ module.exports = {
   		    function(err) {
   		    console.error(err, err.stack);
   		  });
-        console.log("Done reminder");
       })
   }
 };
