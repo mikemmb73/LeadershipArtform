@@ -261,7 +261,7 @@ module.exports = {
       rule = '0 0 9 1 * *';
     }
 
-    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, function(email) {
+    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, function() {
   		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
   		var newMessage = "Hello, " + "<br>" + message;
 
