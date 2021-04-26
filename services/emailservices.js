@@ -250,9 +250,9 @@ module.exports = {
     // }
 
     let today = new Date();
-    const startTime = new Date(today.now() + 1000 * 10);
+    const startTime = new Date(today.getTime() + 1000 * 10);
     const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
-    const rule = '';
+    var rule = '';
     if (frequency == 1) {
       rule = '0 * * * * *';
     } else if (frequency == 7) {

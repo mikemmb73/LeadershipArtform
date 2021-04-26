@@ -10,6 +10,7 @@ var Goal = require("../model/goal");
 var Question = require("../model/question");
 var QResponse = require("../model/qresponse");
 var Response = require("../model/response");
+const emailservices = require("./emailservices.js");
 
 // MC =0, FR = 1, L = 2
 module.exports = {
@@ -280,7 +281,7 @@ module.exports = {
               } else if (frequency == 2) {
                 emailservices.scheduleReminder(clients[j].email, 30);
               }
-              
+
               console.log("IN THE LOOP TO ADD QUESTION");
               await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
               console.log("added goal");
