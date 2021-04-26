@@ -306,7 +306,8 @@ module.exports = {
   		  }).catch(
   		    function(err) {
   		    console.error(err, err.stack);
-  		  }));
+  		  });
         console.log("Done reminder");
+      })
   }
 };
