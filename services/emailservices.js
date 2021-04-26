@@ -12,6 +12,7 @@ var Executive = require('../model/executive');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const schedule = require('node-schedule');
 
 aws.config.update({
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
@@ -29,51 +30,55 @@ module.exports = {
 	**/
 	sendEmail: function(currCoach, name, email, message) {
 		console.log("in function");
-		var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
-		newMessage += "Please go to http://leadersmeetgoals.com/executiveSignup to sign up as an executive.";
+		if(currCoach != null){
+			var newMessage = "Dear " + name + ", " + "<br>" + message + "<br>" + "Your coach's ID is " + currCoach.coach_id + ". You'll need this to sign up. ";
+			newMessage += "Please go to https://leadersmeetgoals.com/executiveSignInSignUp to sign up as an executive.";
 
-		// Create sendEmail params
-		var params = {
-		  Destination: { /* required */
-		    // CcAddresses: [
-		    //   'EMAIL_ADDRESS',
-		    //   /* more items */
-		    // ],
-		    ToAddresses: [
-		      email,
-		      /* more items */
-		    ]
-		  },
-		  Message: { /* required */
-		    Body: { /* required */
-		      Html: {
-		       Charset: "UTF-8",
-		       Data: newMessage
-		      },
-		      Text: {
-		       Charset: "UTF-8",
-		       Data: "TEXT_FORMAT_BODY"
-		      }
-		     },
-		     Subject: {
-		      Charset: 'UTF-8',
-		      Data: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Art of Leadership!'
-		     }
-		    },
-		  Source: 'leadershipartform@gmail.com', /* required */
-		  ReplyToAddresses: [
-		     'leadershipartform@gmail.com',
-		    /* more items */
-		  ],
-		};
-		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-		sendPromise.then(
-		  function(data) {
-		    console.log(data.MessageId);
-		  }).catch(
-		    function(err) {
-		    console.error(err, err.stack);
-		  });
+			// Create sendEmail params
+			var params = {
+			Destination: { /* required */
+				// CcAddresses: [
+				//   'EMAIL_ADDRESS',
+				//   /* more items */
+				// ],
+				ToAddresses: [
+				email,
+				/* more items */
+				]
+			},
+			Message: { /* required */
+				Body: { /* required */
+				Html: {
+				Charset: "UTF-8",
+				Data: newMessage
+				},
+				Text: {
+				Charset: "UTF-8",
+				Data: "TEXT_FORMAT_BODY"
+				}
+				},
+				Subject: {
+				Charset: 'UTF-8',
+				Data: currCoach.fname + ' ' + currCoach.lname + ' has invited you to join Art of Leadership!'
+				}
+				},
+			Source: 'leadershipartform@gmail.com', /* required */
+			ReplyToAddresses: [
+				'leadershipartform@gmail.com',
+				/* more items */
+			],
+			};
+			var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+			sendPromise.then(
+			function(data) {
+				console.log(data.MessageId);
+			}).catch(
+				function(err) {
+				console.error(err, err.stack);
+			});
+		}else{
+			console.log("coach data passed unsuccessfully")
+		}
 
 	},
 
@@ -87,7 +92,7 @@ module.exports = {
 		console.log("EMAIL CLIENTS");
 		console.log(clients);
 		clients.forEach(function(entry) {
-			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+			var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 			var newMessage = "Hello, " + "<br>" + message;
 
 			// Create sendEmail params
@@ -147,7 +152,7 @@ module.exports = {
 	awaiting approval to use the AWS email service
 	**/
 	sendOneReminder: function(email) {
-		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. http://leadersmeetgoals.com"
+		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
 		var newMessage = "Hello, " + "<br>" + message;
 
 		// Create sendEmail params
@@ -214,5 +219,94 @@ module.exports = {
 	      console.log("CURRENT COACH NOW HAS THIS MESSAGE" + exec.coach_message);
 	      return exec;
 	    }
-	}
+	},
+
+	getMessage: async function(email) {
+		const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase()]);
+	    if (rows != null) {
+	      const currExec = rows.map(x => new Executive.Executive(x));
+	      const exec = currExec[0];
+	      var id = exec.execID;
+		  // var statement = "UPDATE executives SET message = YOO WHERE executive_id = " + id;
+		  await mysql.connect.execute("UPDATE executives SET message = ? WHERE executive_id = ?", [message, id]);
+	      console.log("I am setting the coach's message");
+	      exec.coach_message = message;
+	      console.log("CURRENT COACH NOW HAS THIS MESSAGE" + exec.coach_message);
+	      return exec;
+	    }
+	},
+
+  scheduleReminder: function(email, frequency) {
+    // let today = new Date();
+    // const startTime = new Date(today.now() + 1000 * 60);
+    // const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
+    // const rule = '';
+    // if (frequency == 1) {
+    //   rule = '0 0 9 * * *';
+    // } else if (frequency == 7) {
+    //   rule = '0 0 9 * * 1';
+    // } else if (frequency == 30) {
+    //   rule = '0 0 9 1 * *';
+    // }
+
+    let today = new Date();
+    const startTime = new Date(today.getTime() + 1000 * 10);
+    const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
+    var rule = '';
+    if (frequency == 1) {
+      rule = '10 * * * * *';
+    } else if (frequency == 7) {
+      rule = '0 0 9 * * 1';
+    } else if (frequency == 30) {
+      rule = '0 0 9 1 * *';
+    }
+
+    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, function(email) {
+  		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
+  		var newMessage = "Hello, " + "<br>" + message;
+
+  		// Create sendEmail params
+  		var params = {
+  		  Destination: { /* required */
+  		    // CcAddresses: [
+  		    //   'EMAIL_ADDRESS',
+  		    //   /* more items */
+  		    // ],
+  		    ToAddresses: [
+  		      email,
+  		      /* more items */
+  		    ]
+  		  },
+  		  Message: { /* required */
+  		    Body: { /* required */
+  		      Html: {
+  		       Charset: "UTF-8",
+  		       Data: newMessage
+  		      },
+  		      Text: {
+  		       Charset: "UTF-8",
+  		       Data: "TEXT_FORMAT_BODY"
+  		      }
+  		     },
+  		     Subject: {
+  		      Charset: 'UTF-8',
+  		      Data: 'Art of Leadership Reminder'
+  		     }
+  		    },
+  		  Source: 'leadershipartform@gmail.com', /* required */
+  		  ReplyToAddresses: [
+  		     'leadershipartform@gmail.com',
+  		    /* more items */
+  		  ],
+  		};
+  		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+  		sendPromise.then(
+  		  function(data) {
+  		    console.log(data.MessageId);
+  		  }).catch(
+  		    function(err) {
+  		    console.error(err, err.stack);
+  		  }));
+        console.log("Done reminder");
+  }
 };
