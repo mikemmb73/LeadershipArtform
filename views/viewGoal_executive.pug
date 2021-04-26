@@ -43,13 +43,13 @@ block content
 					h2 Goal Details
 		#main.container
 			h2 #{goal.goal_title}
-			p  #{goal.goal_description}
+			p Goal Descirption: #{goal.goal_description}
 			.row(style="width:100%;")
 				
 				
 				div(class="6u 12u$(medium)")
 					h2 Update Progress
-					div(style="width:100%; background-color: #EEE; padding: 20px;position: relative; left: 0px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+					div(style="width:100%; background-color: #EEE; padding: 20px;position: relative; left: 0px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 						div
 							form(id = "progressForm" method='POST' action='/viewGoal_executive')
 								
@@ -81,7 +81,7 @@ block content
 						if (goal.goal_responses.length == 0)
 							p No Responses Yet.
 						else
-							div(style="width:100%; background-color: #EEE; padding-left: 20px;position: relative; left: 0px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+							div(style="width:100%; background-color: #EEE; padding-left: 20px;position: relative; left: 0px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 								div
 									each r,index in goal.goal_responses
 										p(style="color: #BBB;") #{formatDate(r.date)}

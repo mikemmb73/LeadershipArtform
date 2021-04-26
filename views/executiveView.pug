@@ -46,7 +46,7 @@ block content
 				div(class="6u 12u$(medium)")
 					h2 Messages from Coach:
 					br
-					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 						form(method='POST' action='/executiveView')
 							div.card-header 
 								button.special(style="float: right" classe-"btn btn-danger" type="submit") DELETE
@@ -64,7 +64,7 @@ block content
 						else
 							each goal in user.exec_goals
 								br
-								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 									if goal.goal_progress < 100
 										+print_goal(goal)
 		br
