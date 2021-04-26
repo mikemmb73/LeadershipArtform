@@ -1,9 +1,6 @@
 extends layout
 
 block content
-	script
-		include js/coachView.js
-	script.
 	head
 		title Art of Leadership
 		meta(charset='utf-8')
@@ -45,17 +42,17 @@ block content
 					script
 						var clients = !{JSON.stringify(clients)};
 				div(class="6u 12u$(medium)")
-					img#profileImage(src=user.photograph style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
+					img#profileImage(src=user.photo style="display: block; margin-left: auto; margin-right: auto;width: 200px;")
 					br
 					div(style="display: flex;justify-content: center;align-items: center;")
 						button.special(type="button",data-toggle="modal", data-target="#editProfileModal", style="").client_button Edit
 					br
 					br
 					br
-					h2(style="text-align: center;")  #{user.full_name}
+					h2(style="text-align: center;")  #{user.fname} #{user.lname}
 					h2(style="text-align: center;")  Coach ID: #{user.coach_id}
-					h2(style="text-align: center;")  EMAIL: #{user.user_email}
-					p(style="text-align: center;")  #{user.biography}
+					h2(style="text-align: center;")  EMAIL: #{user.email}
+					p(style="text-align: center;")  #{user.bio}
 				div(class="6u 12u$(medium)")
 					h2 Clients
 					form(method='GET' action='/coachProfile_coach')
@@ -115,32 +112,33 @@ block content
 							.modal-footer
 								button.btn.btn-primary(type='submit') Submit
 		div.col-md-1
-		.modal(role="dialog", id="editProfileModal",style="display: none;width:900px; position: fixed; float: center;right: 5%;bottom: 10%;z-index: 1 !important;background: #DDD; border-radius: 10px;")
-			.modal-dialog-centered.custom_modal_dialog(role="document", style="padding-right: 0px; padding-top: 10px; z-index: 1;")
+		.modal(role="dialog", id="editProfileModal",style="display: none; width:80%; position: fixed; left:10%;bottom: 10%;z-index: 1 !important;background: #DDD; border-radius: 10px;")
+			.modal-dialog-centered.custom_modal_dialog(role="document", style="padding-right: 0px; padding-top: 10px;padding-right:20px; z-index: 1;")
 				.modal-content
 					form(id = "form" method='POST' , name="editProfileForm",action='/coachProfile_coach', enctype="multipart/form-data")
 						.modal-header
 							h2 Edit Profile
 						.modal-body(style="width:100%; height:100%; display: flex;")
-							div(style="width:40%;")
+							div(style="width:30%;")
 								p First Name:
 									br
-									input(type="text" name="newFName" placeholder=user.first_name)
+									input(type="text" name="newFName" placeholder=user.fname)
 								p Last Name:
 									br
-									input(type="text" name="newLName" placeholder=user.last_name)
+									input(type="text" name="newLName" placeholder=user.lname)
 								p Email Address:
 									br
-									input(type="text" name="newEmail" size="30" placeholder=user.user_email)
+									input(type="text" name="newEmail" size="30" placeholder=user.email)
 							div(style="width:10%;")
-							div(style="width:50%;")
+							div(style="width:60%;")
 							
 								p Short Biography
 									br
-									input(type="textarea" name="newBio" style="height:150px" size="50" placeholder=user.biography)
+									//input(type="textarea",name="newBio",  style="width:100px;",placeholder=user.biography)
+									textarea(name="newBio",rows="5",placeholder=user.biography)
 								p Photo
 									br
 									input#image.form-control(type='file' name='image' accept='image/*')
 						.modal-footer
 							button.special(type='submit') Update
-							button(data-dismiss="modal" style="position:absolute; left: 85%;") Cancel
+							button(data-dismiss="modal" style="position:absolute; right: 5%;") Cancel

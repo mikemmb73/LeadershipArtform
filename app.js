@@ -15,14 +15,23 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-
-
-
-
 //pug compile
 //const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
 
+// set up http server
+app.use((req, res, next) => {
+  if (req.app.get('env') === 'production') {
+    console.log("env: " + req.app.get('env'));
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    } else {
+      return next();
+    }
+  } else {
+    return next();
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +45,11 @@ app.use(session({
   activeDuration: 5 * 60 * 1000,
 }));
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,6 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 
 //app.use(bodyParser.json());
 

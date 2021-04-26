@@ -326,7 +326,7 @@ function likertDropdown(){
   };
 
   var questionTitleLabel_ = document.createElement("h6");
-  var questionTitleLabel = document.createTextNode("Scaled question (1-5)");
+  var questionTitleLabel = document.createTextNode("question (1-5)");
   questionTitleLabel_.appendChild(questionTitleLabel);
   jumbotron.appendChild(questionTitleLabel_);
 
@@ -513,21 +513,29 @@ function displaySave(result){
 
 function checkGoal() {
   if (numQuestions - numDelete == 0) {
-    alert("Please enter at least one question.")
-  } else {
-    if (document.getElementById("goalForm").checkValidity()) {
-      var title = document.forms["goalForm"]["goalTitle"].value;
-      var description = document.forms["goalForm"]["goalDescription"].value;
-      if (title == "" || description == "") {
-        alert("Please Fill in All Required Fields");
-      } else {
-        document.getElementById("goalForm").submit();
-      }
-    } else {
+    alert("Please enter at least one question.");
+    return;
+  }
 
-      alert("Please Fill in All Required Fields.")
+  if (document.getElementById("goalForm").checkValidity()) {
+    var title = document.forms["goalForm"]["goalTitle"].value;
+    var description = document.forms["goalForm"]["goalDescription"].value;
+
+    
+      document.getElementById("goalForm").submit();
+  } 
+  else {
+    if(document.forms["goalForm"]["goalTitle"].value == ""){
+      alert("you must enter a tile for the goal.");
+    }
+    else if(document.forms["goalForm"]["goalDescription"].value == ""){
+       alert("you must enter a description for the goal.");
+    }
+    else{
+      alert("Please Fill in All Required Fields.");
     }
   }
+  
 }
 
 function previousGoal() {

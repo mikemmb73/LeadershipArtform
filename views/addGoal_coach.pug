@@ -48,7 +48,7 @@ block content
 						h2 Pick Recipients
 						div.card-body
 							if clients.length == 0
-								h6.text-danger(style="text-align:center") You must first invite a client to add and assign a goal
+								p(style="text-align:center") You must first invite a client to assign a goal
 							else
 								.form-group
 									select.recipientList.form-control(multiple size=clients.length id="selRecip" name="clientForm" required)
@@ -71,14 +71,11 @@ block content
 								|  Weekly
 								br
 								input(type='radio', name='frequency', value='2')
-								|  Bi-Weekly
-								br
-								input(type='radio', name='frequency', value='3')
 								|  Monthly
 				.6u(class='12u$(medium)')
 					h2.goalChoiceSelected#prevGoalButton(href='#', onclick='ShowUsePreviousGoal()') Use a Previous Goal
 					h2.goalChoice  / 
-					h2.goalChoice#newGoalButton(href='#', onclick='ShowCreateNewGoal()') Creat a New Goal
+					h2.goalChoice#newGoalButton(href='#', onclick='ShowCreateNewGoal()') Create a New Goal
 					div.fullDiv#UsePreviousGoal
 						div.card.text-black.bg-primary-mb-3(style='max-wdith:20rem')
 							div.prevGoalList
@@ -121,9 +118,11 @@ block content
 							input(class='btn btn-secondary btn-sm' type='button' value='Likert Scale' onclick='likertDropdown()')
 					br
 					br
-					input.button.special.submitButton(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")
-
+					if clients.length == 0
+						p(style="text-align:center") You must first invite a client to add a goal
+					else
+						input.button.special.submitButton(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")
+				
 	footer#footer
 			.copyright
 				| &copy; Leadership as an artform. All rights reserved.
-
