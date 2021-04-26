@@ -237,12 +237,24 @@ module.exports = {
 	},
 
   scheduleReminder: function(email, frequency) {
+    // let today = new Date();
+    // const startTime = new Date(today.now() + 1000 * 60);
+    // const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
+    // const rule = '';
+    // if (frequency == 1) {
+    //   rule = '0 0 9 * * *';
+    // } else if (frequency == 7) {
+    //   rule = '0 0 9 * * 1';
+    // } else if (frequency == 30) {
+    //   rule = '0 0 9 1 * *';
+    // }
+
     let today = new Date();
-    const startTime = new Date(today.now() + 1000 * 60);
-    const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
+    const startTime = new Date(today.now() + 1000 * 10);
+    const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
     const rule = '';
     if (frequency == 1) {
-      rule = '0 0 9 * * *';
+      rule = '0 * * * * *';
     } else if (frequency == 7) {
       rule = '0 0 9 * * 1';
     } else if (frequency == 30) {
