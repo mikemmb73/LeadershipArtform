@@ -64,8 +64,9 @@ block content
 						else
 							each goal in user.exec_goals
 								br
-								div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
-									if goal.goal_progress < 100
+								if goal.goal_progress < 100
+									div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+										
 										+print_goal(goal)
 		br
 		br
