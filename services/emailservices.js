@@ -254,13 +254,59 @@ module.exports = {
     const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
     var rule = '';
     if (frequency == 1) {
-      rule = '0 * * * * *';
+      rule = '10 * * * * *';
     } else if (frequency == 7) {
       rule = '0 0 9 * * 1';
     } else if (frequency == 30) {
       rule = '0 0 9 1 * *';
     }
 
-    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, sendOneReminder(email));
+    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, function(email) {
+  		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
+  		var newMessage = "Hello, " + "<br>" + message;
+
+  		// Create sendEmail params
+  		var params = {
+  		  Destination: { /* required */
+  		    // CcAddresses: [
+  		    //   'EMAIL_ADDRESS',
+  		    //   /* more items */
+  		    // ],
+  		    ToAddresses: [
+  		      email,
+  		      /* more items */
+  		    ]
+  		  },
+  		  Message: { /* required */
+  		    Body: { /* required */
+  		      Html: {
+  		       Charset: "UTF-8",
+  		       Data: newMessage
+  		      },
+  		      Text: {
+  		       Charset: "UTF-8",
+  		       Data: "TEXT_FORMAT_BODY"
+  		      }
+  		     },
+  		     Subject: {
+  		      Charset: 'UTF-8',
+  		      Data: 'Art of Leadership Reminder'
+  		     }
+  		    },
+  		  Source: 'leadershipartform@gmail.com', /* required */
+  		  ReplyToAddresses: [
+  		     'leadershipartform@gmail.com',
+  		    /* more items */
+  		  ],
+  		};
+  		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+  		sendPromise.then(
+  		  function(data) {
+  		    console.log(data.MessageId);
+  		  }).catch(
+  		    function(err) {
+  		    console.error(err, err.stack);
+  		  }));
+        console.log("Done reminder");
   }
 };
