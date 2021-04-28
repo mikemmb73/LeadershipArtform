@@ -509,38 +509,38 @@ router.post('/viewGoal_executive', async function(req, res) {
     var currResponse;
     req.session.user = req.session.user;
 
-    //before we push the data to the frontend, we have to accomodate showing multipl responses per day
-    allGoals = []
-    //break up the individual responses into a full array of responses
-    for(i = 0; i < goal.goal_responses.length; i++){
-      thisGoal = goal.goal_responses[i]
+    // //before we push the data to the frontend, we have to accomodate showing multipl responses per day
+    // allGoals = []
+    // //break up the individual responses into a full array of responses
+    // for(i = 0; i < goal.goal_responses.length; i++){
+    //   thisGoal = goal.goal_responses[i]
 
-      for(j = 0; j < thisGoal.responses.length; j++){
-        allGoals.push(thisGoal.responses[j])
-      }
-    }
+    //   for(j = 0; j < thisGoal.responses.length; j++){
+    //     allGoals.push(thisGoal.responses[j])
+    //   }
+    // }
 
-    //make individual response objects for each response
-    allResponses = []
+    // //make individual response objects for each response
+    // allResponses = []
 
-    //loop through each Q resp
-    allGoals.forEach(function(thisQresp){
-      var thisResponse = new Response();
+    // //loop through each Q resp
+    // allGoals.forEach(function(thisQresp){
+    //   var thisResponse = new Response();
 
-      //set the data
-      thisResponse.date = thisQresp.response_date
-      thisResponse.responses = [thisQresp.answer]
+    //   //set the data
+    //   thisResponse.date = thisQresp.response_date
+    //   thisResponse.responses = [thisQresp.answer]
 
-      //add to the arr
-      allResponses.push(thisResponse)
-    })
+    //   //add to the arr
+    //   allResponses.push(thisResponse)
+    // })
     
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
 
-    //add all of the responses to the main response pushed to the user
-    goal.responses = allResponses
+    // //add all of the responses to the main response pushed to the user
+    // goal.responses = allResponses
     
     console.log("We are here");
     console.log(goal.progress_update + "!!");
