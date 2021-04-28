@@ -17,6 +17,7 @@ var connection = mysql2.createPool({
 If choosing to host locally, use your mySQL credentials
 */
 
+
 // var connection = mysql2.createPool({
 //   connectionLimit : 10,
 //   host     : 'localhost',
@@ -24,6 +25,7 @@ If choosing to host locally, use your mySQL credentials
 //   password : '',
 //   database : 'Leadership_Artform'
 // });
+
 
 
 module.exports = {

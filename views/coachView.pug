@@ -58,7 +58,7 @@ block content
 									div(style="width:100%")
 										br
 										br
-									div(style="width:100%; background-color:#EEE; border-radius: 20px; padding-left: 20px;padding-right: 20px;padding-bottom:30px;box-shadow: 3px 3px #DDD;")
+									div(style="width:100%; background-color:#EEE; border-radius: 20px; padding-left: 20px;padding-right: 20px;padding-bottom:30px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 										if goal.progress_acceptance != goal.progress
 										- noApprovals = "false";
 										div.row(style="display: inline; width: 100%;")
@@ -73,13 +73,14 @@ block content
 										form(method='POST' action='/coachView')
 											button.special.icon.fa-check(style="float:right; bottom:20px;" type="submit") Accept
 											input(type="hidden" name="acceptRequest" value=goal.goal_id)
+										br
 						if noApprovals == "true"
 							h3.text-danger(style="text-align:center") No pending approvals
 				div(class="6u 12u$(medium)")
 					h2 Invite a Client:
 					br
 					br
-					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: 3px 3px #DDD;")
+					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 						.modal-dialog-centered.custom_modal_dialog(role="document")
 							.modal-content
 								form(id = "form" method='POST' action='/coachView')
@@ -100,5 +101,5 @@ block content
 		br
 		br
 		footer#footer
-			div(class = "copyright")
-				|By Leadership as an Artform						
+			.copyright
+				| &copy; Leadership as an artform. All rights reserved.					

@@ -237,10 +237,22 @@ module.exports = {
 	},
 
   scheduleReminder: function(email, frequency) {
+    // let today = new Date();
+    // const startTime = new Date(today.now() + 1000 * 60);
+    // const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
+    // const rule = '';
+    // if (frequency == 1) {
+    //   rule = '0 0 9 * * *';
+    // } else if (frequency == 7) {
+    //   rule = '0 0 9 * * 1';
+    // } else if (frequency == 30) {
+    //   rule = '0 0 9 1 * *';
+    // }
+
     let today = new Date();
-    const startTime = new Date(today.now() + 1000 * 60);
-    const endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 24 * 30);
-    const rule = '';
+    const startTime = new Date(today.getTime() + 1000 * 10);
+    const endTime = new Date(startTime.getTime() + 1000 * 60 * 3);
+    var rule = '';
     if (frequency == 1) {
       rule = '0 0 9 * * *';
     } else if (frequency == 7) {
@@ -249,6 +261,52 @@ module.exports = {
       rule = '0 0 9 1 * *';
     }
 
-    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, sendOneReminder(email));
+    const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: rule}, function() {
+  		var message = "Your coach has sent you a reminder to complete your goals. Please log on to Art of Leadership to complete any tasks. https://leadersmeetgoals.com"
+  		var newMessage = "Hello, " + "<br>" + message;
+
+  		// Create sendEmail params
+  		var params = {
+  		  Destination: { /* required */
+  		    // CcAddresses: [
+  		    //   'EMAIL_ADDRESS',
+  		    //   /* more items */
+  		    // ],
+  		    ToAddresses: [
+  		      email,
+  		      /* more items */
+  		    ]
+  		  },
+  		  Message: { /* required */
+  		    Body: { /* required */
+  		      Html: {
+  		       Charset: "UTF-8",
+  		       Data: newMessage
+  		      },
+  		      Text: {
+  		       Charset: "UTF-8",
+  		       Data: "TEXT_FORMAT_BODY"
+  		      }
+  		     },
+  		     Subject: {
+  		      Charset: 'UTF-8',
+  		      Data: 'Art of Leadership Reminder'
+  		     }
+  		    },
+  		  Source: 'leadershipartform@gmail.com', /* required */
+  		  ReplyToAddresses: [
+  		     'leadershipartform@gmail.com',
+  		    /* more items */
+  		  ],
+  		};
+  		var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+  		sendPromise.then(
+  		  function(data) {
+  		    console.log(data.MessageId);
+  		  }).catch(
+  		    function(err) {
+  		    console.error(err, err.stack);
+  		  });
+      })
   }
 };

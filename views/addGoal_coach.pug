@@ -17,7 +17,8 @@ block content
 		script(src='assets/js/main.js')
 		header#header
 			.logo
-					a(href='/') Art of Leadership
+				a(href='/') Leadership
+					span  as an Artform
 			span 
 			a(href='#menu') Menu
 		nav#menu
@@ -121,3 +122,7 @@ block content
 						p(style="text-align:center") You must first invite a client to add a goal
 					else
 						input.button.special.submitButton(type="button", value="Add Goal" id="addGoalButton", onclick="checkGoal()")
+				
+	footer#footer
+			.copyright
+				| &copy; Leadership as an artform. All rights reserved.

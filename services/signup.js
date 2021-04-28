@@ -70,12 +70,14 @@ module.exports = {
       else {
         var salt = bcrypt.genSaltSync(10);
         var hash = bcrypt.hashSync(password, salt);
+        console.log("here3");
         await mysql.connect.execute("INSERT INTO executives(email, password, fname, lname, phone_number, message, bio, photo, coach_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [email.toLowerCase().trim(), hash, fname.trim(), lname.trim(), phone, message, bio, photo, coach_id]);
         const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM executives WHERE email = ?", [email.toLowerCase().trim()]);
         const currExecutive = rows2.map(x => new Executive.Executive(x));
         currentExecutive = currExecutive[0];
       }
     }
+    console.log("return");
     return currentExecutive;
   },
 

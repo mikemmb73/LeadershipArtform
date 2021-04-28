@@ -93,6 +93,9 @@ router.get('/coachView', requireLogin, function(req, res, next) {
     emailservices.sendAllReminders(clients);
   }
 
+if (clients === undefined) {
+  clients = [];
+}
   res.render('coachView.pug', { title: 'Coach View',  user: req.session.user, clients: clients});
 });
 
@@ -114,6 +117,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
 
 
       clients = await loginservices.getClients (req.session.user);
+
       if (data2.goalTitle != "") {
         await addGoalService.addGoalCoach(data2, currCoach, clients, req.body.frequency);
       } else {
@@ -226,21 +230,23 @@ router.post('/execSignUpAction', upload.single('image'), async function(req,res,
       } else {
         image = req.file.location;
       }
+      console.log(req.body);
       user = await signup.signUpExecutive(req.body.fname, req.body.lname,
       req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
 
       if (user == -1) { //enter if a duplicate email has been detected in the database
-        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
       }
       if (user == -2) { //enter if the coach id provided is not valid
-        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
       }
       if (user == -3) { //enter if the passwords provided do not match
-        res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
       req.session.user = user;
       req.session.user.password = "";
+      console.log("Here");
       var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
       req.session.user.exec_goals = execGoals;
 
@@ -255,15 +261,17 @@ router.post('/execSignInAction', upload.single('image'), async function(req,res,
     console.log("Sign in here 1");
     user = await loginservices.getExecutiveAuthent(req.body.username2, req.body.password2);
 
-    currExecutive = user;
-    req.session.user = user;
-    req.session.user.password = "";
+    if (user != null) {
+      currExecutive = user;
+      req.session.user = user;
+      req.session.user.password = "";
 
-    var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
-    req.session.user.exec_goals = execGoals;
+      var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
+      req.session.user.exec_goals = execGoals;
 
-    if(req.session.user.coach_message == undefined){
-      req.session.user.coach_message = "";
+      if(req.session.user.coach_message == undefined){
+        req.session.user.coach_message = "";
+      }
     }
   }
 

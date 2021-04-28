@@ -19,6 +19,19 @@ var app = express();
 //const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
 
+// set up http server
+app.use((req, res, next) => {
+  if (req.app.get('env') === 'production') {
+    console.log("env: " + req.app.get('env'));
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    } else {
+      return next();
+    }
+  } else {
+    return next();
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
