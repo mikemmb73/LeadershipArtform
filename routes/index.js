@@ -525,7 +525,7 @@ router.post('/viewGoal_executive', async function(req, res) {
       await addGoalService.updateProgress(req.body.goal_id, req.body.progress);
     }
 
-    res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse});
+    res.render('viewGoal_executive.pug', {goal: goal, currResponse: currResponse,user: req.session.user });
 });
 
 /* POST to view goal page when logged in as coach. */

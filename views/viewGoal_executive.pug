@@ -87,8 +87,9 @@ block content
 										
 										p(style="color: #BBB;") #{formatDate(r.date)}
 										each a,index2 in goal.goal_questions
-											h4 Question: #{a.question_title}
-											p Answer: #{r.answers_array[index2].response_answer}
+											if a.question_id == r.answers_array[0].question_id
+												h4 Question: #{a.question_title}
+												p Answer: #{r.answers_array[0].response_answer}
 							- function formatDate(date) {
 							- var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 							- var day = date.getDate();
