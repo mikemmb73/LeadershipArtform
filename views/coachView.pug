@@ -56,30 +56,27 @@ block content
 							each obj in clients
 								each goal in obj.goals_list
 									div(style="width:100%")
-										br
-										br
-									div(style="width:100%; background-color:#EEE; border-radius: 20px; padding-left: 20px;padding-right: 20px;padding-bottom:30px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+									
 										if goal.progress_acceptance != goal.progress
-										- noApprovals = "false";
-										div.row(style="display: inline; width: 100%;")
-											div
-												img#clientImage(src=obj.photo , style="width: 70px;  ") 
-											div
-												h2(style="") #{obj.fname} #{obj.lname}
-										p(style="position:relative; left:25px;padding-right:20px;")  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
-										form(method='POST' action='/viewGoal_coach')
-											input(type="hidden" name="goal_id" value=goal.id)
-											button.special.icon.fa-search(style="float:left; bottom:20px;" type="submit") Details
-										form(method='POST' action='/coachView')
-											button.special.icon.fa-check(style="float:right; bottom:20px;" type="submit") Accept
-											input(type="hidden" name="acceptRequest" value=goal.goal_id)
-										br
+											- noApprovals = "false";
+											div(style="width:100%; background-color:#EEE; border-radius: 20px; padding-left: 20px;padding-right: 20px;padding-bottom:0px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+												div.row(style="display: inline; width: 100%;")
+													div
+														img#clientImage(src=obj.photo , style="width: 70px;  ") 
+													div
+														h2(style="") #{obj.fname} #{obj.lname}
+													p(style="position:relative; left:25px;padding-right:20px;")  Requests #{goal.goal_title} to move from progress level #{goal.progress} to #{goal.progress_update}
+													form(method='POST' action='/viewGoal_coach')
+														input(type="hidden" name="goal_id" value=goal.id)
+														button.special.icon.fa-search(style="float:left; bottom:20px;" type="submit") Details
+													form(method='POST' action='/coachView')
+														button.special.icon.fa-check(style="float:right; bottom:20px;" type="submit") Accept
+														input(type="hidden" name="acceptRequest" value=goal.goal_id)
+													br
 						if noApprovals == "true"
 							h3.text-danger(style="text-align:center") No pending approvals
 				div(class="6u 12u$(medium)")
 					h2 Invite a Client:
-					br
-					br
 					.modal(role="dialog", id="addClientModal", style="padding: 30px; background-color:#EEE; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 						.modal-dialog-centered.custom_modal_dialog(role="document")
 							.modal-content
