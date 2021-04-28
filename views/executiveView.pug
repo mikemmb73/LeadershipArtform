@@ -45,7 +45,6 @@ block content
 			.row(style="width:100%;")
 				div(class="6u 12u$(medium)")
 					h2 Messages from Coach:
-					br
 					div.card.text-black.bg-primary-mb-3(style=" background-color: #EEE; padding:30px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 							div.card-body
 								if user.message.length == 0
@@ -66,6 +65,7 @@ block content
 								if goal.goal_progress < 100
 									div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 										+print_goal(goal)
+									br
 		br
 		br
 		br
