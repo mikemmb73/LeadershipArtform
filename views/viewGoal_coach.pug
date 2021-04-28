@@ -86,8 +86,8 @@ block content
       if (goal.goal_responses.length == 0)
         p No Responses Yet.
       else
-        div.dropdown(style='margin-left: 30px; padding: 10px; width:80%; background-color: #EEE; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;')
-          p #{formatDate(goal.goal_responses[0].date)}
+        div.dropdown(style='margin-left: 30px; padding: 10px; width:80%; ')
+          //p #{formatDate(goal.goal_responses[0].date)}
           - function formatDate(date) {
             - var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             - var day = date.getDate();
@@ -95,10 +95,13 @@ block content
             - var year = date.getFullYear();
             - return monthNames[month] + ' ' + day + ', ' + year; }
           .jumbotron
-            each q, index in goal.goal_questions
-              div(id='q' + index)
-                h3 Question: #{q.question_title}
-                p Answer: #{currResponse.answers_array[index].response_answer}
+            each r,index in goal.goal_responses
+             div(style="width:100%; background-color: #EEE; padding-left: 20px;position: relative; left: 0px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
+              p(style="color: #BBB;") #{formatDate(r.date)}
+               each a,index2 in goal.goal_questions
+                if a.question_id == r.answers_array[0].question_id
+                 h4 Question: #{a.question_title}
+                 p Answer: #{r.answers_array[0].response_answer}
     br
     br
     br
