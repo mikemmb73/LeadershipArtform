@@ -1,0 +1,35 @@
+form .likert li {
+    display:inline-block;
+    width:19%;
+    text-align:center;
+    vertical-align: top;
+  }
+  
+  form .likert::before {
+    content: '';
+    position:relative;
+    top:15px;
+    left:9.5%;
+    display:block;
+    background-color: white;
+    height:4px;
+    width:78%;
+    margin-bottom: 30px;
+  }
+  
+input[type="radio"]{
+    display:block;
+    position:relative;
+    top:10px;
+    left:50%;
+    margin-left:-6px;
+  
+  }
+
+  #likertQuestion{
+    width: 800px;
+  }
+  
+  #likertScaleLeftRight{
+    width: 300px;
+  }
