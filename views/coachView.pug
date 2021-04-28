@@ -73,6 +73,7 @@ block content
 										form(method='POST' action='/coachView')
 											button.special.icon.fa-check(style="float:right; bottom:20px;" type="submit") Accept
 											input(type="hidden" name="acceptRequest" value=goal.goal_id)
+										br
 						if noApprovals == "true"
 							h3.text-danger(style="text-align:center") No pending approvals
 				div(class="6u 12u$(medium)")

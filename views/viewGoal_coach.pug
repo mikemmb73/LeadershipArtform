@@ -1,5 +1,5 @@
 extends layout
-
+ 
 block content
   include mixins/print_goal_coach.pug
   head 
@@ -31,10 +31,11 @@ block content
           form(method='POST' action='/')
             input(type="hidden" name="signOut" value="signOut")
             button(style="background-color: red; color: white !important; float:right;",type="submit").signOut_button Sign Out
-    section#One.wrapper.style3.inner
-      header.align-center
-        p Art of Leadership
-        h2 Executive Profile
+    section#One.wrapper.style3
+      .inner
+        header.align-center
+          p Art of Leadership
+          h2 Goal Details
 
     div.goals(style="margin-left: 30px;")
       .row
