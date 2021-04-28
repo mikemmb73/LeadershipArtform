@@ -10,6 +10,7 @@ block content
 		meta(charset='utf-8')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 		link(rel='stylesheet' href='assets/css/mainProfile.css')
+		link(rel='stylesheet' href='assets/css/likert.css')
 	body.subpage
 		script(src='assets/js/jquery.min.js')
 		script(src='assets/js/jquery.scrollex.min.js')
@@ -69,9 +70,9 @@ block content
 								- mcOptionName = 'MC'+mcOptionCount
 								- mcOptionCount++
 								if q != ' '
-									
 									input(type='radio', value=mcOptionName, name=mcQuestionName, id=mcOptionName)
-									label(for=mcOptionName) #{q}
+									p #{q}
+									//- label(for=mcOptionName) #{q}
 								
 									br
 						if question.question_type == 1

@@ -182,10 +182,10 @@ module.exports = {
         for (var i=1; i<q_responseArray.length; i++) {
             console.log(q_responseArray[i].date);
             console.log(responses_array[responses_array.length - 1].date);
-            if (q_responseArray[i].date.getTime() != responses_array[responses_array.length - 1].date.getTime()) {
-              responses_array.push(new Response.Response());
-              responses_array[responses_array.length - 1].date = q_responseArray[i].date;
-            }
+            //if (q_responseArray[i].date.getTime() != responses_array[responses_array.length - 1].date.getTime()) {
+            responses_array.push(new Response.Response());
+            responses_array[responses_array.length - 1].date = q_responseArray[i].date;
+            //}
             responses_array[responses_array.length - 1].answers_array.push(q_responseArray[i]);
         }
       }
