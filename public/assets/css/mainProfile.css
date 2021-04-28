@@ -2170,16 +2170,16 @@
 
 	input[type="checkbox"],
 	input[type="radio"] {
-		-moz-appearance: none;
+		/* -moz-appearance: none;
 		-webkit-appearance: none;
 		-ms-appearance: none;
-		appearance: none;
+		appearance: none; */
 		display: block;
 		float: left;
 		margin-right: -2rem;
-		opacity: 0;
+		/* opacity: 0; */
 		width: 1rem;
-		z-index: -1;
+		z-index: 10;
 	}
 
 		input[type="checkbox"] + label,
