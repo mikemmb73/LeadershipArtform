@@ -21,6 +21,8 @@ var app = express();
 
 // set up http server
 app.use((req, res, next) => {
+  console.log('env');
+  console.log(req.app.get('env'));
   if (req.app.get('env') === 'production') {
     console.log("env: " + req.app.get('env'));
     if (req.headers['x-forwarded-proto'] !== 'https') {
