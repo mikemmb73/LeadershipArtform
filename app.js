@@ -33,6 +33,7 @@ app.use((req, res, next) => {
   if (!isThisLocalhost(req)) {
     console.log("env: " + req.app.get('env'));
     if (req.headers['x-forwarded-proto'] !== 'https') {
+      console.log(req.headers['x-forwarded-proto']);
       return res.redirect('https://' + req.headers.host + req.url);
     } else {
       return next();
