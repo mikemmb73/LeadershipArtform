@@ -23,7 +23,7 @@ var app = express();
 app.use((req, res, next) => {
   console.log('env');
   console.log(req.app.get('env'));
-  if (req.app.get('env') === 'production') {
+  if (req.app.get('env') === 'development') {
     console.log("env: " + req.app.get('env'));
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect('https://' + req.headers.host + req.url);
