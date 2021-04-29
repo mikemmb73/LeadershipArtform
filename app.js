@@ -19,11 +19,18 @@ var app = express();
 //const pug = require('pug');
 //const compiledFunction = pug.compileFile('/views/test');
 
+// function to check if the request is local
+var isThisLocalhost = function (req){
+
+    var ip = req.connection.remoteAddress;
+    var host = req.get('host');
+
+    return ip === "127.0.0.1" || ip === "::ffff:127.0.0.1" || ip === "::1" || host.indexOf("localhost") !== -1;
+}
+
 // set up http server
 app.use((req, res, next) => {
-  console.log('env');
-  console.log(req.app.get('env'));
-  if (req.app.get('env') === 'development') {
+  if (!isThisLocalhost(req)) {
     console.log("env: " + req.app.get('env'));
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect('https://' + req.headers.host + req.url);
