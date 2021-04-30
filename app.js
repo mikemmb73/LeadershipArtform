@@ -30,9 +30,7 @@ var isThisLocalhost = function (req){
 
 // set up http server
 app.use((req, res, next) => {
-  if (!isThisLocalhost(req)) {
-    console.log("env: " + req.app.get('env'));
-    console.log(req.headers['x-forwarded-proto']);
+  if (req.app.get('env') === 'development') {
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect('https://' + req.headers.host + req.url);
     } else {
