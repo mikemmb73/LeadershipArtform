@@ -165,10 +165,10 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
         console.log(user);
         // if (user == null) {
         if (user == -1) { //the two password fields do not match
-          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Passwords provided do not match! Try again.'});
+          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', SignUpErrorMessage: 'Passwords provided do not match! Try again.'});
         }
         else if (user == -2) { //the email has already been logged into the database and can not be reused
-          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', signupMessage1: 'Duplicate email! Try again or Login.'});
+          res.render('coachSignInSignUp.pug', { title: 'Coach Signup', SignUpErrorMessage: 'Duplicate email! Try again or Login.'});
         }
         // }
         else {
@@ -194,7 +194,7 @@ router.post('/coachSignInAction', async function(req, res) {
     console.log(currCoach);
     //the currCoach is mapped to the coach with the provided information.
     if (user == null) {   // auth passes null if username doesn't match pass
-      res.render("index", { title: 'Art of Leadership', message: 'Incorrect email or password! Try again.' });
+      res.render("coachSignInSignUp.pug", { title: 'Coach Signin', SignInErrorMessage: 'Incorrect email or password! Try again.' });
     }
     else {
       //Once logged in, the clients field will be populated with the coach's clients
@@ -237,13 +237,13 @@ router.post('/execSignUpAction', upload.single('image'), async function(req,res,
       req.body.email,req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image, req.body.coach_id);
 
       if (user == -1) { //enter if a duplicate email has been detected in the database
-        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Duplicate email! Try again or Login.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', SignUpErrorMessage: 'Duplicate email! Try again or Login.' });
       }
       if (user == -2) { //enter if the coach id provided is not valid
-        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Coach ID does not exist! Try again.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', SignUpErrorMessage: 'Coach ID does not exist! Try again.' });
       }
       if (user == -3) { //enter if the passwords provided do not match
-        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', signupMessage1: 'Passwords provided do not match! Try again.' });
+        return res.render('executiveSignInSignUp.pug', { title: 'Executive Signup', SignUpErrorMessage: 'Passwords provided do not match! Try again.' });
       }
       currExecutive = user;
       req.session.user = user;
@@ -281,7 +281,7 @@ router.post('/execSignInAction', upload.single('image'), async function(req,res,
   if (user == null && req.body.fname != null) {
     res.redirect('/executiveSignInSignUp');
   } else if (user == null && req.body.username2 != null) {  // auth passes null if username doesn't match pass
-      res.render("index", { title:'Art of Leadership', message2: 'Incorrect email or password! Try again.' });
+      res.render("executiveSignInSignUp", { title:'Art of Leadership', SignInErrorMessage: 'Incorrect email or password! Try again.' });
   }  else {
       // Successfully sign in as an executive
       console.log("Here1");
@@ -296,7 +296,7 @@ router.post('/executiveView', requireExecLogin, upload.single('image'), async fu
   currExecutive = req.session.user;
   //console.log()
   if (req.body.isEditGoalExec == 'yes'){ //marked as 'yes' if teh executive has entered a response
-	
+
     var goal = await responseServices.getGoalWithID(req.body.goalID);
     var mcQuestionCount = req.body.mcQuestionCount;
     var likertQuestionCount = req.body.likertQuestionCount;
@@ -321,14 +321,14 @@ router.post('/executiveView', requireExecLogin, upload.single('image'), async fu
     var message = "";
     await emailservices.updateMessage(message, currExecutive.email)
     //currExecutive.coach_message = message;
-	
+
     //req.session.user.coach_message = message;
     //req.session.user.message.length = 0;
 	req.session.user.message = message;
 	req.session.user.messageState = 0;
     var execGoals = await profileServices.getExecGoals(currExecutive.executive_id);
     req.session.user.exec_goals = execGoals;
-	
+
 
     console.log("Here2");
     res.render('executiveView.pug', {title: 'Executive View', user: req.session.user});
@@ -541,19 +541,19 @@ router.post('/viewGoal_executive', async function(req, res) {
     //   //add to the arr
     //   allResponses.push(thisResponse)
     // })
-    
+
     if (goal.goal_responses.length > 0) {
       currResponse = goal.goal_responses[0]
     }
 
     // //add all of the responses to the main response pushed to the user
     // goal.responses = allResponses
-    
+
     console.log("We are here");
     console.log(goal.progress_update + "!!");
     console.log(currResponse)
     console.log(goal)
-    
+
     if (req.body.update_progress != null) {
       //the executive is requesting their progress be updated
       //it should not directly change the database until the coach has access to it

@@ -47,7 +47,8 @@ block content
                     .group
                       input.button(type='submit' value='Sign In')
                     .hr
-
+                  h6(style="color: red; text-align: center") #{SignInErrorMessage}
+                  
                 .sign-up-htm
                   form(id='form' method='POST' action='/execSignUpAction' enctype='multipart/form-data')
                     .group
@@ -76,7 +77,7 @@ block content
                       input#bio.input(type='text' name='bio' required) 
                     .group
                       input.button(type='submit' value='Sign Up')
-                  h6(style="color: red; text-align: center") #{signupMessage1}
+                  h6(style="color: red; text-align: center") #{SignUpErrorMessage}
     br
     br
     footer#footer
