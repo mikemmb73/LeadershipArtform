@@ -76,7 +76,6 @@ module.exports = {
 				const [questionRows, questionFields] = await mysql.connect.execute(getStatement3);
 				const currQuestionArray = questionRows.map(x => new Question.Question(x));
 				currGoalArray[j].goal_questions = currQuestionArray;
-				console.log("currQuestionArray is " + currQuestionArray);
 				currExecutives[i].addGoal(currGoalArray[j]);
 
 			}

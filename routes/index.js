@@ -210,10 +210,6 @@ router.post('/coachSignInAction', async function(req, res) {
       }
       req.session.user.clients = clients;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 60d7e58a49249e3635615c10b0d2bf2c1c0104e6
       res.render('coachView.pug', {user:req.session.user, clients: clients})
     }
   }
