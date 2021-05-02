@@ -86,8 +86,8 @@ block content
 										ul.likert
 											li
 												.label
-													input(type='radio', value='1L', name=likertQuestionName)
-													|   1. #{qs[0]}
+													input(type='radio', value='1L', name=likertQuestionName, style="")
+													| 1. #{qs[0]}
 											li
 												.label
 													input(type='radio', value='2L', name=likertQuestionName)
@@ -103,7 +103,7 @@ block content
 											li
 												.label
 													input(type='radio', value='5L', name=likertQuestionName)
-													|   5. #{qs[1]}
+													| 5. #{qs[1]}
 						br
 					input(type='hidden' name="mcQuestionCount" value=mcQuestionCount)
 					input(type='hidden' name="likertQuestionCount" value=likertQuestionCount)

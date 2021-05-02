@@ -66,13 +66,7 @@ block content
 									div(style=" background-color: #EEE; padding:20px; border-radius: 20px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;")
 										+print_goal(goal)
 									br
-		br
-		br
-		br
-		footer#footer
-			.copyright
-				| &copy; Leadership as an artform. All rights reserved.
-		
+
 	.col-lg-4
 	- var today = new Date()
 	- var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -86,4 +80,11 @@ block content
 				br
 				.alert.alert-dismissible.alert-success
 					h5.text-success(style="text-align:center") You have a new goal
+		
+
+		br
+		footer#footer
+			.copyright
+				| &copy; Leadership as an artform. All rights reserved.
+		
 
