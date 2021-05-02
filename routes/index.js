@@ -201,8 +201,13 @@ router.post('/coachSignInAction', async function(req, res) {
       clients = await loginservices.getClientGoals(user);
       req.session.user = user;
       req.session.user.password = "";
+      if(clients == null){
+        clients = []
+      }
+      req.session.user.clients = clients;
 
-      res.redirect('/coachView')
+
+      res.render('coachView.pug', {user:req.session.user, clients: clients})
     }
   }
 });
