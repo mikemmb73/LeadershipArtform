@@ -516,6 +516,14 @@ function checkGoal() {
     alert("Please enter at least one question.");
     return;
   }
+  if(document.forms["goalForm"]["goalTitle"].value == ""){
+    alert("you must enter a tile for the goal.");
+    return;
+  }
+  if(document.forms["goalForm"]["goalDescription"].value == ""){
+     alert("you must enter a description for the goal.");
+     return;
+  }
 
   if (document.getElementById("goalForm").checkValidity()) {
     var title = document.forms["goalForm"]["goalTitle"].value;
@@ -524,17 +532,12 @@ function checkGoal() {
     
       document.getElementById("goalForm").submit();
   } 
-  else {
-    if(document.forms["goalForm"]["goalTitle"].value == ""){
-      alert("you must enter a tile for the goal.");
-    }
-    else if(document.forms["goalForm"]["goalDescription"].value == ""){
-       alert("you must enter a description for the goal.");
-    }
-    else{
-      alert("Please Fill in All Required Fields.");
-    }
+  else{
+
+    alert("Please Select at least one Recipient");
+    return;
   }
+
   
 }
 
