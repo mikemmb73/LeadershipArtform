@@ -9,10 +9,10 @@ mixin print_goal_coach(goal)
         div.goal_data.col-md-6
           h4(style="font-size: 20px;") Goal Title: #{goal.goal_title}
           p Goal Description: #{goal.goal_description}
-        div.form_view_goal.col-md-6
+        div.form_view_goal.col-md-6(style="float:right;")
           form(method="POST", action="/viewGoal_coach")
             input(type="hidden" name="goal_id" value=goal.id)
-            button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:100px; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; " ) View Goal
+            button.btn.btn-primary.btn-small.view_goal_button(type='submit', style="margin-left:100px; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;" ) View Goal
       div.progress.row
         -var progress = 'width: ' + goal.goal_progress + '%';
         if goal.goal_progress == 100
