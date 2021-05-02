@@ -29,6 +29,7 @@ block content
     div.row
       div.col
       div.col-md-4.jumbotron
+        h6(style="color: red; text-align: center; margin-bottom: 1rem;") #{SignUpErrorMessage}
         .login-wrap
             .login-html
               input#tab-1.sign-in(type='radio' name='tab' checked)
@@ -75,7 +76,6 @@ block content
                     .group
                       input.button(type='submit' value='Sign Up')
                       
-                  h6(style="color: red; text-align: center") #{SignUpErrorMessage}
     br
     br
     footer#footer
