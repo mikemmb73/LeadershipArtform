@@ -205,9 +205,9 @@ router.post('/coachSignInAction', async function(req, res) {
         clients = []
       }
       req.session.user.clients = clients;
-      
 
-      res.render('/coachView', {user:req.session.user, clients: clients})
+
+      res.render('coachView.pug', {user:req.session.user, clients: clients})
     }
   }
 });
