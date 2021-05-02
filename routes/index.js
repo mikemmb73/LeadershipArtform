@@ -175,10 +175,14 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
           var promise = Promise.resolve(user);
           promise.then(function(value) {
             currCoach = user;
-            var clientList = [];
+            var clients = []
             req.session.user = user;
             req.session.user.password = "";
-            res.redirect('/coachView');
+            if(clients == null){
+              clients = []
+            }
+
+            res.render('coachView.pug', {user:req.session.user, clients: clients})
           });
 
         }

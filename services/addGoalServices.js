@@ -335,14 +335,12 @@ module.exports = {
     const questionArrayMatch = rows.map(x => new Question.Question(x));
 
     if (Array.isArray(goalData.clientForm)) {
-      console.log("Here3");
       for (var x = 0; x < goalData.clientForm.length; x++) {
         var fullName = goalData.clientForm[x].split(" ");
         var today = new Date();
         var nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
         for (var j = 0; j < clients.length; j++) {
-          console.log("Here2");
           if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
 
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
@@ -372,10 +370,7 @@ module.exports = {
             const currGoal = currGoalArray[0];
             currGoal.goal_due_date = nextWeek;
 
-            console.log("currGoal");
-            console.log(currGoal);
             for (var i = 0; i < questionArrayMatch.length; i++) {
-              console.log("here");
               await mysql.connect.execute("INSERT INTO questions(goal_id, title, type, qs) VALUES(?, ?, ?, ?);", [currGoal.goal_id, questionArrayMatch[i].title, questionArrayMatch[i].type, questionArrayMatch[i].qs]);
             }
           }
