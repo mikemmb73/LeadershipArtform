@@ -182,7 +182,7 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
               clients = []
             }
 
-            res.render('coachView.pug', {user:req.session.user, clients: clients})
+            res.render('coachView.pug', {title: 'Coach Signin', user: req.session.user, clients: clients})
           });
 
         }
@@ -202,7 +202,6 @@ router.post('/coachSignInAction', async function(req, res) {
     }
     else {
       //Once logged in, the clients field will be populated with the coach's clients
-      clients = await loginservices.getClientGoals(user);
       req.session.user = user;
       req.session.user.password = "";
       if(clients == null){
