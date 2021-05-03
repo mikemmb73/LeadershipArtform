@@ -66,7 +66,7 @@ module.exports = {
 		const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(?, coach_id)", [coach.coach_id]);
 		console.log("firstLoop")
 		const currExecutives = execRows.map(x => new Executive.Executive(x));
-		console.log(currentExecutive.length)
+		console.log(currentExecutives.length)
 		for (var i = 0; i < currExecutives.length; i++) {
 			//Get each executive's list of goals
 	    	const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(?, executive_id)", [currExecutives[i].executive_id]);
