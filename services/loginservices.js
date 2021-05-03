@@ -63,14 +63,19 @@ module.exports = {
 	**/
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
+		console.log("coach")
+		console.log(coach)
 		var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + coach.coach_id + ", coach_id)";
 		const [execRows, execFields] = await mysql.connect.execute(getStatement);
 		const currExecutives = execRows.map(x => new Executive.Executive(x));
 		for (var i = 0; i < currExecutives.length; i++) {
 			//Get each executive's list of goals
 			var getStatement2 = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currExecutives[i].executive_id + ", executive_id)";
-	    const [goalRows, goalFields] = await mysql.connect.execute(getStatement2);
+	    	const [goalRows, goalFields] = await mysql.connect.execute(getStatement2);
 			const currGoalArray = goalRows.map(x => new Goal.Goal(x));
+			console.log("goal array")
+			console.log(currGoalArray)
+
 			for (var j = 0; j < currGoalArray.length; j++) {
 				var getStatement3 = "SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoalArray[j].id + ", goal_id)";
 				const [questionRows, questionFields] = await mysql.connect.execute(getStatement3);
