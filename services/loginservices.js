@@ -33,8 +33,7 @@ module.exports = {
 				if (validPassword) {
 					isCorrectPass = true;
 					currentExecutive = currExecutive[0];
-					var getStatement = "SELECT * FROM goals WHERE executive_id = IFNULL(" + currentExecutive.executive_id + ", executive_id)";
-					const [rows2, fields2] = await mysql.connect.execute(getStatement);
+					const [rows2, fields2] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(?, executive_id)", [currentExecutive.executive_id]);
 					const currGoalArray = rows2.map(x => new Goal.Goal(x));
 					for (var i = 0; i < currGoalArray.length; i++) {
 						currentExecutive.addGoal(currGoalArray[i]);
@@ -63,15 +62,15 @@ module.exports = {
 	**/
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
-		const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(" + coach.coach_id + ", coach_id)");
+		const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(?, coach_id)", [coach.coach_id]);
 		const currExecutives = execRows.map(x => new Executive.Executive(x));
 		for (var i = 0; i < currExecutives.length; i++) {
 			//Get each executive's list of goals
-	    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(" + currExecutives[i].executive_id + ", executive_id)");
+	    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(?, executive_id)", [currExecutives[i].executive_id]);
 			const currGoalArray = goalRows.map(x => new Goal.Goal(x));
 
 			for (var j = 0; j < currGoalArray.length; j++) {
-				const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoalArray[j].id + ", goal_id)");
+				const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = IFNULL(?, goal_id)", [currGoalArray[j].id]);
 				const currQuestionArray = questionRows.map(x => new Question.Question(x));
 				currGoalArray[j].goal_questions = currQuestionArray;
 				currExecutives[i].addGoal(currGoalArray[j]);
@@ -119,8 +118,7 @@ module.exports = {
 	getClients: async function(user) {
 	    var id = user.coach_id_val;
 	    console.log("ID HERE: " + id);
-	    var getStatement = "SELECT * FROM executives WHERE coach_id = IFNULL(" + user.coach_id + ", coach_id)";
-	    const [rows, fields] = await mysql.connect.execute(getStatement);
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(?, coach_id)", [user.coach_id]);
 	    const currCoach = rows.map(x => new Executive.Executive(x));
 	    return currCoach;
   	},
@@ -131,8 +129,8 @@ module.exports = {
 	purpose- Returns the coach that is mapped to the executive.
 	**/
 	getExecutiveCoach: async function(executive) {
-		var getStatement = "SELECT * FROM coaches WHERE coach_id = IFNULL(" + executive.coach_id + ", coach_id)";
-	    const [rows, fields] = await mysql.connect.execute(getStatement);
+		var getStatement = ;
+	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = IFNULL(?, coach_id)", [executive.coach_id]);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 	    return currCoach[0];
 	},
