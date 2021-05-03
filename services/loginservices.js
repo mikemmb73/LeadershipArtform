@@ -62,6 +62,7 @@ module.exports = {
 	**/
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
+		console.log(coach.coach_id)
 		const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(?, coach_id)", [coach.coach_id]);
 		console.log("firstLoop")
 		const currExecutives = execRows.map(x => new Executive.Executive(x));
