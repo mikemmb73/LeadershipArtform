@@ -132,7 +132,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
         console.log("this is the client's goal ID" + req.body.acceptRequest);
         console.log("ABOUT TO CALL ACCEPTPORGRESSUPDATE IN COACHVIEW");
         await addGoalService.acceptProgressUpdate(req.body.acceptRequest);
-        clients = await loginservices.getClientGoals(user);
+        clients = await loginservices.getClientGoals(req.session.user);
         res.render('coachView.pug', {title: 'CoachView', user: currCoach, clients: clients});
         //res.redirect('coachView');
     } else { //sending an email to invite a client
@@ -162,7 +162,6 @@ router.post('/coachSignUpAction', upload.single('image'), async function(req, re
         }
         user = await signup.signUpCoach(req.body.fname, req.body.lname,
           req.body.email, req.body.phone_number, req.body.password, req.body.confirmPassword, req.body.bio, image);
-        console.log(user);
         // if (user == null) {
         if (user == -1) { //the two password fields do not match
           res.render('coachSignInSignUp.pug', { title: 'Coach Signup', SignUpErrorMessage: 'Passwords provided do not match! Try again.'});
@@ -409,8 +408,7 @@ router.post('/executiveProfile_coach', requireLogin, async function(req,res,next
 
 /* GET profile page for coach when logged in as coach. */
 router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
-  clients = await loginservices.getClientGoals(user);
-  console.log("finished!")
+  clients = await loginservices.getClientGoals(req.session.user);
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: clients});
 });
 
