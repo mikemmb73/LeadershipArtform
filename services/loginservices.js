@@ -63,14 +63,17 @@ module.exports = {
 	getClientGoals: async function(coach) {
 		//Grab coach's executive list
 		const [execRows, execFields] = await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = IFNULL(?, coach_id)", [coach.coach_id]);
+		console.log("firstLoop")
 		const currExecutives = execRows.map(x => new Executive.Executive(x));
 		for (var i = 0; i < currExecutives.length; i++) {
 			//Get each executive's list of goals
-	    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(?, executive_id)", [currExecutives[i].executive_id]);
+	    	const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(?, executive_id)", [currExecutives[i].executive_id]);
 			const currGoalArray = goalRows.map(x => new Goal.Goal(x));
-
+			console.log("second loop")
 			for (var j = 0; j < currGoalArray.length; j++) {
+				console.log("third loop")
 				const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = IFNULL(?, goal_id)", [currGoalArray[j].id]);
+				console.log("after next query")
 				const currQuestionArray = questionRows.map(x => new Question.Question(x));
 				currGoalArray[j].goal_questions = currQuestionArray;
 				currExecutives[i].addGoal(currGoalArray[j]);
