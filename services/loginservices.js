@@ -69,6 +69,7 @@ module.exports = {
 			//Get each executive's list of goals
 	    const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = IFNULL(" + currExecutives[i].executive_id + ", executive_id)");
 			const currGoalArray = goalRows.map(x => new Goal.Goal(x));
+
 			for (var j = 0; j < currGoalArray.length; j++) {
 				const [questionRows, questionFields] = await mysql.connect.execute("SELECT * FROM questions WHERE goal_id = IFNULL(" + currGoalArray[j].id + ", goal_id)");
 				const currQuestionArray = questionRows.map(x => new Question.Question(x));
