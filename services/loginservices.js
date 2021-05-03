@@ -129,7 +129,6 @@ module.exports = {
 	purpose- Returns the coach that is mapped to the executive.
 	**/
 	getExecutiveCoach: async function(executive) {
-		var getStatement = ;
 	    const [rows, fields] = await mysql.connect.execute("SELECT * FROM coaches WHERE coach_id = IFNULL(?, coach_id)", [executive.coach_id]);
 	    const currCoach = rows.map(x => new ExecutiveCoach.ExecutiveCoach(x));
 	    return currCoach[0];
