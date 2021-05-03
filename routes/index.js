@@ -410,6 +410,7 @@ router.post('/executiveProfile_coach', requireLogin, async function(req,res,next
 /* GET profile page for coach when logged in as coach. */
 router.get('/coachProfile_coach', requireLogin, async function(req,res,next){
   clients = await loginservices.getClientGoals(user);
+  console.log("finished!")
 	res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: clients});
 });
 
