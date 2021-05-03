@@ -90,7 +90,7 @@ module.exports = {
     var id = user.coach_id_val;
     var clientList = [];
     console.log(id);
-    await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = "+id, function(err, rows) {
+    await mysql.connect.execute("SELECT * FROM executives WHERE coach_id = ?", [id], function(err, rows) {
       var i;
       console.log('in select statement');
       console.log(rows.length);
