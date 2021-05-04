@@ -40,17 +40,17 @@ block content
 					p Art of Leadership
 					h2 Coach Profile
 
-		div.row.client-info
+		div.row.client-info(style="margin-left: 50px; margin-top: 50px;")
 			div.col-md-1
-			div.col-md-2
+			div.col-md-2(style="margin-right: 50px;")
 				img#profileImage(src=user.photograph)
 			div.col-md-1
 			div.col-md-6
 				br
-				h1 #{user.full_name}
+				h1(style="font-size: 50px;") #{user.full_name}
 				h3 EMAIL: #{user.user_email}
-				h5 COACH ID: #{user.coach_id}
-				p #{user.biography}
+				p(style="font-size: 20px;") COACH ID: #{user.coach_id}
+				p(style="font-size: 20px;") #{user.biography}
 			div.col-md-1
 			br
 
