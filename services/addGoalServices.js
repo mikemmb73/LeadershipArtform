@@ -346,7 +346,7 @@ module.exports = {
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
-            const currGoal = currGoalArray[0];
+            const currGoal = currGoalArray[currGoalArray.length - 1];
             currGoal.goal_due_date = nextWeek;
 
             for (var i = 0; i < questionArrayMatch.length; i++) {
@@ -367,7 +367,7 @@ module.exports = {
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, currGoalMatch.title, currGoalMatch.description, 0, currGoalMatch.frequency, today, nextWeek, 0]);
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [currGoalMatch.goal_title, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
-            const currGoal = currGoalArray[0];
+            const currGoal = currGoalArray[currGoalArray.length - 1];
             currGoal.goal_due_date = nextWeek;
 
             for (var i = 0; i < questionArrayMatch.length; i++) {

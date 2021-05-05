@@ -457,11 +457,11 @@ router.get('/addGoal_coach', requireLogin, async function(req,res,next){
   //check if the user logged in is a coach
   if(typeof req.session.user.coach_id === 'number'){
     currCoach = req.session.user;
-
+    clients = await loginservices.getClients(req.session.user)
     var clients2 = await loginservices.getClientGoals(currCoach);
     var promise = Promise.resolve(clients2);
     promise.then(function(value) {
-      res.render('addGoal_coach.pug', {title: 'Add Goal', user:currCoach, clients:clients, clients2:value});
+      res.render('addGoal_coach.pug', {title: 'Add Goal', user:req.session.user, clients:clients, clients2:value});
     });
 
   //if its not a coach then redirect back home (graceful error)
