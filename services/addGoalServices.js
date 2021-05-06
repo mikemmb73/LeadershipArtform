@@ -31,7 +31,7 @@ module.exports = {
     // console.log("This is my goal data" + goalData.goalTitle);
     const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
     if (rowsTest.length) {
-      return;
+      goalData.goalTitle = goalData.goalTitle + " (" + rowsTest.length + ")";
     }
 
     await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [-1,currExecutive.executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
@@ -84,7 +84,6 @@ module.exports = {
       const [questionRows, questionFields] = await mysql.connect.execute(getStatement);
       const currQuestionArray = questionRows.map(x => new Question.Question(x));
       currGoal.goal_questions = currQuestionArray;
-      console.log("inside addgoalServices: currGoal.goal_questions is: " + currGoal.goal_questions);
       return currGoal;
     }
 
@@ -148,7 +147,6 @@ module.exports = {
   in the progress bar
   **/
   updateProgress: async function(goalID, progressValue) {     //when exec requests to change progress
-    console.log("updateProgress" + goalID + " " + progressValue);
     var statement = "UPDATE goals SET progress_acceptance = " + progressValue + " WHERE goal_id = " + goalID;
     await mysql.connect.execute(statement);
     const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE goal_id = ?", [goalID]);
@@ -203,9 +201,6 @@ module.exports = {
   the client form will be a string and will not need to loop through the entire clientForm
   **/
   addGoalCoach: async function(goalData, currCoach, clients, frequency) {
-    console.log(goalData)
-    console.log("clients" + clients)
-    console.log(clients[0])
     typeof clientForm;
     if (Array.isArray(goalData.clientForm)) {
       for (var x = 0; x < goalData.clientForm.length; x++) {
@@ -225,8 +220,11 @@ module.exports = {
               emailservices.scheduleReminder(clients[j].email, 30);
             }
 
+            const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
+            if (rowsTest.length) {
+              goalData.goalTitle = goalData.goalTitle + " (" + rowsTest.length + ")";
+            }
             await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
-            console.log("added goal");
             const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
             const currGoalArray = rows.map(x => new Goal.Goal(x));
             const currGoal = currGoalArray[0];
@@ -259,19 +257,11 @@ module.exports = {
           //this happens if there is an error with the request (i.e. the coach has no clients)
           //this will push the user back to the home screen but at least the page won't hang, we should add an error here
         }else{
-          console.log("printing goal data");
-          console.log(goalData);
-          console.log("clientForm: " + goalData.clientForm);
-          console.log("goal data is not array" + goalData.clientForm[i]);
           var fullName = goalData.clientForm.split(" ");
           var today = new Date();
           var nextWeek = new Date();
           nextWeek.setDate(nextWeek.getDate() + 7);
           for (var j = 0; j < clients.length; j++) {
-            console.log("+" + clients[j].fname.valueOf() + "+");
-            console.log("+" + fullName[0].valueOf() + "+");
-            console.log("+" + clients[j].lname.valueOf() + "+");
-            console.log("+" + fullName[1].valueOf() + "+");
             if (clients[j].fname.valueOf().trim() == fullName[0].valueOf().trim() && clients[j].lname.valueOf().trim() == fullName[1].valueOf().trim()){
               // Email Reminder
               if (frequency == 0) {
@@ -282,9 +272,11 @@ module.exports = {
                 emailservices.scheduleReminder(clients[j].email, 30);
               }
 
-              console.log("IN THE LOOP TO ADD QUESTION");
+              const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
+              if (rowsTest.length) {
+                goalData.goalTitle = goalData.goalTitle + " (" + rowsTest.length + ")";
+              }
               await mysql.connect.execute("INSERT INTO goals(coach_id, executive_id, title, description, progress, frequency, date_assigned, currDueDate, progress_acceptance) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", [currCoach.coach_id, clients[j].executive_id, goalData.goalTitle, goalData.goalDescription, 0, goalData.frequency, today, nextWeek, 0]);
-              console.log("added goal");
               const [rows, fields] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
               const currGoalArray = rows.map(x => new Goal.Goal(x));
               const currGoal = currGoalArray[0];
@@ -356,8 +348,6 @@ module.exports = {
         }
       }
     } else {
-        console.log(goalData);
-        console.log(currGoalMatch);
         var fullName = goalData.clientForm.split(" ");
         var today = new Date();
         var nextWeek = new Date();
