@@ -95,9 +95,11 @@ router.get('/coachView', requireLogin, function(req, res, next) {
     emailservices.sendAllReminders(clients);
   }
 
-if (clients === undefined) {
-  clients = [];
-}
+  if (clients === undefined) {
+    clients = [];
+  }
+
+  console.log(clients);
   res.render('coachView.pug', { title: 'Coach View',  user: req.session.user, clients: clients});
 });
 
@@ -118,7 +120,7 @@ router.post('/coachView', requireLogin, upload.single('image'), async function(r
       console.log("frequency: " + req.body.frequency);
 
 
-      clients = await loginservices.getClients (req.session.user);
+      clients = await loginservices.getClientGoals (req.session.user);
 
       if (data2.goalTitle != "") {
         await addGoalService.addGoalCoach(data2, currCoach, clients, req.body.frequency);
@@ -206,9 +208,9 @@ router.post('/coachSignInAction', async function(req, res) {
       if(clients == null){
         clients = []
       }
-      req.session.user.clients = await loginservices.getClients(req.session.user);
-
-      res.render('coachView.pug', {user:req.session.user, clients: clients})
+      req.session.user.clients = await loginservices.getClientGoals(req.session.user);
+      console.log(req.session.user.clients);
+      res.render('coachView.pug', {title: "CoachView", user: req.session.user, clients: req.session.user.clients})
     }
   }
 });
@@ -457,7 +459,7 @@ router.get('/addGoal_coach', requireLogin, async function(req,res,next){
   //check if the user logged in is a coach
   if(typeof req.session.user.coach_id === 'number'){
     currCoach = req.session.user;
-    clients = await loginservices.getClients(req.session.user)
+    clients = await loginservices.getClientGoals(req.session.user)
     var clients2 = await loginservices.getClientGoals(currCoach);
     var promise = Promise.resolve(clients2);
     promise.then(function(value) {
