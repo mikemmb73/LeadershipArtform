@@ -25,14 +25,14 @@ module.exports = {
 
     if (newFName != currCoach.first_name && newFName != ''){
       const updateFName = newFName;
-      currCoach.first_name = newFName;
+      currCoach.fname = newFName;
       const coach = currCoach;
       var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET fname = ? WHERE coach_id = ?", [updateFName, coachID]);
     }
 
     if (newLName != currCoach.last_name && newLName != ''){
-      currCoach.last_name = newLName;
+      currCoach.lname = newLName;
       const coach = currCoach;
       var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET lname = ? WHERE coach_id = ?", [newLName, coachID]);
@@ -42,7 +42,7 @@ module.exports = {
     currCoach.full_name = currCoach.first_name + " " + currCoach.last_name;
 
     if (newEmail != currCoach.user_email && newEmail != ''){
-      currCoach.user_email = newEmail;
+      currCoach.email = newEmail;
       const coach = currCoach;
       var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET email = ? WHERE coach_id = ?", [newEmail, coachID]);
@@ -50,7 +50,7 @@ module.exports = {
 
 
     if (newBio != currCoach.biography && newBio != ''){
-      currCoach.biography = newBio;
+      currCoach.bio = newBio;
       const coach = currCoach;
       var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET bio = ? WHERE coach_id = ?", [newBio, coachID]);
@@ -58,12 +58,13 @@ module.exports = {
 
 
     if (newPhoto != currCoach.photograph && newPhoto != ''){
-      currCoach.photograph = newPhoto;
+      currCoach.photo = newPhoto;
       const coach = currCoach;
       var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET photo = ? WHERE coach_id = ?", [newPhoto, coachID]);
     }
 
+    return currCoach;
   },
 
   /**
@@ -72,6 +73,7 @@ module.exports = {
   purpose- Changes the executive's information if they request to edit it.
   **/
   editExecutiveInfo: async function(newInfo, currExec, imageLocation){
+    console.log(newInfo);
     var newFName = newInfo.newFName;
     var newLName = newInfo.newLName;
     var newEmail = newInfo.newEmail;
@@ -81,16 +83,16 @@ module.exports = {
 
     if (newFName != currExec.first_name && newFName != ''){
       const updateFName = newFName;
-      currExec.first_name = newFName;
+      currExec.fname = newFName;
       const exec = currExec;
-      var execID = exec.execID;
+      var execID = exec.executive_id;
       await mysql.connect.execute("UPDATE executives SET fname = ? WHERE executive_id = ?", [updateFName, execID]);
     }
 
     if (newLName != currExec.last_name && newLName != ''){
-      currExec.last_name = newLName;
+      currExec.lname = newLName;
       const exec = currExec;
-      var execID = exec.execID;
+      var execID = exec.executive_id;
       await mysql.connect.execute("UPDATE executives SET lname = ? WHERE executive_id = ?", [newLName, execID]);
     }
 
@@ -98,27 +100,30 @@ module.exports = {
     currExec.full_name = currExec.first_name + " " + currExec.last_name;
 
     if (newEmail != currExec.user_email && newEmail != ''){
-      currExec.user_email = newEmail;
+      currExec.email = newEmail;
       const exec = currExec;
-      var execID = exec.execID;
+      var execID = exec.executive_id;
       await mysql.connect.execute("UPDATE executives SET email = ? WHERE executive_id = ?", [newEmail, execID]);
     }
 
 
     if (newBio != currExec.biography && newBio != ''){
-      currExec.biography = newBio;
+      console.log("Here");
+      currExec.bio = newBio;
       const exec = currExec;
-      var execID = exec.execID;
+      var execID = exec.executive_id;
       await mysql.connect.execute("UPDATE executives SET bio = ? WHERE executive_id = ?", [newBio, execID]);
     }
 
 
     if (newPhoto != currExec.photograph && newPhoto != ''){
-      currExec.photograph = newPhoto;
+      currExec.photo = newPhoto;
       const exec = currExec;
-      var execID = exec.execID;
+      var execID = exec.executive_id;
       await mysql.connect.execute("UPDATE executives SET photo = ? WHERE executive_id = ?", [newPhoto, execID]);
     }
+
+    return currExec;
   },
 
   /**

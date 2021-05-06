@@ -358,7 +358,7 @@ router.post('/executiveProfile', requireExecLogin, upload.single('image'), async
   } else {
     image = req.file.location;
   }
-  await profileServices.editExecutiveInfo(newInfo, currExecutive, image);
+  req.session.user = await profileServices.editExecutiveInfo(newInfo, req.session.user, image);
 
   res.redirect('/executiveProfile');
 });
@@ -421,8 +421,9 @@ router.post('/coachProfile_coach', requireLogin, upload.single('image'), async f
   } else {
     image = req.file.location;
   }
-  await profileServices.editCoachInfo(newInfo, req.session.user, image);
+  req.session.user = await profileServices.editCoachInfo(newInfo, req.session.user, image);
 
+  console.log(req.session.user);
   res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: req.session.user.clients});
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
