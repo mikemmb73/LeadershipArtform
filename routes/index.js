@@ -206,7 +206,7 @@ router.post('/coachSignInAction', async function(req, res) {
       if(clients == null){
         clients = []
       }
-      req.session.user.clients = clients;
+      req.session.user.clients = await loginservices.getClients(req.session.user);
 
       res.render('coachView.pug', {user:req.session.user, clients: clients})
     }
