@@ -1,9 +1,9 @@
 /*****
 
-notesServices.js allows express and node.js to interact with the database when the 
+notesServices.js allows express and node.js to interact with the database when the
 user is on the profile page
 
-****/ 
+****/
 
 var mysql = require("./sqlconnect.js");
 var Goal = require("../model/goal");
@@ -13,7 +13,7 @@ module.exports = {
   /**
   editCoachInfo:
   paramters- newInfo, currCoach, newImage
-  purpose- Changes the coach's information if they request to edit it. 
+  purpose- Changes the coach's information if they request to edit it.
   **/
   editCoachInfo: async function(newInfo, currCoach, newImage){
     var newFName = newInfo.newFName;
@@ -27,14 +27,14 @@ module.exports = {
       const updateFName = newFName;
       currCoach.first_name = newFName;
       const coach = currCoach;
-      var coachID = coach.coach_id_val;
+      var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET fname = ? WHERE coach_id = ?", [updateFName, coachID]);
     }
 
     if (newLName != currCoach.last_name && newLName != ''){
       currCoach.last_name = newLName;
       const coach = currCoach;
-      var coachID = coach.coach_id_val;
+      var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET lname = ? WHERE coach_id = ?", [newLName, coachID]);
     }
 
@@ -44,7 +44,7 @@ module.exports = {
     if (newEmail != currCoach.user_email && newEmail != ''){
       currCoach.user_email = newEmail;
       const coach = currCoach;
-      var coachID = coach.coach_id_val;
+      var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET email = ? WHERE coach_id = ?", [newEmail, coachID]);
     }
 
@@ -52,7 +52,7 @@ module.exports = {
     if (newBio != currCoach.biography && newBio != ''){
       currCoach.biography = newBio;
       const coach = currCoach;
-      var coachID = coach.coach_id_val;
+      var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET bio = ? WHERE coach_id = ?", [newBio, coachID]);
     }
 
@@ -60,7 +60,7 @@ module.exports = {
     if (newPhoto != currCoach.photograph && newPhoto != ''){
       currCoach.photograph = newPhoto;
       const coach = currCoach;
-      var coachID = coach.coach_id_val;
+      var coachID = coach.coach_id;
       await mysql.connect.execute("UPDATE coaches SET photo = ? WHERE coach_id = ?", [newPhoto, coachID]);
     }
 
@@ -69,7 +69,7 @@ module.exports = {
   /**
   editExecutiveInfo:
   paramters- newInfo, currExec, imageLocation
-  purpose- Changes the executive's information if they request to edit it. 
+  purpose- Changes the executive's information if they request to edit it.
   **/
   editExecutiveInfo: async function(newInfo, currExec, imageLocation){
     var newFName = newInfo.newFName;
@@ -124,7 +124,7 @@ module.exports = {
   /**
   getExecGoals:
   paramters- execID
-  purpose- Returns the goals associated with the executive. 
+  purpose- Returns the goals associated with the executive.
   **/
   getExecGoals: async function(execID){
     const [goalRows, goalFields] = await mysql.connect.execute("SELECT * FROM goals WHERE executive_id = ?", [execID]);

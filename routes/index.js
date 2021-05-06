@@ -99,7 +99,6 @@ router.get('/coachView', requireLogin, function(req, res, next) {
     clients = [];
   }
 
-  console.log(clients);
   res.render('coachView.pug', { title: 'Coach View',  user: req.session.user, clients: clients});
 });
 
@@ -209,7 +208,6 @@ router.post('/coachSignInAction', async function(req, res) {
         clients = []
       }
       req.session.user.clients = await loginservices.getClientGoals(req.session.user);
-      console.log(req.session.user.clients);
       res.render('coachView.pug', {title: "CoachView", user: req.session.user, clients: req.session.user.clients})
     }
   }
@@ -424,7 +422,8 @@ router.post('/coachProfile_coach', requireLogin, upload.single('image'), async f
     image = req.file.location;
   }
   await profileServices.editCoachInfo(newInfo, req.session.user, image);
-  res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: clients});
+
+  res.render('coachProfile_coach.pug', {title: 'Coach Profile', user: req.session.user, clients: req.session.user.clients});
   // res.render('executiveProfile.pug', {title: 'Executive Profile', user: currCoach});
 });
 
