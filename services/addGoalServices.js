@@ -272,7 +272,7 @@ module.exports = {
                 emailservices.scheduleReminder(clients[j].email, 30);
               }
 
-              const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, currExecutive.executive_id]);
+              const [rowsTest, fieldsTest] = await mysql.connect.execute("SELECT * FROM goals WHERE title = ? AND executive_id = ?", [goalData.goalTitle, clients[j].executive_id]);
               if (rowsTest.length) {
                 goalData.goalTitle = goalData.goalTitle + " (" + rowsTest.length + ")";
               }
